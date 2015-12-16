@@ -12,6 +12,20 @@ All interactions is with "app.php".
 
 This php is responsible to load controllers and execute the behaviors.
 
+---------------
+
+Work on UI
+Testing URL: http://localhost/reasgex/test/test_ui_core001.html
+
+Implemented "components" to be able to add functionality.
+
+UI widgets are implemented as "components".
+
+UI elements are build from semantical html and shorthands.
+
+Started defined common behaviors and patterns for ui and components design.
+
+
 
 ---------------
 ---------------
