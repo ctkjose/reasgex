@@ -1,0 +1,661 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+	<meta name="description" content="REASG PAGE">
+	<meta name="viewporte" content="width=device-width">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type='text/javascript' src='{{@REA_ENGINE_URL}}vendor/jquery/jquery-2.1.3.min.js'></script>
+	
+	
+	<link type="text/css" rel="stylesheet" href='{{@REA_ENGINE_URL}}css/rea.ui.images.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='{{@REA_ENGINE_URL}}css/rea.ui.globals.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='{{@REA_ENGINE_URL}}css/rea.ui.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='{{@REA_ENGINE_URL}}css/rea.font.css' media='all'\>
+	
+	{{#repeat css[includes]}} 
+	<link type="text/css" rel="stylesheet" href='{{url}}' {{attr}}\>
+	{{end css[includes]}}
+	
+	<style>
+		{{css[inline]}}
+	</style>
+
+	{{header}}
+</head>
+<body class='bg-grey'>
+
+
+<div class='content'>
+<div class='sidebar'>
+	
+</div>
+<div class='page center with-sidebar'>
+
+<div class='page-content'>
+<div class='page-header pd-md'>
+	<div class="columns">
+        <div class="col-2-3">
+          <h3 class="m-n">Dashboard</h3>
+          <small class="text-muted">Welcome to REA</small>
+        </div>
+        <div class="col-1-3">
+          More
+        </div>
+      </div>	
+</div>
+<div class='section place-alerts'><div>
+<div class='section'>
+		Active Records<div class='small-notification red'>25</div>
+
+</div>
+<div class='section'>
+		<div role='button' class='button' confirm='Do you want to leave this page?' open-url='test_view.php?a=test_tpl'>
+			<span>Find</span>
+		</div>
+		<div class='small-notification lightgreen' title='Currently viewing 16 records found...'>16</div>
+		<span class='small-notification red' title='Currently viewing 16 records found...'>new records</span>
+</div>
+	
+<div class='section boxed'>
+	<div class='button'>
+		<span><i class="icon icon-alarm"></i> Alarm</span>
+	</div>
+
+	<div class='button blue'>
+		<span><i class="icon icon-export"></i> Export</span>
+	</div>
+	<div class='button blue'>
+		<span><i class="icon icon-import"></i> Import</span>
+	</div>
+	
+	<div class='button'>
+		<i class="icon icon-certificate icon-lg"></i>
+	</div>
+	
+	<div class='button green'>
+		<span>Save</span>
+	</div>
+
+	<div class='button red'>
+		<span><i class="icon icon-servers icon-lg"></i> Find</span>
+	</div>
+</div>
+
+
+
+
+<div class='section round'>
+	<div class='header grey'>
+		<h2>Section Styling: No Border</h2>
+	</div>
+	<div class='body'>
+		<pre>&lt;div class='section round'&gt;</pre>
+	</div>
+</div>
+
+<div class='section with-border round'>
+	<div class='header grey'>
+		<h2>Section Styling:  With Border</h2>
+	</div>
+	<div class='body'>
+		<pre>&lt;div class='section with-border'&gt;</pre>
+		<pre>&lt;div class='section with-border round'&gt;</pre>
+	</div>
+</div>
+<div class='section with-border round'>
+	<div class='header grey'>
+		<h2>Widgets</h2>
+	</div>
+	<div class='body'>
+		<div class='ui_loader'></div>
+		
+		<div class='ui_loader inline'></div>
+		<progress value="70" max="100">70 %</progress>	
+		<br>
+		<input type="search">
+	</div>
+</div>
+
+<div class='section with-border round' name='main-form'>
+	<div class='header'>
+		<h2>Basic Form</h2>
+	</div>
+	<div class='body'>
+		<form name='emp_record' class='basic-form'>
+			<input type="hidden" name="test1" value='TEST' data-ignore='1'>
+			<div class="columns">
+				<div class="col-1-5">
+					<label for="email">E-mail adress</label>
+				</div>
+				<div class="col-4-5">
+					<input type="text" name="email" id="email" placeholder="Enter your e-mail">
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label for="payment_amount">E-mail adress</label>
+				</div>
+				<div class="col-4-5">
+					<div class="input-group">
+						<input type="text" name="payment_amount" placeholder="Enter payment amount">
+						<span class='input-group-addon'>$</span>
+					</div>
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label for="email">Start Date</label>
+				</div>
+				<div class="col-4-5">
+					<input class='datepicker' type="text" name="start_date" id="start_date" placeholder="Enter date">
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Checkbox</label>
+				</div>
+				<div class="col-4-5">
+					<label for="ch_option01" class='checkbox'>
+						<input type="checkbox" name="option01" id="ch_option01" value="1" checked> Option 1
+					</label>
+					
+					<label for="ch_option02" class='checkbox'>
+						<input type="checkbox" name="option01" id="ch_option02" value="2"> Option 2
+					</label>
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Checkbox Short Hand</label>
+				</div>
+				<div class="col-4-5">
+					<div class='checkbox' name='field01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></div>
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Radio Short Hand</label>
+				</div>
+				<div class="col-4-5">
+					<div class='radio' name='field02' default='1' options='{"1":"Option 1", "2":"Option 2"}'></div>
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Checkbox Booleans</label>
+				</div>
+				<div class="col-4-5">
+					<div class='checkbox bool' name='field03' default='1' label='Enabled'></div>
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Checkbox Yes No</label>
+				</div>
+				<div class="col-4-5">
+					<div class='checkbox yesno' name='field04' default='1'></div>
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Checkbox Addon</label>
+				</div>
+				<div class="col-4-5">
+					<div class="input-group">
+						<span class='input-group-addon'>
+							<div class='checkbox bool' name='field05' default='1'></div>	
+						</span>
+						<input type="text" name="field06" id="field06" placeholder="Enter something">
+					</div>
+				</div>
+			</div>
+			
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Group Checkbox</label>
+				</div>
+				<div class="col-4-5">
+					<fieldset id='options2' class='control-group'>
+						<label for="ch_option03" class='checkbox'>
+							<input type="checkbox" name="option03" id="ch_option03" value="1" checked> Option 1
+						</label>
+						<label for="ch_option04" class='checkbox'>
+							<input type="checkbox" name="option04" id="ch_option04" value="2" default='x'> Option 2
+						</label>
+						<label for="ch_option05" class='checkbox'>
+							<input type="checkbox" name="option05" id="ch_option05" value="3"> Option 3
+						</label>
+					</fieldset>
+				</div>
+			</div>
+			
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Basic Select</label>
+				</div>
+				<div class="col-4-5">
+					<div class='select size-auto' name='fld_town01' default='ag' options='{"ag":"Aguadilla", "mc":"Moca", "ri" : "Rincon", "my" : "Mayaguez"}'></div>
+				</div>
+			</div>
+			
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Select with DS</label>
+				</div>
+				<div class="col-4-5">
+					<div class='select size-small' name='fld_town02' default='ag' datasource='towns' data-with-code='1'></div>
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Lookup DS</label>
+				</div>
+				<div class="col-4-5">
+					<div class='lookup' name='fld_town03' default='ag' datasource='towns' data-with-code='0'></div>
+				</div>
+			</div>
+			<div class="columns">
+				<div class="col-1-5">
+					<label>Lookup Dynamic</label>
+				</div>
+				<div class="col-4-5">
+					<div class='lookup' name='fld_jobs01' default='001' datasource='qjobs' data-with-code='1'></div>
+				</div>
+			</div>
+			
+			<div class="columns">
+				<div class="col-1-1">
+					<table class='table striped' name='records' datasource='emp_records'>
+						<thead><tr>
+							<th>ID</th><th name='name'>Name</th><th name='amount'>Amount</th>
+							<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class='table-row-template'>
+								<td name='id'>%id%</td>
+								<td name='name'>%name%</td>
+								<td name='amount'>%amount%</td>
+								<td name='actions'>
+									<a href='test_view.php?a=edit&id=%id%' title='Edit'>Edit</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+			<div class="columns">
+				<div class="col-1-1">
+					<table class='table striped' name='records_with_footer' datasource='emp_records'>
+						<thead><tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Amount</th>
+							<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class='table-row-template'>
+								<td name='id'>%id%</td>
+								<td name='name'>%name%</td>
+								<td name='amount' class='%amount_class%'>%amount%</td>
+								<td name='actions'>
+									<a href='test_view.php?a=edit&id=%id%' title='View'>View...</a>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<th></th>
+							<th colspan='3'>
+								<a href='test_view.php?a=edit' title='Create new record'><i class='icon icon-plus'></i> Create a new record...</a>
+							</th>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+			
+			<div class="columns">
+				<div class="col-1-1">
+					<table class='table repeater' name='records_with_fields' datasource='schools'>
+						<thead><tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Town</th>
+							<th>Date</th>
+							<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class='table-row-template'>
+								<td name='id'>%id%</td>
+								<td name='name'><input type="hidden" name="id" value=''><input type="text" name="school_name" placeholder="Enter school name" value=''></td>
+								<td name='town'><div class='select size-small' name='town' default='%town%' datasource='towns'></div></td>
+								<td name='date'><input class='datepicker' type="text" name="date_created" placeholder="Enter date"></div></td>
+								<td name='actions'>
+									<a class='repeater-cmd-del' href='#' title='Delete'><i class='icon icon-trash'></i></a>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<th></th>
+							<th colspan='4'>
+								<a class='repeater-cmd-add' href='#' title='Create new record'><i class='icon icon-plus'></i> Create a new record...</a>
+							</th>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="footer grey">
+		<div role='button' class='button blue' confirm='Do you want to leave this page?'
+			 call-app-event='save' params-data-from-sel='[name=emp_record]'>
+			<span>Save</span>
+		</div>
+	</div>
+</div>
+
+<datasource name='towns'>
+	<option value='ag'>Aguadilla</option>
+	<option value='mc'>Moca</option>
+	<option value='ri'>Rincon</option>
+	<option value='my'>Mayaguez</option>
+	<option value='pc'>Ponce</option>
+</datasource>
+
+<datasource name='jobs' href='./test_view.php?a=ds_jobs_list'></datasource>
+<datasource name='qjobs' href='./test_view.php?a=ds_job_list' source_pull='dynamic'></datasource>
+
+<datasource name='emp_records' href='./test_view.php?a=ds_records_get'></datasource>
+
+<datasource name='schools' href='./test_view.php?a=ds_schools_get'></datasource>
+
+<div class='section with-border round'>
+	<div class='header'>
+		<h2>Horizontal Form</h2>
+	</div>
+	<div class='body'>
+		<form  class='basic-form horizontal-form'>
+			<div class="columns">
+				<div class="one-half column">
+					<label for="email">E-mail adress</label>
+					<input type="text" name="email" id="email" placeholder="Enter your e-mail">
+				</div>
+				<div class="one-half column">
+					<label for="pass">Password</label>
+					<input type="text" name="pass" id="pass" placeholder="Enter your password">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class='section with-border round'>
+	<div class='header'>
+		<h2>Grids</h2>
+	</div>
+	<div class='body columns-samples'>
+	  <div class="columns">
+		<div class="col-1-5">
+		  .col-1-5
+		</div>
+		<div class="col-4-5">
+		  .col-4-5
+		</div>
+	  </div>
+	
+	  <div class="columns">
+		<div class="col-1-4">
+		  .col-1-4
+		</div>
+		<div class="col-3-4">
+		  .col-3-4
+		</div>
+	  </div>
+	
+	  <div class="columns">
+		<div class="col-1-3">
+		  .col-1-3
+		</div>
+		<div class="col-2-3">
+		  .col-2-3
+		</div>
+	  </div>
+	
+	  <div class="columns">
+		<div class="col-1-2">
+		  .col-1-2
+		</div>
+		<div class="col-1-2">
+		  .col-1-2
+		</div>
+	  </div>
+	</div>
+</div>
+
+<div class='section'>
+	<div class="alert" role="alert">
+		<h2>Regular Message</h2>
+		There are a total of 25 record available. 
+	</div>
+	<p></p>
+	<div class="alert info" role="alert">
+		<i class="close icon" data-dismiss="alert" aria-label="Close"></i>
+		<h2>Information</h2>
+		Remeber to update employee address. Using an "alert info". 
+	</div>
+	<div class="alert success" role="alert">
+		<i class="close icon" data-dismiss="alert" aria-label="Close"></i>
+		<h2>Record Saved</h2>
+		This record was updated.  Using an "alert success".
+	</div>
+	<div class="alert danger" role="alert">
+		<i class="close icon" data-dismiss="alert" aria-label="Close"></i>
+		<h2>Unable to save record</h2>
+		This record is not available.  Using an "alert danger".
+	</div>
+</div>
+
+<div class='section boxed'>
+	<div class="columns">
+	<div class="col-1-5">
+		<i class="icon icon-gear icon-lg icon-spin"></i>
+	</div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-certificate icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-network icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-servers icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-terminal icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-list icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-report-data icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-report icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-text icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-tab icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-export icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-forms icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-docs icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-records icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-creditcard icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-shopping-cart icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-shopping-basket icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-shopping-basket-add icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-suitcase icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-barcode icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-barcode-upc icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-idcard icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-money icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-tag icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-telephone icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-smartphone icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-print icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-home icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-font icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-script icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-bugs icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-destination icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-code icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-link icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-find-down icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-search icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-icons icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-history icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-gear-down icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-gear icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-heart icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-heart-fill icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-favorites  icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-export icon-lg"></i></p></div>
+	</div>
+	
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-close icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-close-circle-fill icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-plus icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-minus  icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-import icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-bookmark icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-bookmarks icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-trash icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-cloud  icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-attach icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-triangle-left icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-triangle-down icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-show-sidebar icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-menu  icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-pencil icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-mail icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-bank icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-archive icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-lock  icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-wallet icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-person-student icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-person icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-person-girl icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-persons icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-addressbook icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-arrow-select icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-arrow-left icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-arrow-right icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-arrow-down icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-arrow-up icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-alert-triangle icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-alarm icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-flag icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-picture icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-refresh icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-plus-circle-fill icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-minus-circle-fill icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-help-circle icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-hide-circle icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-close-circle icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-accept-circle icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-plus-circle icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-folder icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-folder-open icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-folder-fill icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-key icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-edit icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-rtf icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-form icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-form-edit icon-lg"></i></p></div>
+	</div>
+	<div class="columns">
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-checklist icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-barcode icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-money icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-doc-form icon-lg"></i></p></div>
+	<div class="col-1-5"><p style='color: #222222;'><i class="icon icon-upr icon-lg"></i></p></div>
+	</div>
+</div>
+
+  <p>
+	<a href='#' id='test1'>Test1</a><br>
+	
+  </p>
+	hello1
+	{{part_test}}
+	{{body}}
+	hello2
+
+
+</div><!-- end page-content -->
+</div><!-- end page -->
+</div><!-- end content -->
+
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.php.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.parser.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.controller.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.extend.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.views.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.bindings.js"></script>
+
+{{#repeat js[includes]}} 
+	<script type='text/javascript' src='{{url}}'></script>
+{{end js[includes]}}
+<script type='text/javascript'>
+	$(document).ready(function(){
+		
+		rea_controller.installDefaultEvents();
+		
+		
+		rea_controller.dispatchEvent("initialize");
+		
+		rea_extend_helper.expand_items($(document));
+		
+		rea_controller.dispatchEvent("ready");
+	
+		
+	
+		$('#test1').click( function(e){
+			e.preventDefault();
+			console.log("here1");
+			getDatasetForSelector('form[name=emp_record]');
+		});
+	});
+	
+	function test1(){
+		
+	}
+	
+	
+	{{js[inline]}}
+</script>
+</body>
+</html>

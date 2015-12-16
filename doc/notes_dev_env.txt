@@ -1,0 +1,31 @@
+
+Created an apache config:
+
+sudo nano /private/etc/apache2/other/reasgex.conf
+
+
+<Directory "/Library/WebServer/Documents/reasgex/">
+        Options Indexes MultiViews ExecCGI
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+        Options +FollowSymLinks
+
+        RewriteEngine On
+#       RewriteLog "/private/var/log/apache2/rewrite.log"
+</Directory>
+
+
+
+The project folder has an ".htaccess" file with:
+
+RewriteEngine On
+
+#/api/<scope>/<controller>/<action>/
+#RewriteRule ^api/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/$ $1/api/$2.php?api-obj=$2&api-action=$3  [L,QSA]
+RewriteRule ^app/([A-Za-z0-9-_]+)/([A-Za-z0-9-_]+)/([A-Za-z0-9-]+)/$ engine/reasg/app.php?api-obj=$2&api-scope=$1&api-action=$3
+
+RewriteRule ^js/([A-Za-z0-9-_]+)/([A-Za-z0-9-_\.\/]+)$ $1/assets/js/$2 [L,QSA]
+RewriteRule ^css/([A-Za-z0-9-_]+)/([A-Za-z0-9-_\.\/]+)$ $1/assets/css/$2 [L,QSA]
+RewriteRule ^media/([A-Za-z0-9-_]+)/([A-Za-z0-9-_\.\/]+)$ $1/assets/media/$2 [L,QSA]
+RewriteRule ^assets/([A-Za-z0-9-_]+)/([A-Za-z0-9-_\.\/]+)$ $1/assets/$2 [L,QSA]

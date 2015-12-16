@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang='EN'>
+<head>
+	<meta charset="utf-8">
+	<title>UI CORE 001</title>
+	<meta name="description" content="REASG PAGE">
+	<meta name="viewporte" content="width=device-width">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	
+	<link type="text/css" rel="stylesheet" href='../engine/vendor/bootstrap/css/bootstrap.css' media='all'\>
+	<!-- <link type="text/css" rel="stylesheet" href='../engine/vendor/bootstrap/css/bootstrap-theme.css' media='all'\> -->
+	<link type="text/css" rel="stylesheet" href='../engine/vendor/font-awesome/font-awesome.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='../engine/css/reasg-ui.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='../engine/css/reasg-theme.css' media='all'\>
+	
+	
+</head>
+<body>
+	<div class='container'>
+	<h1>Hello, world!</h1>
+	
+<div class="test_area">
+	
+	<div class='section view extend' name='buttons'>
+	
+	<h1>Buttons</h1>
+	<p>
+	<div class='btn'>
+		<span><i class="fa fa-check"></i> Export</span>
+	</div>
+	
+	<button class='btn blue'>
+		Button
+	</button>
+	<button class='btn btn-primary'>
+		Ok
+	</button>
+	<button class='btn btn-primary disabled'>
+		Save
+	</button>
+	<button class='btn btn-success'>
+		Success
+	</button>
+	<button class='btn btn-info'>
+		Info
+	</button>
+	<button class='btn btn-warning'>
+		Warning
+	</button>
+	<button class='btn btn-danger'>
+		Danger
+	</button>
+	
+	<button class='btn lblue btn-sm'>
+		View
+	</button>
+	<button class='btn green btn-xs'>
+		12 records...
+	</button>
+	</p>
+	<p>
+		<group class='btns'>
+			<button class='btn'>Option 1</button>
+			<button class='btn'>Option 2</button>
+			<button class='btn'>Option 3</button>
+		</group>
+	</p>
+	
+	</div>
+	<form class="form-horizontal view-form" role="form" name="employee">
+	<div class='section with-border round'>
+		<div class='header grey'>
+			<h2>Employee Record</h2>
+		</div>
+		<div class='body'>			
+			<div class="form row" title='test jose'>
+				<label class="control-label" for="email">Email:</label>
+				<input type='text' class='form-control' name='email' placeholder='Company email' data-validate="empty" data-error-message="Please provide an email">
+				<span class='decorate'>@upr.edu</span>
+			</div>
+			<div class="form row inline" title='test jose' data-label='Name:'>
+				<input type='text' class='form-control' size='4' name='emp_name' placeholder='First Name' data-validate="empty" data-error-message="Please provide a name">
+				<input type='text' class='form-control' size='1' name='emp_mname' placeholder='Initial'>
+				<input type='text' class='form-control' name='emp_lname' placeholder='Last Name' data-validate="empty" data-error-message="Please provide a last name">
+			</div>
+			<div class="form row" title='test jose' data-label='Salary:'>
+				<span class='decorate'>$</span><input type='text' class='form-control' name='emp_salary' placeholder='Salary'>
+			</div>
+			
+			<div class="form row" data-label='Date Hired:'>
+				<input class='datepicker' type="text" name="start_date" id="start_date" placeholder="Enter date">
+			</div>
+			
+			<div class="form row" title='test jose' data-label='Test:'>
+				<span class='decorate'><checkbox aria-label="..." name='emp_test1_enabled' class='bool'></checkbox></span>
+				<input type='text' class='form-control' name='emp_test1' placeholder='Test'>
+			</div>
+			<div class="form row" title='test jose' data-label='Tax Rate:'>
+				<input type='text' class='form-control' name='emp_tax_rate' placeholder='FICA'>
+				<span class='decorate'><i class='fa fa-money'></i></span>
+			</div>
+			<div class="form row" title='test jose' data-label='Checkbox Shorthand 1:'>
+				<checkbox name='field_checkbox01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></checkbox>
+			</div>
+			<div class="form row" title='test jose' data-label='Radio Shorthand:'>
+				<radio name='field_radio01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></radio>
+			</div>
+			<div class="form row" title='test jose' data-label='Yes No Shorthand:'>
+				<checkbox class='yesno' name='field_yesno' default='1'></checkbox>
+			</div>
+			<div class="form row" title='test jose' data-label='Bool Shorthand:'>
+				<checkbox class='bool' name='field_enabled' default='1' label1='Enabled'>Enabled</checkbox>
+			</div>
+			<div class="form row" title='test jose' data-label='Basic Select:'>
+				<div class='select size-auto' name='fld_town01' default='ag' options='{"ag":"Aguadilla", "mc":"Moca", "ri" : "Rincon", "my" : "Mayaguez"}'></div>
+			</div>
+			
+			<div class='header'>
+				<h2>Comments</h2><span>Enter record comments before saving this employee.</span>
+			</div>
+			<div class="form row" title='test jose' >
+				<textarea class="form-control" rows="3" name="comments"></textarea>
+			</div>
+		
+		</div>
+		<div class='footer grey'>
+			<button class='btn btn-info' name='btn-continue'>Continue</button>
+		</div>
+	</div>
+	</form>
+	
+</div>	
+
+	
+<script type='text/javascript' src='../engine/vendor/jquery/jquery-2.1.3.min.js'></script>
+<script type='text/javascript' src='../engine/vendor/bootstrap/js/bootstrap.min.js'></script>
+<!-- <script type='text/javascript' src='../engine/vendor/require/require.js'></script> -->
+
+<script type='text/javascript' src='../engine/js/rea.framework.js'></script>
+<script type='text/javascript' src='../engine/js/rea.helper.jquery.js'></script>
+<script type='text/javascript' src='../engine/js/rea.helper.types.js'></script>
+
+<script type='text/javascript' src='../engine/js/rea.ui.controller.js'></script>
+<script type='text/javascript' src='../engine/js/rea.ui.storage.js'></script>
+<script type='text/javascript' src='../engine/js/rea.ui.view.js'></script>
+
+<script type='text/javascript' src='../engine/js/rea.ui.extend.js'></script>
+<script type='text/javascript' src='../engine/js/rea.ui.panels.js'></script>
+<script type='text/javascript' src='../engine/js/rea.ui.calendar.js'></script>
+	
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+		
+		rea.initialize();
+		rea_controller.dispatchEvent("ready");
+		rea_controller.dispatchEvent("initialize");
+		
+		rea.loadComponents();
+		
+		rea_helper_ui_extender.expandDefaults();
+	});
+	</script>
+	
+	<p>
+	<span id='run01' class='btn btn-info' >CreateDataSet</span> <span id='run02'  class='btn btn-info'>Expand Test Area</span><br>
+	</p>
+	<textarea id='code' cols=80 rows=5></textarea>
+<script>
+$(document).ready(function(){
+	
+	$("#run01").click(function(e){
+		var ds = rea_controller.datasetCreateFromSelector(".test_area");
+		console.log(ds);
+	});
+	
+	$("#run02").click(function(e){
+		//rea_helper_ui_extender.expandForSelector(".test_area");
+		rea_helper_ui_extender.expandDefaults();
+	});
+});
+</script>
+</div>
+</body>

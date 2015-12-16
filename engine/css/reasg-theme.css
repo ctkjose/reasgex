@@ -1,0 +1,17 @@
+/* COLOR ELEMENTS */
+
+.section .header {
+	background-color: #ffffff;
+}
+.section .body {
+	background-color: #ffffff;
+}
+.section .footer {
+	background-color: #ffffff;
+}
+.section .header.grey {
+    background-color:#f6f8f8;
+}
+.section .footer.grey {
+	background-color: #f6f8f8;
+}

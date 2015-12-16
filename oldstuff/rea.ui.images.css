@@ -1,0 +1,161 @@
+
+
+.ximg-samples img {
+	display: inline-block;
+	border: 1px solid white;
+	margin: 6px 6px;
+}
+.ximg-samples img:hover {
+	border: 1px solid #cccccc;
+	background-color: #EBEBEB;
+}
+.ximg-samples:hover {
+	
+}
+
+
+.btn-nav {
+	display:inline-block;
+	background:#FBFBFB;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px; 
+	height:26px;
+	padding:0 8px;
+	cursor:pointer;
+	color:#B4B4B4;
+	border-bottom:1px solid #CECECE;
+}
+.btn-nav:hover {
+  background:#f2f2f2;
+  color:#666;
+}
+.btn-nav.blue {
+	background: #1681F7;
+}
+.btn-nav.red {
+	background: #FC6054;
+}
+.btn-nav.green {
+	background: #2ACA3E;
+}
+
+
+.ximg-defs {
+	display: none;
+}
+.ximg {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+}
+.ximg1 {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background-size: 32px 32px;
+	background-repeat: no-repeat;
+}
+
+
+.ximg.x24 {
+	background-size: 24px 24px;
+}
+.ximg.x48 {
+	background-size: 48px 48px;
+}
+.ximg.x64 {
+	background-size: 64px 64px;
+}
+.ximg.x128 {
+	background-size: 128px 128px;
+}
+
+.x24 {
+	width: 24px;
+	height: 24px;
+}
+.x32 {
+	width: 32px;
+	height: 32px;
+}
+.x48 {
+	width: 48px;
+	height: 48px;
+}
+.x64 {
+	width: 64px;
+	height: 64px;
+}
+.x128 {
+	width: 128px;
+	height: 128px;
+}
+
+
+
+
+.ximg-accept-circle{ background-image: url('./ui-images/accept_circle.svg'); }
+.ximg-add-circle{ background-image: url('./ui-images/add_circle.svg'); }
+.ximg-addressbook{ background-image: url('./ui-images/addressbook.svg'); }
+.ximg-alarm{ background-image: url('./ui-images/alarm.svg'); }
+.ximg-alert-triangle{ background-image: url('./ui-images/alert_triangle.svg'); }
+.ximg-archive{ background-image: url('./ui-images/archive.svg'); }
+.ximg-attach{ background-image: url('./ui-images/attach.svg'); }
+.ximg-attach01{ background-image: url('./ui-images/attach01.svg'); }
+.ximg-bookmarks{ background-image: url('./ui-images/bookmarks.svg'); }
+.ximg-briefcase{ background-image: url('./ui-images/briefcase.svg'); }
+.ximg-calendar{ background-image: url('./ui-images/calendar.svg'); }
+.ximg-close{ background-image: url('./ui-images/close.svg'); }
+.ximg-close-circle-fill{ background-image: url('./ui-images/close_circle_fill.svg'); }
+.ximg-close-circle-grey{ background-image: url('./ui-images/close_circle_grey.svg'); }
+.ximg-cloud{ background-image: url('./ui-images/cloud.svg'); }
+.ximg-code{ background-image: url('./ui-images/code.svg'); }
+.ximg-comment{ background-image: url('./ui-images/comment.svg'); }
+.ximg-decline-circle{ background-image: url('./ui-images/decline_circle.svg'); }
+.ximg-destination{ background-image: url('./ui-images/destination.svg'); }
+.ximg-export{ background-image: url('./ui-images/export.svg'); }
+.ximg-favorites{ background-image: url('./ui-images/favorites.svg'); }
+.ximg-find-down{ background-image: url('./ui-images/find_down.svg'); }
+.ximg-flag{ background-image: url('./ui-images/flag.svg'); }
+.ximg-folder-fill{ background-image: url('./ui-images/folder_fill.svg'); }
+.ximg-folder-grey{ background-image: url('./ui-images/folder_grey.svg'); }
+.ximg-folder-outline{ background-image: url('./ui-images/folder_outline.svg'); }
+.ximg-font{ background-image: url('./ui-images/font.svg'); }
+.ximg-gear{ background-image: url('./ui-images/gear.svg'); }
+.ximg-gear-down{ background-image: url('./ui-images/gear_down.svg'); }
+.ximg-help-circle{ background-image: url('./ui-images/help_circle.svg'); }
+.ximg-hide-cricle{ background-image: url('./ui-images/hide_cricle.svg'); }
+.ximg-history{ background-image: url('./ui-images/history.svg'); }
+.ximg-home{ background-image: url('./ui-images/home.svg'); }
+.ximg-icons{ background-image: url('./ui-images/icons.svg'); }
+.ximg-info{ background-image: url('./ui-images/info.svg'); }
+.ximg-link{ background-image: url('./ui-images/link.svg'); }
+.ximg-location{ background-image: url('./ui-images/location.svg'); }
+.ximg-lock{ background-image: url('./ui-images/lock.svg'); }
+.ximg-mail{ background-image: url('./ui-images/mail.svg'); }
+.ximg-minus{ background-image: url('./ui-images/minus.svg'); }
+.ximg-minus-circle-fill{ background-image: url('./ui-images/minus_circle_fill.svg'); }
+.ximg-pencil{ background-image: url('./ui-images/pencil.svg'); }
+.ximg-person{ background-image: url('./ui-images/person.svg'); }
+.ximg-persons{ background-image: url('./ui-images/persons.svg'); }
+.ximg-picture{ background-image: url('./ui-images/picture.svg'); }
+.ximg-pin{ background-image: url('./ui-images/pin.svg'); }
+.ximg-plus{ background-image: url('./ui-images/plus.svg'); }
+.ximg-plus-circle-fill{ background-image: url('./ui-images/plus_circle_fill.svg'); }
+.ximg-print{ background-image: url('./ui-images/print.svg'); }
+.ximg-reading{ background-image: url('./ui-images/reading.svg'); }
+.ximg-refresh{ background-image: url('./ui-images/refresh.svg'); }
+.ximg-reply{ background-image: url('./ui-images/reply.svg'); }
+.ximg-reply-circle{ background-image: url('./ui-images/reply_circle.svg'); }
+.ximg-ruler{ background-image: url('./ui-images/ruler.svg'); }
+.ximg-script{ background-image: url('./ui-images/script.svg'); }
+.ximg-search{ background-image: url('./ui-images/search.svg'); }
+.ximg-shared{ background-image: url('./ui-images/shared.svg'); }
+.ximg-tag{ background-image: url('./ui-images/tag.svg'); }
+.ximg-tasks{ background-image: url('./ui-images/tasks.svg'); }
+.ximg-trash{ background-image: url('./ui-images/trash.svg'); }
+.ximg-unvisible{ background-image: url('./ui-images/unvisible.svg'); }
+.ximg-visible{ background-image: url('./ui-images/visible.svg'); }
+.ximg-zoom-minus{ background-image: url('./ui-images/zoom_minus.svg'); }
+.ximg-zoom-plus{ background-image: url('./ui-images/zoom_plus.svg'); }

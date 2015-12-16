@@ -1,0 +1,19 @@
+Por donde voy:
+
+
+15/DEC/2015 JLC
+Testing URL: http://localhost/reasgex/app/test/employee/do/?a=joe
+
+Basic GUI done. Took a break to work on the backend to be able to work on the JS controller, datasets, datasources, etc.
+
+We have a basic structure to call the backend. The backend is implementes by "controllers".
+
+All interactions is with "app.php".
+
+This php is responsible to load controllers and execute the behaviors.
+
+
+---------------
+---------------
+
+

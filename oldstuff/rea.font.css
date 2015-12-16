@@ -1,0 +1,254 @@
+/**
+	font-reasg
+*/
+
+
+/* IE8 and below use EOT and allow cross-site embedding. 
+   IE9 uses WOFF which is base64 encoded to allow cross-site embedding.
+   So unfortunately, IE9 will throw a console error, but it'll still work.
+   When the font is base64 encoded, cross-site embedding works in Firefox */
+/*
+@font-face {
+  font-family: "font-reasg";
+  src: url("./font-reasg.eot");
+  src: url("./font-reasg.eot?#iefix") format("embedded-opentype"),
+       url("./font-reasg.woff") format("woff"),
+       url("./font-reasg.ttf") format("truetype"),
+       url("./font-reasg.svg#font-reasg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "font-reasg";
+    src: url("./font-reasg.svg#font-reasg") format("svg");
+  }
+}
+*/
+
+@font-face {
+  font-family: "font-reasg";
+  src: url("../fonts/font-reasg.eot");
+  src: url("../fonts/font-reasg.eot?#iefix") format("embedded-opentype"),
+       url("../fonts/font-reasg.woff") format("woff"),
+       url("../fonts/font-reasg.ttf") format("truetype"),
+       url("../fonts/font-reasg.svg#font-reasg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "font-reasg";
+    src: url("../fonts/font-reasg.svg#font-reasg") format("svg");
+  }
+}
+
+@-webkit-keyframes icon-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes icon-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+.icon {
+  display: inline-block;
+  font: normal normal normal 14px/1 "font-reasg";
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+  
+  
+  speak: none;
+}
+
+.icon-lg {
+  font-size: 1.33333333em;
+  line-height: 0.75em;
+  vertical-align: -15%;
+}
+
+.icon-spin {
+  -webkit-animation: icon-spin 2s infinite linear;
+  animation: icon-spin 2s infinite linear;
+}
+
+
+.icon.x24 {
+	font-size: 24px;
+}
+.icon.x32 {
+	font-size: 32px;
+}
+.icon.x48 {
+	font-size: 48px;
+}
+.icon.x64 {
+	font-size: 64px;
+}
+.icon.x128 {
+	font-size: 128px;
+}
+
+/*======== basic icons ========*/
+i.icon.cancel::before,
+i.icon.close::before,
+i.icon.delete::before,
+i.icon.remove::before,
+i.icon.x::before {
+	content:"\f10b";
+}
+
+i.icon {
+
+}
+
+/**
+ * Individual icons
+ */
+
+.icon-accept-circle:before { content: "\f1a9"; }
+.icon-add_circle:before { content: "\f101"; }
+.icon-addressbook:before { content: "\f102"; }
+.icon-alarm:before { content: "\f103"; }
+.icon-alert-triangle:before { content: "\f19e"; }
+.icon-archive:before { content: "\f105"; }
+.icon-arrow-down:before { content: "\f19a"; }
+.icon-arrow-left:before { content: "\f19b"; }
+.icon-arrow-right:before { content: "\f19c"; }
+.icon-arrow-select:before { content: "\f199"; }
+.icon-arrow-up:before { content: "\f19d"; }
+.icon-attach:before { content: "\f106"; }
+.icon-bank:before { content: "\f15f"; }
+.icon-barcode:before { content: "\f14d"; }
+.icon-barcode-upc:before { content: "\f191"; }
+.icon-basket:before { content: "\f161"; }
+.icon-bell:before { content: "\f15b"; }
+.icon-bookmark:before { content: "\f14b"; }
+.icon-bookmarks:before { content: "\f108"; }
+.icon-briefcase:before { content: "\f109"; }
+.icon-bugs:before { content: "\f14c"; }
+.icon-calendar:before { content: "\f10a"; }
+.icon-certificate:before { content: "\f168"; }
+.icon-close:before { content: "\f10b"; }
+.icon-close-circle:before { content: "\f1a4"; }
+.icon-close-circle-fill:before { content: "\f190"; }
+.icon-cloud:before { content: "\f10e"; }
+.icon-cloud_down:before { content: "\f142"; }
+.icon-cloud_up:before { content: "\f143"; }
+.icon-code:before { content: "\f10f"; }
+.icon-comment:before { content: "\f110"; }
+.icon-creditcard:before { content: "\f15d"; }
+.icon-data_table:before { content: "\f179"; }
+.icon-decline_circle:before { content: "\f111"; }
+.icon-destination:before { content: "\f112"; }
+.icon-doc:before { content: "\f144"; }
+.icon-doc-barcode:before { content: "\f1b1"; }
+.icon-doc-checklist:before { content: "\f1b0"; }
+.icon-doc-edit:before { content: "\f1ab"; }
+.icon-doc-export:before { content: "\f186"; }
+.icon-doc-form:before { content: "\f1ae"; }
+.icon-doc-form-edit:before { content: "\f1af"; }
+.icon-doc-forms:before { content: "\f18b"; }
+.icon-doc-list:before { content: "\f181"; }
+.icon-doc-money:before { content: "\f1b2"; }
+.icon-doc-records:before { content: "\f183"; }
+.icon-doc-report:before { content: "\f180"; }
+.icon-doc-report-data:before { content: "\f182"; }
+.icon-doc-rtf:before { content: "\f1ac"; }
+.icon-doc-tab:before { content: "\f184"; }
+.icon-doc-text:before { content: "\f185"; }
+.icon-docs:before { content: "\f14e"; }
+.icon-docs_send:before { content: "\f159"; }
+.icon-export:before { content: "\f113"; }
+.icon-favorites:before { content: "\f114"; }
+.icon-find-down:before { content: "\f18d"; }
+.icon-flag:before { content: "\f116"; }
+.icon-folder:before { content: "\f1a6"; }
+.icon-folder-fill:before { content: "\f1a5"; }
+.icon-folder-open:before { content: "\f1a7"; }
+.icon-font:before { content: "\f11a"; }
+.icon-gear:before { content: "\f11b"; }
+.icon-gear-down:before { content: "\f18f"; }
+.icon-groceries:before { content: "\f160"; }
+.icon-heart:before { content: "\f147"; }
+.icon-heart-fill:before { content: "\f18e"; }
+.icon-help-circle:before { content: "\f1a2"; }
+.icon-hide-circle:before { content: "\f1a3"; }
+.icon-history:before { content: "\f11f"; }
+.icon-home:before { content: "\f120"; }
+.icon-icons:before { content: "\f121"; }
+.icon-idcard:before { content: "\f196"; }
+.icon-import:before { content: "\f169"; }
+.icon-info:before { content: "\f122"; }
+.icon-key:before { content: "\f1a8"; }
+.icon-link:before { content: "\f123"; }
+.icon-location:before { content: "\f124"; }
+.icon-lock:before { content: "\f125"; }
+.icon-mail:before { content: "\f126"; }
+.icon-menu:before { content: "\f16c"; }
+.icon-menu_box:before { content: "\f16d"; }
+.icon-menu_circle:before { content: "\f16e"; }
+.icon-minus:before { content: "\f127"; }
+.icon-minus-circle-fill:before { content: "\f1a0"; }
+.icon-money:before { content: "\f192"; }
+.icon-network:before { content: "\f17e"; }
+.icon-pencil:before { content: "\f129"; }
+.icon-pencil_circle:before { content: "\f171"; }
+.icon-person:before { content: "\f12a"; }
+.icon-person-girl:before { content: "\f198"; }
+.icon-person-student:before { content: "\f197"; }
+.icon-person_circle:before { content: "\f16f"; }
+.icon-person_student_circle:before { content: "\f170"; }
+.icon-persons:before { content: "\f12b"; }
+.icon-picture:before { content: "\f12c"; }
+.icon-pin:before { content: "\f12d"; }
+.icon-plus:before { content: "\f12e"; }
+.icon-plus-circle:before { content: "\f1aa"; }
+.icon-plus-circle-fill:before { content: "\f1a1"; }
+.icon-print:before { content: "\f130"; }
+.icon-reading:before { content: "\f131"; }
+.icon-refresh:before { content: "\f132"; }
+.icon-reply:before { content: "\f133"; }
+.icon-reply_circle:before { content: "\f134"; }
+.icon-ruler:before { content: "\f135"; }
+.icon-script:before { content: "\f136"; }
+.icon-search:before { content: "\f137"; }
+.icon-servers:before { content: "\f17d"; }
+.icon-shared:before { content: "\f138"; }
+.icon-shopping-basket:before { content: "\f187"; }
+.icon-shopping-basket-add:before { content: "\f18a"; }
+.icon-shopping-cart:before { content: "\f189"; }
+.icon-shopping_bag:before { content: "\f166"; }
+.icon-show-sidebar:before { content: "\f195"; }
+.icon-smartphone:before { content: "\f16a"; }
+.icon-suitcase:before { content: "\f18c"; }
+.icon-tag:before { content: "\f139"; }
+.icon-tasks:before { content: "\f13a"; }
+.icon-telephone:before { content: "\f15e"; }
+.icon-terminal:before { content: "\f17f"; }
+.icon-trash:before { content: "\f13b"; }
+.icon-triangle-down:before { content: "\f193"; }
+.icon-triangle-left:before { content: "\f194"; }
+.icon-unvisible:before { content: "\f13d"; }
+.icon-upr:before { content: "\f1ad"; }
+.icon-visible:before { content: "\f13e"; }
+.icon-wallet:before { content: "\f165"; }
+.icon-zoom_minus:before { content: "\f13f"; }
+.icon-zoom_plus:before { content: "\f140"; }

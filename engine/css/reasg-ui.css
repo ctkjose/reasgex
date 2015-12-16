@@ -1,0 +1,227 @@
+pre {
+	margin-left: 1em;
+	margin-right: 1em;
+	padding: 1em;
+	border: 1px solid #eee;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	
+	font-family: Consolas, Courier, monospace;
+	color: #333;
+	background: rgb(250, 250, 250);
+}
+.inline {
+ 
+}
+.inline.checkbox, .inline.radio {
+	display:  inline-block !important;
+}
+
+
+fieldset.checkboxes, fieldset.radios {
+	min-height: 27px;
+}
+label.checkboxes, label.radios {
+	margin-top: 7px;
+	min-height: 27px;
+}
+.input-group-addon label {
+	margin-bottom: 0px;
+	margin-top: 0px;
+	min-height: 0px;
+}
+
+.block {
+	display: block;
+}
+
+
+div.popup {
+	position: fixed;
+	z-index: 999;
+	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+div.boxed {
+	padding: 15px;
+	background-color: #ffffff;
+}
+
+div.round {
+	border-radius: .25rem .25rem .25rem .25rem;
+}
+div.round .header:first-child {
+	border-radius: .25rem .25rem 0 0;
+}
+div.round .body:last-child {
+	border-radius: 0 0 .25rem .25rem;
+}
+div.round .footer:last-child {
+	border-radius: 0 0 .25rem .25rem;
+}
+
+div.with-border {
+	border: 1px solid #e5e5e5;
+}
+div.with-border .header {
+	border: 1px solid #e5e5e5;
+}
+div.with-border .footer {
+	border: 1px solid #e5e5e5;
+}
+div.with-border .body {
+	border: 1px solid #e5e5e5;
+}
+div.with-border .body .header {
+	border-width: 1px 0 1px 0;
+}
+
+
+
+.section {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.section::before, .page .section::after {
+	display: table;
+	content: " ";
+}
+.section::after {
+	clear: both;
+}
+.section.with-border {
+	border-collapse: collapse;
+	border: 0px solid #e5e5e5;
+}
+
+.section .header {
+    padding: 10px;
+    margin-bottom: 0px;
+}
+
+
+
+
+.section h1, .section h2, .section h3 {
+	color: #222222;
+    margin: 2px 0 0.1em 0;
+	font-weight: 300;
+}
+.section .body {
+	padding: 15px;
+    margin-top: -1px;
+}
+.with-border .body {
+	border: 1px solid #e5e5e5;
+}
+.section .body .header {
+	margin: 10px -15px 10px -15px;
+}
+
+.section .footer {
+	padding: 15px;
+    margin-top: -1px;
+}
+.with-border .footer {
+	border: 1px solid #e5e5e5;
+}
+
+
+
+.rea-group {
+	
+}
+
+@media only screen and (min-width: 768px) {
+	
+	.rea-group div.col-sm-1, .rea-group div.col-sm-2, .rea-group div.col-sm-3,
+	.rea-group div.col-sm-4, .rea-group div.col-sm-5, .rea-group div.col-sm-6,
+	.rea-group div.col-sm-7, .rea-group div.col-sm-8, .rea-group div.col-sm-9,
+	.rea-group div.col-sm-10, .rea-group div.col-sm-11, .rea-group div.col-sm-12 {
+		padding-left: 6px;
+		padding-right: 6px;
+	}
+	.rea-group div:first-child {
+		padding-left: 0px !important;
+	}
+	.rea-group div:last-child {
+		padding-right: 0px !important;
+	}
+}
+@media only screen and (max-width: 768px) {
+	.rea-group div.col-sm-1, .rea-group div.col-sm-2, .rea-group div.col-sm-3,
+	.rea-group div.col-sm-4, .rea-group div.col-sm-5, .rea-group div.col-sm-6,
+	.rea-group div.col-sm-7, .rea-group div.col-sm-8, .rea-group div.col-sm-9,
+	.rea-group div.col-sm-10, .rea-group div.col-sm-11, .rea-group div.col-sm-12 {
+		padding-top: 6px;
+		padding-bottom: 6px;
+	}
+}
+
+
+
+/* Widgets */
+
+select.size-auto {
+	width: auto;
+}
+select.size-small {
+	width: 20em;
+}
+select.size-medium {
+	width: 30em;
+}
+
+select {
+	display: inline-block;
+	font-size: 1em;
+	margin: 10px 0px 10px 0px;
+	
+	width: 100%;
+	padding: 7px 8px;
+	vertical-align: middle;
+	outline: none;
+}
+
+#modal-background {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: .50;
+    -webkit-opacity: .5;
+    -moz-opacity: .5;
+    filter: alpha(opacity=50);
+    z-index: 998;
+}
+#modal-background.active {
+    display: block;
+}​
+
+#ui_cal_view th {
+	font-weight: 400;
+}
+#ui_cal_view th.day_prev, #ui_cal_view th.day_next {
+	text-align: center;
+}
+
+td.day {
+	text-align: center;
+	color: #222222;
+	font-weight: 200;
+	cursor: default;
+	padding: 2px 2px 2px 2px;
+}
+td.day.active {
+	color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+

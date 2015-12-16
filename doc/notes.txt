@@ -1,0 +1,27 @@
+
+
+
+jQuery.globalEval("alert('jose');");
+
+$( "#result" ).load( "ajax/test.html", function() {
+  alert( "Load was performed." );
+});
+
+$.ajax({
+  url: url,
+  dataType: "script",
+  success: success
+});
+
+$.getScript( "ajax/test.js", function( data, textStatus, jqxhr ) {
+  console.log( data ); // Data returned
+  console.log( textStatus ); // Success
+  console.log( jqxhr.status ); // 200
+  console.log( "Load was performed." );
+});
+
+jQuery.getScript( url [, success ] )
+//Function( String script, String textStatus, jqXHR jqXHR )
+$.getScript( url, function() {} );
+
+

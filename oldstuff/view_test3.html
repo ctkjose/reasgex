@@ -1,0 +1,82 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		rea_bootstrap_helper.expand_items();
+		rea_views.initialize();
+	});
+</script>
+<br>
+<div class="container" role="main">
+<form class="form-horizontal form-style-framed" name="view_test3">
+	<h2>Input Groups</h2>
+	<div class="form-row" title='test jose'>
+		<label class="control-label" for="email">Email:</label>
+		<input type='text' class='form-control' name='email' placeholder='Company email' data-validate="empty" data-error-message="Please provide an email">
+	</div>
+	<div class="form-row" data-label="Salary:">
+		<div class='input-group' name='salary' placeholder='Salary of employee' data-prefix='$' data-suffix='00' ></div>
+	</div>
+	<div class="form-row" data-label="Tax:">
+		<div class='input-group' name='tax' placeholder='Tax Rate' data-suffix='%' data-bind="change: do $salary.val('299')"></div>
+	</div>
+	<div class="form-row" data-label="Something:">
+		<div class='input-group' name='e' placeholder='a number' data-suffix='%' data-bind="change: options 'jose' fetch $message('test_ajax1', {param1: 'jose'})"></div>
+	</div>
+	<div class="form-row">
+		<div class='input-group' name='optional_name' placeholder='optional name' data-prefix="checkbox"></div>
+	</div>
+	<div class="form-row">
+		<label class="control-label" for="hire_date">Date Hired:</label>
+		<div class='input-group datepicker' id='datetimepicker1' name='hire_date'></div>
+		
+	</div>
+	<div class="form-row" data-label="Registered">
+		<div class="checkbox yesno" name="registered_yesno"></div>
+	</div>
+	<div class="form-row" id='option-set' data-label="Options Inline">
+		<div class="checkbox bool inline" data-label="Option A" name="option1"></div>
+		<div class="checkbox bool inline" data-label="Option B" name="option2"></div>
+	</div>
+	<div class="form-row" data-label="Options">
+		<div class="checkbox bool" data-label="Member" name="option4"></div>
+		<div class="checkbox bool" data-label="Union" name="option5"></div>
+	</div>
+	<div class="form-row" data-label="Radios" >
+		<div class="radio inline" data-value="1" data-label="Option 1" name="option7"></div>
+		<div class="radio inline" data-value="2" data-label="Option 2" name="option7"></div>
+		<div class="radio inline" data-value="3" data-label="Option 3" name="option7"></div>
+	</div>
+	<div class="form-row" data-label="Score">
+		<select class="form-control" name="score">
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+	</div>
+	<div class="form-row" data-toggle="tooltip" title='Search for employee record'>
+		<label class="control-label" for="hire_date">Text with Button:</label>
+		<div class='input-group' name='q' placeholder='Search' data-btn="Go!"></div>
+	</div>
+	
+	<div class="form-footer">
+		<button type="submit" class="btn btn-primary" data-rea-msg="test_form_save" data-confirm="Do you want to save this record?">Submit</button>
+	</div>
+</form>
+</div>
+
+
+<span id='run'>RUN</span><br>
+<textarea id='code' cols=80 rows=5></textarea>
+<script>
+$(document).ready(function(){
+	var p = new rea_selectors_parser();
+	
+	$("#run").click(function(e){
+		var s = $("#code").val();
+		console.log("CODE======");
+		console.log(s);
+		p.evaluate(s);
+	});
+});
+</script>

@@ -1,0 +1,14 @@
+{{body}}
+{{#ignore}}
+<table>
+	<tr><td>{{@USER_DEFINED_CONSTANT}}</td><td>Replace with the value of a user defined constant. Use the @ symbol followed by the name of a constant.</td></tr>
+	<tr><td>{{FIELD}}</td><td>Replace with field of the given name.</td></tr>
+	<tr><td>{{FIELD[INDEX]}}</td><td>Replace with the given index of an array value. Only one dimensional arrays are supported.</td></tr>
+	<tr><td>{{url(FIELD)}}</td><td>Url encode the value given.</td></tr>
+	<tr><td>{{html(FIELD)}}</td><td>Encode html entities for the value given.</td></tr>
+	<tr><td>{{#repeat FIELD}} ... {{end FIELD}}</td><td>Repeats the enclosed contents for each element of the array given in field.</td></tr>
+	<tr><td>{{#if FIELD}} ... {{end if FIELD}}</td><td>Enclosed contents is used if given field evaluates to true.</td></tr>
+	<tr><td>{{#unless FIELD}} ... {{end unless FIELD}}</td><td>Enclosed contents is used if given field evaluates to false.</td></tr>
+	<tr><td>{{#ignore}} ... {{end&nbsp;ignore}}</td><td>No substitutions are made on the enclosed contents.</td></tr>
+</table>
+{{end ignore}}

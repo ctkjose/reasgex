@@ -1,0 +1,110 @@
+.form-style-framed {
+	
+	border: 1px solid #ddd;
+	box-sizing: border-box;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-bottom: 20px;
+	background-color: #fff;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+
+}
+.form-style-framed .form-footer {
+	padding: 10px 15px;
+	background-color: #f5f5f5;
+	border-top: 0px solid #ddd;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+div.checkbox.inline {
+	display: inline-block;
+}
+div.checkbox.inline label {
+	margin-right: 10px;
+}
+div.radio.inline {
+	display: inline-block;
+}
+
+.form-style-framed .form-group {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.form-style-framed .form-group {
+	margin-bottom:0px;
+}
+.form-style-framed .form-row {
+	background-color: #ffffff;
+	border-bottom: 1px solid #dad9dd;
+}
+.form-style-framed:first-of-type div.form-row:first-of-type {
+	
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	
+	margin-top: 0px !important;
+	padding-top: 10px;
+}
+.form-style-framed .form-row {
+
+}
+th.day_month {
+	text-align:center;
+	cursor: pointer;
+}
+th.day_prev, th.day_next {
+	text-align:center;
+	cursor: pointer;
+}
+td.day {
+
+	
+	text-align: center;
+	border-radius: 4px;
+}
+
+td.day:hover {
+	background: #eee;
+	cursor: pointer;
+}
+
+td.active, td.active:hover {
+	background-color: #428bca;
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+}
+.cal_btn {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.ui_ctrl_cal th, .ui_ctrl_cal td {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 14px;
+
+	font-weight: normal;
+	
+	height: 20px;
+	line-height: 20px;
+	width: 20px;
+	padding: 5px;
+}
+.ui_ctrl_cal {
+	padding: 4px;
+	margin: 1px 0px 0px 0px;
+	
+	background:#FFFFFF;
+	
+	position: absolute;
+	z-index: 22;
+	display: none;
+	
+	border: 1px solid #cccccc;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
