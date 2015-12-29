@@ -5,6 +5,44 @@ function(){
 		initialize : function(){
 			rea_ui_panels_controller.installEventHandlers();
 		},
+		uiDataProvider: function(uidsc){
+			uidsc.registerDataProvider("input.datepicker", [this,"uiDataSetter"], [this,"uiDataGetter"] );	
+		},
+		uiDataGetter: function(){
+			
+		},
+		uiDataSetter: function(o,value, attr){
+			console.log("@ui_datepicker.uiDataSetter()");
+			
+			var v = '';
+			var ty = (typeof value);
+	
+			if( (ty == "string") ) {
+				v = value;
+			}
+			
+			var r = /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}\:[0-9]{2}/;
+			if (r.test(v)) { //is ISO8601
+				var d = new Date(v);
+				v = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear();
+			}
+			var r = /[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}\:[0-9]{2}\:[0-9]{2}/;
+			if (r.test(v)) { //is Mysql datetime
+				var ps = v.split(' ');
+				var dp = ps[0].split('-');
+				var tp = ps[1].split(':');
+				var d = new Date( dp[0], dp[1]-1, dp[2], tp[0], tp[1], tp[2]);
+				v = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear();
+			}
+			
+			o.val(v);
+			
+			if(attr.ro){
+				o.attr("disabled", "disabled");
+			}else if(o.attr("disabled")){
+				o.removeAttr("disabled");
+			}
+		},
 		/**
 		 * Implements the UI Extend interface.
 		 * @param {Object} extender - The rea_helper_ui_extender instance
@@ -76,6 +114,12 @@ function(){
 			
 			t.attr('data-type', data_type );
 			t.attr('data-ignore', '1' );
+			
+			if(o.hasOwnProperty("view")){
+				t.attr("name", o.view.name + "." + n );
+				d.attr("name", o.view.name + "." + n );
+			}
+			
 			d.css({"width": "240px"});
 			
 			d.append(t);

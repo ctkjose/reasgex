@@ -3,11 +3,41 @@
 /**
  * Implements bootstrap helpers to build UI Forms in REASG
  */
+
+
 rea.registerComponent( "ui", "select", ["ui.panel"],
 function(){
 	var ui_select = {
 		initialize : function(){
-			rea_ui_panels_controller.installEventHandlers();
+
+		},		
+		uiDataProvider: function(uidsc){
+			uidsc.registerDataProvider("select", [this,"uiDataSetter"], [this,"uiDataGetter"] );	
+		},
+		uiDataGetter: function(){
+			
+		},
+		uiDataSetter: function(o,value, attr){
+			console.log("@ui_select.uiDataSetter()");
+
+			var v = '';
+			var ty = (typeof value);
+	
+			if ( Array.isArray(value) && (value.hasOwnProperty(1)) ) {
+				v = '';
+			}else if( (ty == "string") || (ty == "number") ) {
+				v = value;
+			}else if( (ty == "boolean") ) {
+				v = (value) ? '1' : '0';
+			}
+			o.attr('value', v);
+			o.val(v);
+			
+			if(attr.ro){
+				o.attr("disabled", "disabled");
+			}else if(o.attr("disabled")){
+				o.removeAttr("disabled");
+			}
 		},
 		/**
 		 * Implements the UI Extend interface.
@@ -29,8 +59,6 @@ function(){
 			var data_class = "select";
 			var data_bind = "";
 			var data_type = "data-type='list'";
-			
-			//<div class='checkbox' name="fieldName" default="1" options="{1:'Option 1', 2:'Option 2'}"></div>
 			
 			if( o.attr("extended") ) return;
 			
@@ -110,7 +138,75 @@ rea.registerComponent( "ui", "checkbox", ["ui.panel"],
 function(){
 	var ui_checkbox = {
 		initialize : function(){
-			rea_ui_panels_controller.installEventHandlers();
+		},
+		uiDataProvider: function(uidsc){
+			uidsc.registerDataProvider("fieldset.radios", [this,"uiDataSetter"], [this,"uiDataGetter"] );
+			uidsc.registerDataProvider("fieldset.checkboxes", [this,"uiDataSetter"], [this,"uiDataGetter"] );
+			uidsc.registerDataProvider("input[type=checkbox]", [this,"uiDataSetter"], [this,"uiDataGetter"] );
+			uidsc.registerDataProvider("input[type=radio]", [this,"uiDataSetter"], [this,"uiDataGetter"] );
+		},
+		uiDataGetter: function(){
+			
+		},
+		uiDataSetter: function(o,value, attr){
+			console.log("@ui_checkbox.uiDataSetter()");
+			var n = o.elmName();
+			
+			var v = '';
+			var ty = (typeof value);
+	
+			if ( Array.isArray(value) && (value.hasOwnProperty(0)) ) {
+				v = value;
+			}else if( (ty == "string") || (ty == "number") ) {
+				v = value;
+			}else if( (ty == "boolean") ) {
+				v = (value) ? '1' : '0';
+			}
+			
+			var m = (o.hasClass('radio') || o.hasClass('radios')) ? false : true; //multiples
+			var t = (m ? 'checkbox' : 'radio');
+			if( o.attr("data-type") && (o.data('type') =='bool') ) m = false;
+			
+			var k = "@fieldset." + t + "[name=" + n + "]";
+			//console.log(k + " =======================================");
+			
+			var ops = [];
+			if(o.elmTag() == 'fieldset'){
+				var items = o.find('input[type=' + t + ']');
+				items.each( function(x) {
+					ops.push( $(this) );
+				});
+			}else{
+				ops.push(o);
+			}
+			
+			var c = 0;
+			
+			for(var i=0; i< ops.length; i++){
+				var e = ops[i];
+				var idx = e.elmName();
+			
+				c++;
+				var ev = e.attr('value');
+				var check = false;
+			
+				console.log(k + " > input[type=" + t + "][name=" + idx + "][value=" + ev + "]");
+			
+				check = ui_datasource_controller.matchValue(v, ev);
+			
+				if (check) {
+					e.prop("checked", true);
+				}else {
+					e.removeProp("checked");
+					e.removeAttr("checked");
+				}
+				
+				if(attr.ro){
+					e.attr("disabled", "disabled");
+				}else if(e.attr("disabled")){
+					e.removeAttr("disabled");
+				}
+			}
 		},
 		/**
 		 * Implements the UI Extend interface.
@@ -168,8 +264,8 @@ function(){
 				if (o.hasClass('yesno')) {
 					chk.type = "radio";
 					chk.data_type = " data-type='bool' ";
-					chk.options[0] = 'Yes';
-					chk.options[1] = 'No';
+					chk.options[1] = 'Yes';
+					chk.options[0] = 'No';
 					
 				}
 			}
@@ -223,7 +319,7 @@ rea.registerComponent( "ui", "button", ["ui.panel"],
 function(){
 	var ui_button = {
 		initialize : function(){
-			rea_ui_panels_controller.installEventHandlers();
+			
 		},
 		/**
 		 * Implements the UI Extend interface.
@@ -272,7 +368,77 @@ function(){
 	};
 	return ui_button;
 }() );
+rea.registerComponent( "ui", "generic", ["ui.panel"],
+function(){
+	var ui_generic = {
+		initialize : function(){
+			
+		},
+		uiDataProvider: function(uidsc){
+			uidsc.registerDataProvider("input[type=hidden], input[type=text], input[type=email], input[type=password], textarea", [this,"uiDataSetter"], [this,"uiDataGetter"] );	
+		},
+		uiDataGetter: function(){
+			
+		},
+		uiDataSetter: function(o,value, attr){
+			console.log("@ui_generic.uiDataSetter()");
 
+			var v = '';
+			var ty = (typeof value);
+	
+			if ( Array.isArray(value) && (value.hasOwnProperty(1)) ) {
+				v = '';
+			}else if( (ty == "string") || (ty == "number") ) {
+				v = value;
+			}else if( (ty == "boolean") ) {
+				v = (value) ? '1' : '0';
+			}
+			
+			if(attr.ro){
+				o.attr("disabled", "disabled");
+			}else if(o.attr("disabled")){
+				o.removeAttr("disabled");
+			}
+			o.val(v);
+		},
+		uiExtender : function(extender){
+			extender.registerExpandHelper( "input.text", [this, "uiExpandTextBox"] );
+			extender.registerExpandHelper( "input.email", [this, "uiExpandTextBox"] );
+			extender.registerExpandHelper( "input.password", [this, "uiExpandTextBox"] );
+		},
+		uiExpandTextBox: function(o){
+			console.log("@ui.checkbox.uiExpandTextBox()");			
+			var n = o.attr("name");
+
+			if(o.hasOwnProperty("view")){
+				n = o.view.name + "." + n;
+				o.attr("name", n);
+			}
+			
+			o.addClass("form-control").addClass("textbox");
+			if(o.hasClass("email")){
+				o.attr("type", "email");
+			}else if(o.hasClass("password")){
+				o.attr("type", "password");
+			}else{
+				o.attr("type", "text");
+			}
+			
+			if( o.attr("decorate") ){
+				var s  = o.attr("decorate");
+				o.removeAttr("decorate");	
+				var d = o.clone();
+			
+				var fg = $("<div class='rea-group input-group' name='" + n + "'></div>");
+				fg.append(d);
+				fg.append("<span class='input-group-addon'>" + s + "</span>");
+				
+				o.replaceWith( fg );
+			}
+		}
+	}
+	return ui_generic;
+}() );
 rea.registerComponent( "ui", "panel", [],
 function(){
 	var ui_panel = {
@@ -338,7 +504,7 @@ function(){
 			var n = "" + o.elmName();
 			
 			var nx = o.next();
-			if( (nx.length > 0) && (nx.elmTag() == "input") ){
+			if( (nx.length > 0) && ((nx.elmTag() == "input") || (nx.hasClass("text"))) ){
 				g.addClass("input-group");
 				nx.detach();
 				
@@ -349,7 +515,7 @@ function(){
 				g.append(nx);
 			}else{
 				nx = o.prev();
-				if( (nx.length > 0) && (nx.elmTag() == "input") ){
+				if( (nx.length > 0) && ((nx.elmTag() == "input") || (nx.hasClass("text"))) ){
 					g.addClass("input-group");
 					nx.detach();
 					
@@ -473,6 +639,7 @@ function(){
 	};
 	return ui_panel;
 }() );
+
 
 
 var rea_ui_panels_controller = function(){

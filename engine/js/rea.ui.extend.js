@@ -44,6 +44,14 @@ var rea_helper_ui_extender = function(){
 				});
 			}
 		},
+		copyAttributes: function(a, o, e){
+			
+			for(i=0;i<a.length;i++){
+				var k = a[i];
+				if( o.attr(k) ) e.attr(k, o.attr(k));
+			}
+			
+		},
 		/**
 		 * Expand default selectors
 		 */

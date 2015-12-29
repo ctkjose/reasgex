@@ -76,16 +76,15 @@
 		<div class='body'>			
 			<div class="form row" title='test jose'>
 				<label class="control-label" for="email">Email:</label>
-				<input type='text' class='form-control' name='email' placeholder='Company email' data-validate="empty" data-error-message="Please provide an email">
-				<span class='decorate'>@upr.edu</span>
+				<input class='text' name='email' placeholder='Company email' decorate='@upr.edu'>
 			</div>
 			<div class="form row inline" title='test jose' data-label='Name:'>
-				<input type='text' class='form-control' size='4' name='emp_name' placeholder='First Name' data-validate="empty" data-error-message="Please provide a name">
-				<input type='text' class='form-control' size='1' name='emp_mname' placeholder='Initial'>
-				<input type='text' class='form-control' name='emp_lname' placeholder='Last Name' data-validate="empty" data-error-message="Please provide a last name">
+				<input class='text' name='emp_name' size='4' placeholder='First Name' data-validate="empty" data-error-message="Please provide a name">
+				<input class='text' name='emp_mname' size='1' placeholder='Initial'>
+				<input class='text' name='emp_lname'  placeholder='First Name' data-validate="empty" data-error-message="Please provide a last name">
 			</div>
 			<div class="form row" title='test jose' data-label='Salary:'>
-				<span class='decorate'>$</span><input type='text' class='form-control' name='emp_salary' placeholder='Salary'>
+				<span class='decorate'>$</span><input class='text' name='emp_salary' placeholder='Salary'>
 			</div>
 			
 			<div class="form row" data-label='Date Hired:'>
@@ -145,12 +144,32 @@
 <script type='text/javascript' src='../engine/js/rea.ui.storage.js'></script>
 <script type='text/javascript' src='../engine/js/rea.ui.view.js'></script>
 
+<script type='text/javascript' src='../engine/js/rea.ui.datasource.js'></script>
 <script type='text/javascript' src='../engine/js/rea.ui.extend.js'></script>
 <script type='text/javascript' src='../engine/js/rea.ui.panels.js'></script>
 <script type='text/javascript' src='../engine/js/rea.ui.calendar.js'></script>
 	
 	
 	<script type="text/javascript">
+		
+	var testDS = {
+		name : 'employee',
+		attr : {
+			'emp_salary' : {'ro' : 1 }
+			
+		},
+		items : {
+			'emp_salary' : '45,000',
+			'emp_test1_enabled' : 1,
+			'fld_town01' : "mc",
+			'start_date' : "09/20/2015",
+			'field_checkbox01' : [2,1],
+			'emp_tax_rate' : '30',
+			'field_yesno': 1,
+			'field_enabled' : 1,
+		}
+		
+	};
 	$(document).ready(function(){
 		
 		rea.initialize();
