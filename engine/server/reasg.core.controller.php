@@ -1,7 +1,9 @@
 <?php
 namespace reasg\core;
 
-class controller extends \reasg\core\base {
+class controller {
+	use \reasg\core\ObjectBase, \reasg\core\ObjectExtendable;
+	
 	private $event_map = array();
 	function on($evtName, $callBackMethod, $evtData=NULL, $callbackName=NULL){
 		///N:Allows others to register for an event.

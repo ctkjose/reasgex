@@ -1,5 +1,5 @@
 <?php
-namespace reasg\app;
+namespace reasg;
 //require_once($REA_USE_VIEW_UI);
 
 $app_extended_view_helpers = array();
@@ -19,6 +19,11 @@ class controller extends \reasg\core\controller {
 			print "TEST 01: app_start NOT found\n";
 		}
 	}
+	
+	
+}
+
+trait ObjectDataSource {
 	
 	
 }

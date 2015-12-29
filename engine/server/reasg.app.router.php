@@ -1,5 +1,5 @@
 <?php
-namespace reasg\app;
+namespace reasg;
 
 $rea_route = null;
 
