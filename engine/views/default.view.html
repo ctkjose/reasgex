@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang='{{lang}}'>
+<head>
+	<meta charset="utf-8">
+	<base href="{{@REASG_ROOT_URL}}">
+	<title>{{title}}</title>
+	<meta name="description" content="REASG PAGE">
+	<meta name="viewporte" content="width=device-width">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link type="text/css" rel="stylesheet" href='vendor/engine/bootstrap/css/bootstrap.css' media='all'\>
+	<!-- <link type="text/css" rel="stylesheet" href='engine/vendor/bootstrap/css/bootstrap-theme.css' media='all'\> -->
+	<link type="text/css" rel="stylesheet" href='vendor/engine/font-awesome/font-awesome.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='css/engine/reasg-ui.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='css/engine/reasg-theme.css' media='all'\>
+	
+
+	{{#repeat css[includes]}} 
+	<link type="text/css" rel="stylesheet" href='{{url}}' {{attr}}\>
+	{{end css[includes]}}
+	
+	<style>
+		{{css[inline]}}
+	</style>
+
+	{{header}}
+</head>
+<body>
+<div class='container'>
+{{body}}
+</div><!-- end container -->
+
+
+<script type='text/javascript' src='vendor/engine/jquery/jquery-2.1.3.min.js'></script>
+<script type='text/javascript' src='vendor/engine/bootstrap/js/bootstrap.min.js'></script>
+<!-- <script type='text/javascript' src='../engine/vendor/require/require.js'></script> -->
+
+<script type='text/javascript' src='js/engine/rea.framework.js'></script>
+<script type='text/javascript' src='js/engine/rea.helper.jquery.js'></script>
+<script type='text/javascript' src='js/engine/rea.helper.types.js'></script>
+
+<script type='text/javascript' src='js/engine/rea.ui.controller.js'></script>
+<script type='text/javascript' src='js/engine/rea.ui.storage.js'></script>
+<script type='text/javascript' src='js/engine/rea.ui.view.js'></script>
+
+<script type='text/javascript' src='js/engine/rea.ui.extend.js'></script>
+<script type='text/javascript' src='js/engine/rea.ui.datasource.js'></script>
+<script type='text/javascript' src='js/engine/rea.ui.panels.js'></script>
+<script type='text/javascript' src='js/engine/rea.ui.table.js'></script>
+<script type='text/javascript' src='js/engine/rea.ui.calendar.js'></script>
+
+
+{{#repeat js[includes]}} 
+<script type='text/javascript' src='{{url}}'></script>
+{{end js[includes]}}
+
+<script type="text/javascript" name='j1'>
+	$(document).ready(function(){
+		
+		rea.initialize();
+		rea_controller.dispatchEvent("ready");
+		rea_controller.dispatchEvent("initialize");
+		
+		rea.loadComponents();
+		
+		rea_helper_ui_extender.expandDefaults();
+	});
+</script>
+</body>
+</html>

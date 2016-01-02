@@ -15,3 +15,8 @@
 .section .footer.grey {
 	background-color: #f6f8f8;
 }
+
+.form-control[disabled] {
+    background-color: #f6f6f6;
+
+}

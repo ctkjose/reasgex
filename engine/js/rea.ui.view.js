@@ -1,5 +1,15 @@
 var rea_ui_views = function(){
 	var obj = {
+		viewCreateWithName: function(n){
+			
+			var v = new rea_ui_view();
+			
+			v.name = n;
+			v.o = $(".view[name='" + n + "']");
+			
+			
+			return v;
+		},
 		viewCreateWithNode: function(o){
 			
 			var v = new rea_ui_view();

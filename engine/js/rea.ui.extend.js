@@ -9,6 +9,7 @@
 var rea_helper_ui_extender = function(){
 	var a = {
 		expand_functions : [],
+		global_expand_function :[],
 		/**
 		 * Implements the UI Extend interface.
 		 * 
@@ -18,13 +19,16 @@ var rea_helper_ui_extender = function(){
 		registerExpandHelper : function(sel, fn){
 			this.expand_functions.push( {sel: sel, fn:fn} );
 		},
+		registerGlobalExpandHelper : function(sel, fn){
+			this.global_expand_function.push( {sel: sel, fn:fn} );
+		},
 		/**
 		 * Runs extensions and .
 		 * 
 		 * @param {string} sel - A selector
 		 * @param {Callback} fn - A callback
 		 */
-		expandForSelector : function(sel){
+		expandForSelector : function(sel, view_name){
 			var o = (typeof sel == "string") ? $(sel) : sel;
 			
 			if(!o || (o.length <= 0)) return;
@@ -33,7 +37,12 @@ var rea_helper_ui_extender = function(){
 			if(o.hasClass("extend")) o.removeClass("extend");
 			if(!o.hasClass("extended")) o.addClass("extended");
 			
-			var view = rea_ui_views.viewCreateWithNode( o );
+			if(view_name && (typeof view_name !== "undefined") ){
+				var view = rea_ui_views.viewCreateWithName( view_name );
+			}else{
+				var view = rea_ui_views.viewCreateWithNode( o );
+			}
+			
 			
 			for(i=0;i<this.expand_functions.length;i++){
 				var def = this.expand_functions[i];
@@ -56,14 +65,22 @@ var rea_helper_ui_extender = function(){
 		 * Expand default selectors
 		 */
 		expandDefaults : function(){
+			
+			for(i=0;i<this.global_expand_function.length;i++){
+				var def = this.global_expand_function[i];
+				$(def.sel).each(function(){
+					var o = $( this );
+					rea.types.callback(def.fn, o);
+				});
+			}
 			var defaults = [".view-form",".view.extend"];
 			for(var i in defaults){
 				this.expandForSelector(defaults[i]);	
 			}
 		},
 		componentLoaded : function(e){
-			console.log("@rea_helper_ui_extender.componentLoaded()");
-			console.log(e);
+			//console.log("@rea_helper_ui_extender.componentLoaded()");
+			//console.log(e);
 			//console.log("@rea_helper_ui_extender.componentLoaded(" + e.scope + "." + e.name + ")");
 			if( !e.instance ) return;
 			if( !e.instance.hasOwnProperty("uiExtender") ) return;
@@ -75,7 +92,7 @@ var rea_helper_ui_extender = function(){
 		initialize : function(){
 			
 			rea_controller.on("component_loaded", [this,"componentLoaded"]);
-			console.log("@rea_helper_ui_extender.constructor()");
+			//console.log("@rea_helper_ui_extender.constructor()");
 		}
 	};
 	

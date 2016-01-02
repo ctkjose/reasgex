@@ -45,6 +45,10 @@ Use &quot; to escape double quotes on options or in your ```label``` attribute.
 
 ## Forms ##
 
+### Header Row ###
+
+Use a div with class ```header``` to create a new row.
+
 
 ### Form Rows ###
 

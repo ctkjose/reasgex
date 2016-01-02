@@ -6,10 +6,10 @@ jQuery.elm = function(e){
 	var o = $( "[id=" + e +"]" );
 	if (o.length) return o;
 	
-	o = $( "[name=" + e +"]" );
+	o = $( "[name='" + e +"']" );
 	if (o.length) return o;
 	
-	o = $( "[name^=" + e +"_]" );
+	o = $( "[name^='" + e +"_']" );
 	if (o.length) return o;
 	
 	return null;
@@ -49,7 +49,7 @@ jQuery.fn.elmOptionsGet = function(){
 	if ( t == "select" ){
 		var selected =this.o.find('option');
 	}else{	
-		var selected = $('input[name=' + n + ']'); //fix this, n could be an id
+		var selected = $("input[name='" + n + "']"); //fix this, n could be an id
 	}
 	
 	selected.each( function() {

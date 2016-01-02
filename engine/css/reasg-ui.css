@@ -204,6 +204,7 @@ select {
     display: block;
 }​
 
+/* Calendar =================== */
 #ui_cal_view th {
 	font-weight: 400;
 }
@@ -225,3 +226,126 @@ td.day.active {
 }
 
 
+/* Tables ===================== */
+
+.table {
+	width: 100%;
+	background: #fff;
+	margin: 1em 0;
+	border: 1px solid #d0d0d0;
+	box-shadow: none;
+	border-radius: .25rem;
+	color: rgba(0,0,0,.8);
+	border-collapse: separate;
+	border-spacing: 0;
+	
+	font-size:1em;
+}
+.table thead tr:first-child>th:only-child {
+	border-radius:.25rem .25rem 0 0;
+}
+
+.table thead tr:first-child>th:first-child {
+	border-radius:.25rem 0 0;
+}
+.table thead tr:first-child>th:last-child {
+	border-radius:0 .25rem 0 0;
+}
+
+.table tr td, .table tr th {
+	border-left: 1px solid #d4d4d5;
+}
+.table thead th {
+	cursor: auto;
+	background: #f0f0f0;
+	text-align: left;
+	color: rgba(0,0,0,.8);
+	padding: .7em .8em;
+	vertical-align: middle;
+	font-style: none;
+	font-weight: 700;
+	text-transform: none;
+	border-bottom: 1px solid #d4d4d5;
+	border-left: none;
+}
+
+.table td {
+	padding: .7em .8em;
+	text-align: left;
+	vertical-align: middle;
+}
+.table tr td {
+	border-top:1px solid #d4d4d5;
+}
+
+.table tr:first-child td {
+	border-top:none;
+}
+.table tr td, .table tr th{
+	border-left:1px solid #d4d4d5;
+}
+.table tr td:first-child, .table tr th:first-child {
+	border-left: none;
+}
+
+.table tr td.disabled, .table tr.disabled td, .table tr.disabled:hover td, .table tr:hover td.disabled {
+	pointer-events: none;
+	color: rgba(40,40,40,.3);
+}
+
+.striped.table tbody tr:nth-child(2n), .striped.table>tr:nth-child(2n) {
+	background-color:rgba(0,0,50,.03);
+}
+
+
+.table tfoot {
+	box-shadow: none;
+}
+.table tfoot th {
+	cursor: auto;
+	border-top: 1px solid #d4d4d5;
+	background: #fff;
+	text-align: left;
+	color: rgba(0,0,0,.8);
+	padding: .7em .8em;
+	vertical-align: middle;
+	font-style: normal;
+	font-weight: 400;
+	text-transform: none;
+}
+.table tfoot tr:first-child>th:first-child {
+	border-radius:0 0 0 .25rem;
+}
+.table tfoot tr>th:first-child {
+	border-left: none;
+}
+.table tfoot tr:first-child>th:last-child {
+	border-radius:0 0 .25rem;
+}
+
+.table td.negative, .table tr.negative td {
+	background: #fff0f0 !important;
+	color: #cd2929 !important;
+}
+.table td.positive, .table tr.positive td {
+	background: #eeffe7 !important;
+	color: #3c763d !important;
+}
+.table td a {
+	text-decoration: none;
+	color:#009fda;
+}
+.table td a:hover {
+	color: #00b2f3;
+}
+.table tfoot th a {
+	text-decoration: none;
+	color:#009fda;
+}
+.table tfoot th a:hover {
+	color: #00b2f3;
+}
+
+.table td .select {
+	margin: 0 0;
+}

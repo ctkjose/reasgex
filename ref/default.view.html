@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+	<meta name="description" content="REASG PAGE">
+	<meta name="viewporte" content="width=device-width">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type='text/javascript' src='{{@REA_ENGINE_URL}}vendor/jquery/jquery-2.1.3.min.js'></script>
+	
+	
+	<link type="text/css" rel="stylesheet" href='{{@REA_ENGINE_URL}}css/rea.ui.images.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='{{@REA_ENGINE_URL}}css/rea.ui.globals.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='{{@REA_ENGINE_URL}}css/rea.ui.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='{{@REA_ENGINE_URL}}css/rea.font.css' media='all'\>
+	
+	{{#repeat css[includes]}} 
+	<link type="text/css" rel="stylesheet" href='{{url}}' {{attr}}\>
+	{{end css[includes]}}
+	
+	<style>
+		{{css[inline]}}
+	</style>
+
+	{{header}}
+</head>
+<body class='bg-grey'>
+<div class='content'>
+{{body}}
+</div><!-- end content -->
+
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.php.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.parser.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.controller.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.extend.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.views.js"></script>
+<script src="{{@REA_ENGINE_URL}}js/rea.helper.bindings.js"></script>
+
+{{#repeat js[includes]}} 
+<script type='text/javascript' src='{{url}}'></script>
+{{end js[includes]}}
+</body>
+</html>

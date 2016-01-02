@@ -3,10 +3,17 @@ RewriteEngine On
 #RewriteLog "/private/var/log/apache2/rewrite.log"
 #RewriteBase /api/
 
+
+RewriteRule ^views/engine/([A-Za-z0-9_\.\-\/]+)$ engine/views/$1 [L,QSA]
+RewriteRule ^server/engine/([A-Za-z0-9_\.\-\/]+)$ engine/server/$1 [L,QSA]
+RewriteRule ^vendor/engine/([A-Za-z0-9_\.\-\/]+)$ engine/vendor/$1 [L,QSA]
+RewriteRule ^js/engine/([A-Za-z0-9_\.\-\/]+)$ engine/js/$1 [L,QSA]
+RewriteRule ^css/engine/([A-Za-z0-9_\.\-\/]+)$ engine/css/$1 [L,QSA]
+
 #This need a way to allow nested scopes/folders
 #/api/<scope>/<controller>/<action>/
 #RewriteRule api/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/$ $1/api/$2.php?api-obj=$2&api-scope=$1&api-action=$3  [L,QSA]
-RewriteRule ^app/([A-Za-z0-9-_]+)/([A-Za-z0-9-_]+)/([A-Za-z0-9-]+)/$ engine/server/app.php?api-obj=$2&api-scope=$1&api-action=$3  [L,QSA]
+RewriteRule ^app/([A-Za-z0-9_\-\.\*]+)/([A-Za-z0-9-_]+)/([A-Za-z0-9-_]+)/([A-Za-z0-9-_]+)/$ engine/server/app.php?api-loc=$1&api-obj=$3&api-scope=$2&api-action=$4  [L,QSA]
 #RewriteRule api/([A-Za-z0-9-_]+)/([A-Za-z0-9-_]+)/$ $1/api/$2.php [L,QSA]
 
 RewriteRule ^js/([A-Za-z0-9-_]+)/([A-Za-z0-9-_\.\/]+)$ $1/assets/js/$2 [L,QSA]

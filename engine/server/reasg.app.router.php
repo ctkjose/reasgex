@@ -10,7 +10,7 @@ class router {
 	}
 	public static function loadFromRequest(){
 		global $reasg_route;
-		$reasg_route =  ['scope'=>'reasg','controller'=>'main', 'action'=> 'main', 'values'=> array(), 'return_type'=>'any', 'method' => 'get', 'ajax'=> false, 'view' => 'default'];
+		$reasg_route =  ['scope'=>'reasg','location'=>'default', 'controller'=>'main', 'action'=> 'main', 'values'=> array(), 'return_type'=>'any', 'method' => 'get', 'ajax'=> false, 'view' => 'default'];
 		
 		if(isset($_SERVER['REQUEST_METHOD'])){
 			$method = strtolower($_SERVER['REQUEST_METHOD']);
@@ -46,7 +46,10 @@ class router {
 		}elseif(isset($reasg_route['values']['a'])) {
 			$reasg_route['action'] = strtolower($reasg_route['values']['a']);
 		}
-		
+		if(isset($reasg_route['values']['api-loc'])) {
+			$reasg_route['location'] = strtoupper($reasg_route['values']['api-loc']);
+			unset($reasg_route['values']['api-loc']);
+		}
 		if(isset($reasg_route['values']['api-obj'])) {
 			$reasg_route['controller'] = strtolower($reasg_route['values']['api-obj']);
 			unset($reasg_route['values']['api-obj']);

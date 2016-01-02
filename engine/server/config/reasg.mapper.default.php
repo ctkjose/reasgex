@@ -28,7 +28,7 @@ $reasg_path_mapper = function($scope, $f, $event, $params){
 	}elseif( strpos($r, ".controller." ) !== false){
 		//is a controller
 		$n = str_replace(".controller.php",'', $r);
-		$url.= "app/{$scope}/" . $n . '/' . $event .'/';
+		$url.= "app/" . REASG_SELF_LOCATION . "/{$scope}/" . $n . '/' . $event .'/';
 		if(strlen($args) > 0) $url.= '?' . $args;
 	}
 	

@@ -1,5 +1,16 @@
 
 
+"with" : { "datasource" : "employee" },   
+ 
+"populate" : {"view":"employee", "set": "all"}
+"populate" : {"view":"employee", "set": "ui_table:record2"}
+"populate" : {"view":"employee:record2", "set": "ui_table:record2"}
+"populate" : {"view":"employee", "set": "emp_name"}
+
+
+
+
+
 
 jQuery.globalEval("alert('jose');");
 

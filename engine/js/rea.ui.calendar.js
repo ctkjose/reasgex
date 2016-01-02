@@ -3,7 +3,6 @@ function(){
 	ui_datepicker = {
 		state : {'txt':'', 'target':null, 'popover':null},
 		initialize : function(){
-			rea_ui_panels_controller.installEventHandlers();
 		},
 		uiDataProvider: function(uidsc){
 			uidsc.registerDataProvider("input.datepicker", [this,"uiDataSetter"], [this,"uiDataGetter"] );	
@@ -98,7 +97,7 @@ function(){
 				data_class = o.attr('class');
 			}
 			
-			var d = $('<div class="input-group ' + data_class + '"  data-type="' + data_type + '" name="' + n + '">');
+			var d = $('<div class="input-group ' + data_class + '"  data-type="' + data_type + '" name="' + n + '_frame">');
 			var b = $('<span class="input-group-addon ui_cal_btn"><i class="fa fa-calendar"></i></span>');
 		
 			var t = o.clone();

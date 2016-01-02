@@ -4,35 +4,206 @@ namespace reasg;
 
 $app_extended_view_helpers = array();
 $rea_app_controller_page = null;
+$app_controller = null;
+$client_controller = null;
 
-class controller extends \reasg\core\controller {
-	
-	public static function run(){
-		print "@\\reasg\\app\\controller::run()\n";
+$app_state = [
+	'ended' => false,
+	'commited' => false,
+	'headers'=>['Content-Type'=> 'text/html; charset=UTF-8'],
+	'buffer'=>''
+];
+class client_controller extends \reasg\core\controller {
+	public $data = ['cmd'=>[]];
+	public function messagebox($m){
+		$this->data['cmd'][] = ['cmd'=>'display_msg', 'msg'=>$m];
 	}
-	public function test1(){
-		if(function_exists('\reasg\app\app_start')){
-			print "TEST 01: app_start found\n";
-			//app_start($rea_route->details['values']);
-			app_start();
-		}else{
-			print "TEST 01: app_start NOT found\n";
-		}
+	public function alert_success($m){
+		$this->data['cmd'][] = ['cmd'=>'display_alert','type'=>'success', 'msg'=>$m];
 	}
-	
+	public function alert_info($m){
+		$this->data['cmd'][] = ['cmd'=>'display_alert','type'=>'info', 'msg'=>$m];
+	}
+	public function alert_warning($m){
+		$this->data['cmd'][] = ['cmd'=>'display_alert','type'=>'warning', 'msg'=>$m];
+	}
+	public function alert_error($m){
+		$this->data['cmd'][] = ['cmd'=>'display_alert','type'=>'danger', 'msg'=>$m];
+	}
+	public function redirect($url, $m = 'Redirecting...'){
+		$this->data['cmd'][] = ['cmd'=>'redirect', 'msg'=>$m, 'url'=>$url];
+	}
+	public function executeJS($js){
+		$this->data['cmd'][] = ['cmd' => 'js', 'code'=>$js];
+	}
 	
 }
+class app_controller extends \reasg\core\controller {
+	public static function init(){
+		global $app_controller, $client_controller, $app; 
+		$app_controller = new app_controller();
+		$app = $app_controller;
+		
+		$client_controller = new client_controller();
+	}
+	public static function instance(){
+		global $app_controller;
+		return $app_controller;
+	}
+	public function header($n, $v){
+		global $app_state;
+		$k = strtolower($n);
+		$app_state['headers'][$n] = $v;
+	}
+	public function sendHeaders(){
+		global $app_state, $app_controller;
+		if($app_state['commited']) return;
+		$this->dispatchEvent("app_send_headers", [$this]);
+		
+		foreach($app_state['headers'] as $k=>$v){
+			header($k . ': ' . $v, true);
+		}
+		
+	}
+	
+	public function write($a){
+		global $app_state;
+		if( is_string($a) ){
+			$app_state['buffer'] .= $a;
+		}elseif( is_object($a) && method_exists($a, "getHTML") ){
+			$app_state['buffer'] .= $a->getHTML();
+		}
+	}
+	public function sendJSON($a){
+		$this->header('Content-Type','text/json');
+		
+		$s = json_encode($a);
+		$this->write($s);
+		
+		$this->end();
+	}
+	public function sendView($a){
+		$this->sendHeaders();
+		$app_state['commited'] = true;
+		
+		if( is_string($a) ){
+			print $a;
+		}elseif( is_object($a) && method_exists($a, "getHTML") ){
+			print $a->getHTML();
+		}
+		
+		$this->end();
+	}
+	public function sendDownloadWithFile($mime, $file){
+		global $app_state;
+		
+		if($app_state['commited']) return;
+		
+		$this->header('content-type', $mime);
+		
+		$basename = basename($filename);
+		$this->header('content-disposition', 'attachment; filename="' . urlencode($basename) . '');
+		
+		$this->sendHeaders();
+		$app_state['commited'] = true;
+		
+		$size = filesize($filename);
+		$fp = fopen($filename, "r");
+		while( !feof($fp) ){
+			print fread($fp, 65536);
+			flush(); // this is essential for large downloads
+		}
+		fclose($fp);
+
+		$this->end();
+	}
+	public function sendDownloadWithData($mime, $filename, $data){
+		global $app_state;
+		
+		if($app_state['commited']) return;
+		
+		$this->header('content-type', $mime);
+		
+		if(!is_null($filename)){
+			$this->header('content-disposition', 'attachment; filename="' . urlencode($basename) . '');
+		}else{
+			$this->header('content-disposition', 'attachment;');
+		}
+		
+		$size = strlen($data);
+		$this->header('content-length', $size);
+
+		$this->sendHeaders();
+		$app_state['commited'] = true;
+		
+		print $data;
+		$this->end();
+	}
+	public function commit(){
+		global $app_state, $app_controller;
+		error_log("at_commit");
+		if($app_state['commited']) return;
+		
+		$this->sendHeaders();
+		$this->dispatchEvent("app_send_output", [$this]);
+
+		$app_state['commited'] = true;
+		print $app_state['buffer'];
+	}
+	public function end(){
+		global $app_state, $app_controller;
+		$app_state['ended'] = true;
+		
+		if(!$app_state['commited']){
+			self::commit();
+		}
+		error_log("at_end");
+		$app_controller->dispatchEvent("app_end",[]);
+	
+		flush();
+		exit;
+	}
+	public function abort(){
+		global $app_state, $app_controller;
+		$app_state['ended'] = true;
+		
+		$app_controller->dispatchEvent("app_abort", []);
+		$app_controller->dispatchEvent("app_end", []);
+		flush();
+		exit;
+	}
+}
+
+class view_controller extends \reasg\core\controller {
+	public $location = '';
+	public $scope = '';
+	
+	public static function run(){
+		
+	}
+	public function appController(){
+		global $app_controller;
+		return $app_controller;
+	}
+}
+class process_controller extends \reasg\core\controller {
+	public $location = '';
+	public $scope = '';
+	
+	public function appController(){
+		global $app_controller;
+		return $app_controller;
+	}
+}
+
 
 trait ObjectDataSource {
 	
 	
 }
 
-function app_start(){
-	print "@app_start inside\n";
-}
 
-class rea_app_controller {
+class rea_app_controller1 {
 	///N: A proxy controller for $rea_controller
 	var $properties = array();
 	var $delegate = null;

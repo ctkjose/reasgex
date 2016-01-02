@@ -94,7 +94,7 @@ function(){
 			
 			var d = o;
 			if( o.elmType() != "select" ){
-				d = $('<select class="' + data_class + '" name="' + n + '" ' + data_type + '></select>');
+				d = $('<select class="' + data_class + ' form-control" name="' + n + '" ' + data_type + '></select>');
 				if (o.attr('data-with-code')) d.attr('data-with-code', o.attr('data-with-code'));
 			}
 			
@@ -405,6 +405,7 @@ function(){
 			extender.registerExpandHelper( "input.text", [this, "uiExpandTextBox"] );
 			extender.registerExpandHelper( "input.email", [this, "uiExpandTextBox"] );
 			extender.registerExpandHelper( "input.password", [this, "uiExpandTextBox"] );
+			extender.registerExpandHelper( "textarea", [this, "uiExpandTextArea"] );
 		},
 		uiExpandTextBox: function(o){
 			console.log("@ui.checkbox.uiExpandTextBox()");			
@@ -434,6 +435,20 @@ function(){
 				fg.append("<span class='input-group-addon'>" + s + "</span>");
 				
 				o.replaceWith( fg );
+			}
+		},
+		uiExpandTextArea: function(o){
+			console.log("@ui.checkbox.uiExpandTextArea()");			
+			var n = o.attr("name");
+
+			if(o.hasOwnProperty("view")){
+				n = o.view.name + "." + n;
+				o.attr("name", n);
+			}
+			
+			o.addClass("form-control").addClass("textarea");
+			
+			if( o.attr("rtf") ){
 			}
 		}
 	}

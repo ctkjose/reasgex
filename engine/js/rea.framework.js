@@ -23,7 +23,7 @@ var rea = function(){
 		},
 		registerComponent : function( scope, name, needs, obj) {
 			var e ={'scope': scope, 'name': name, 'needs':needs,'instance': obj};
-			console.log("rea.registerComponent(" + scope + "." + name + ")");
+			//console.log("rea.registerComponent(" + scope + "." + name + ")");
 			
 			this.components_registered.push( e );
 		},
