@@ -11,30 +11,147 @@ $app_state = [
 	'ended' => false,
 	'commited' => false,
 	'headers'=>['Content-Type'=> 'text/html; charset=UTF-8'],
-	'buffer'=>''
+	'buffer'=>'',
+	'cc' => [],
+	'interactions'=>[],
+	'current_interaction'=> null,
 ];
+
+/** client_interaction is half baked idea
+ * moved to implement client interactions on the js side
+ * there still scenarios for php interactions, but i'll
+ * wait to see how push-views, templates and js interactions
+ * pan out
+ */
+class client_interaction {
+	public $verb = null;
+	public $owner = null;
+	public $sel = '';
+	public $name = '';
+	
+	public function __construct($name, $verb='when', $scope='default' ){
+		
+		$this->name = $name;
+		$this->sel = $this->item($name);
+	}
+	private function verbNew($action, $open='{',$close='{' ){
+		$this->verb = ['event'=> $action, 'open'=>$open, 'close'=> $close, 'actions'=>[]];
+	}
+	public function onChange($n=''){
+		$a = new \reasg\client_interaction($this->name);
+		$a->owner = $this;
+		
+		$js = "client_interactions.ciOnEvent(" . $this->sel . ",\"change\", function(\$o,value,n,e)";
+		$a->verbNew($js, '{', '});');
+		
+		return $a;
+	}
+	public function done(){
+		if(is_null($this->verb)) return;
+		if(!is_object($this->owner)) return;
+		
+		$js = $this->verb['event'] . "{\n";
+		$js.= implode("\n", $this->verb['actions']);
+		
+		if(isset($this->verb['close'])){
+			$js.= $this->verb['close'];
+		}else{
+			$js.= "}\n";	
+		}
+		
+		$this->owner->execute($js);
+		return $this->owner;
+	}
+	public function execute($js){
+		if(is_null($this->verb)) return $this;
+		$this->verb['actions'][] = $js;
+	}
+	public function val($v = null){
+		$js = "client_interactions.ciSetValue(" . $this->sel . "," . \js::encode($v) . ");";
+		$this->verb['actions'][] = $js;
+		return $this;
+	}
+	public function clear(){
+		return $this->val('');
+	}
+	public function item( $n ){
+		$scope = 'default';
+		$name = $n;
+		$attr = null;
+		if( strpos($n,'.')!== false){
+			list($scope, $name) = explode('.', $n);
+		}
+		
+		$p1 = strpos($name,'[');
+		$p2 = strpos($name,']');
+		if( ($p !== false) && ($p2!== false)){
+			$attr = substr($name, $p1+1, $p2-($p1+1) );
+			$name = substr($name,0, $p1);
+		}
+		
+		$sel = "\".uiw[name='" . $name . "']";
+		if(!is_null($attr)) $sel.= "[" . $attr . "]";
+		return $sel;
+	}
+	public function __get($name) {
+		
+	}
+}
 class client_controller extends \reasg\core\controller {
 	public $data = ['cmd'=>[]];
-	public function messagebox($m){
-		$this->data['cmd'][] = ['cmd'=>'display_msg', 'msg'=>$m];
+	public static function addCMD($e){
+		global $app_state;
+		$app_state['cc'][] = $e;
 	}
-	public function alert_success($m){
-		$this->data['cmd'][] = ['cmd'=>'display_alert','type'=>'success', 'msg'=>$m];
+	
+	
+	public static function when($n){
+		global $app_state;
+		$scope = 'default';
+		$name = $n;
+		if( strpos($n,'.')!== false){
+			list($scope,$name) = explode('.', $n);
+		}
+		
+		$o = new client_interaction($name, 'when', $scope);
+		$o->verb = ['event'=> '', 'actions'=>[]];
+		
+		$app_state['current_interaction'] = $o;
+		return $o;
 	}
-	public function alert_info($m){
-		$this->data['cmd'][] = ['cmd'=>'display_alert','type'=>'info', 'msg'=>$m];
+
+	public static function showMessage($m){
+		self::addCMD(['cmd'=>'displayMsg', 'msg'=>$m]);
 	}
-	public function alert_warning($m){
-		$this->data['cmd'][] = ['cmd'=>'display_alert','type'=>'warning', 'msg'=>$m];
+	public static function showAlertSuccess($m){
+		self::addCMD(['cmd'=>'displayAlert','type'=>'success', 'msg'=>$m]);
 	}
-	public function alert_error($m){
-		$this->data['cmd'][] = ['cmd'=>'display_alert','type'=>'danger', 'msg'=>$m];
+	public static function showAlertInfo($m){
+		self::addCMD(['cmd'=>'displayAlert','type'=>'info', 'msg'=>$m]);
 	}
-	public function redirect($url, $m = 'Redirecting...'){
-		$this->data['cmd'][] = ['cmd'=>'redirect', 'msg'=>$m, 'url'=>$url];
+	public static function showAlertWarning($m){
+		self::addCMD(['cmd'=>'displayAlert','type'=>'warning', 'msg'=>$m]);
 	}
-	public function executeJS($js){
-		$this->data['cmd'][] = ['cmd' => 'js', 'code'=>$js];
+	public static function showAlertError($m){
+		self::addCMD(['cmd'=>'displayAlert','type'=>'danger', 'msg'=>$m]);
+	}
+	public static function redirect($url, $m = 'Redirecting...'){
+		self::addCMD(['cmd'=>'redirect', 'msg'=>$m, 'url'=>$url]);
+	}
+	public static function replaceContentWithURL($url, $m = 'Please wait...'){
+		self::addCMD(['cmd'=>'pushReplace', 'msg'=>$m, 'url'=>$url]);
+	}
+	public static function replaceContentWithHTML($html, $m = 'Please wait...'){
+		self::addCMD(['cmd'=>'pushReplace', 'msg'=>$m, 'html'=>$html]);
+	}
+	public static function pushContentWithURL($url, $m = 'Please wait...'){
+		self::addCMD(['cmd'=>'push', 'msg'=>$m, 'url'=>$url]);
+	}
+	public static function pushContentWithHTML($html, $m = 'Please wait...'){
+		self::addCMD(['cmd'=>'push', 'msg'=>$m, 'html'=>$html]);
+	}
+	public static function executeJS($js){
+		self::addCMD(['cmd' => 'js', 'code'=>$js]);
 	}
 	
 }

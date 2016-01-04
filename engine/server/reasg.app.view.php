@@ -27,6 +27,10 @@ class ui_views extends \reasg\core\base {
 		
 		$rea_config['rea_views']['views_path'] = $p;
 	}
+	public static function getDefaultView(){
+		global $app_controller, $ui_default_view, $rea_views_path;
+		return $ui_default_view;
+	}
 	public static function createDefaultView($view = null){
 		///N:create a default template and prints its content on commit
 		///P:$view:An optional string with a view's name or an instance of rea_view or rea_template, if non is given the 'default_page' will be loaded.
@@ -46,7 +50,6 @@ class ui_views extends \reasg\core\base {
 			$m = function(){
 				global $ui_default_view;
 				global $app_controller;
-				
 				
 				$app_controller->dispatchEvent("default_view_commit", [ $ui_default_view ] );
 				$app_controller->write($ui_default_view);
@@ -502,7 +505,7 @@ class ui_view extends ui_template {
 		$s.= "var view_options = " . json_encode($payload) . ";\n";
 		
 		if(!empty($this->data)){
-			$s.= "rea_views.setViewDataFromJSON(\"{$this->name}\", " . json_encode($this->data ) . ");\n";
+			//$s.= "rea_views.setViewDataFromJSON(\"{$this->name}\", " . json_encode($this->data ) . ");\n";
 		}
 		$s.= "</script>";
 		

@@ -5,15 +5,17 @@ class ui_datasource extends \reasg\core\base {
 	use \reasg\core\ObjectExtendable;
 
 	var $js='';
+	var $name = '';
 	var $def = ['source'=> 'ajax', 'source_pull'=>'static', 'url'=>'', 'url_find'=>'', 'bind'=> [] ];
 	var $items = [];
 	var $attr = [];
-	
-	public static function dataset(){
+	var $_private = ['js'=>'', 'cf'=>null];
+	public static function createDataset($n){
 		$a = new ui_datasource;
+		$a->name = $n;
 		return $a;
 	}
-	public static function datasetCachable(){
+	public static function createCachableDataset($n){
 		
 		$flg_exit = false;
 		/*
@@ -38,19 +40,80 @@ class ui_datasource extends \reasg\core\base {
 	
 		
 		$a = new ui_datasource;
-		
+		$a->name = $n;
 		return $a;
 	}
 	public function __construct(){
 		$this->uid = strtoupper(uniqid('DS'));
 	}
 	public function getHTML(){
+		$ob = ['uid' => $this->uid, 'name'=> $this->name, 'attr'=> &$this->attr, 'items'=> &$this->items];
+		$js = json_encode($ob);
+		unset($ob);
 		
+		return $js;
+	}
+	public function __toString(){
+		return $this->getHTML();
+	}
+	function field($n, $v=null){
+		$this->_private['cf'] = $n;
+		if(!is_null($v)){
+			$this->items[$n] = $v;
+		}
+		if(!isset($this->items[$n])) $this->items[$n] = '';
+		
+		return $this;
+	}
+	function attr($an, $av){
+		if( is_null($this->_private['cf']) ) return $this;
+		$n = $this->_private['cf'];
+		if( !isset($this->attr[$n]) ) $this->attr[$n] = [];
+		
+		$this->attr[$n][$an] = $av;
+		return $this;
+	}
+	function readonly($v = true){
+		return $this->attr('ro', ($v?1:0) );
+	}
+	function decoration($v){
+		return $this->attr('dc', $v);
+	}
+	function placeholder($v){
+		return $this->attr('ph', $v);
+	}
+	function bindToView($sel='.view'){
+		$s = $sel . "[name='" . $this->name . "']";
+		$this->bindToSelector($s);
+	}
+	function bindToSelector($sel){
+		global $app_controller;
+		
+		$uid = $this->uid;
+		$name = $this->name;
+		$view = \reasg\ui_views::getDefaultView();
+		//$view->js_ready->write($js);
+		
+		$js = "var ds = ui_datasource_controller.createDataSourceWithObject('" . $this->name . "', " . $this->getHTML() . ");\n";
+		error_log("@bindToSelector {$sel}::default_view_commit =========");
+		$m = function($view) use($uid, $name, $sel, $js) {
+			error_log("@closure default_view_commit =========");
+			$s = "ui_datasource_controller.populateSelectorWithDataset(\"{$sel}\", ui_datasource_controller.getDatsourceWithName(\"{$name}\") );\n";
+			
+			$view->js_ready->write($s);
+			
+			$view->js_payload->write($js);
+		};
+	
+		$app_controller->on('default_view_commit', $m);
 	}
 	public function send(){
 		global $app_controller;
 		
 		$app_controller->sendJSON($this);
+	}
+	public function setItems($items){
+		$this->items = $items;	
 	}
 	public function append(){
 		$ar = func_get_args();

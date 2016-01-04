@@ -16,16 +16,85 @@ var rea_command = {
 	}
 	
 }
+var ui_values_ = {
+	"uiwd-text" : {
+		"set" : function(o, value, attr){
+			
+			var v = '';
+			var ty = (typeof value);
+	
+			if ( Array.isArray(value) && (value.hasOwnProperty(1)) ) {
+				v = '';
+			}else if( (ty == "string") || (ty == "number") ) {
+				v = value;
+			}else if( (ty == "boolean") ) {
+				v = (value) ? '1' : '0';
+			}
+			
+			if(attr && attr.hasOwnProperty('ro') && attr.ro){
+				o.attr("disabled", "disabled");
+			}else if(o.attr("disabled")){
+				o.removeAttr("disabled");
+			}
+			if(attr && attr.hasOwnProperty('ph')){
+				o.attr("placeholder", attr.ph);
+			}
+			if(attr && attr.hasOwnProperty('dc')){
+				var p = o.closest(".input-group[name='" + o.attr("name") + "']");
+				if(p && (p.length > 0)){
+					var d = p.find(".input-group-addon");
+					if(d && (d.length > 0)) d.html( attr.dc );
+				}
+			}
+			
+			o.val(v);
+		}
+	},
+	"uiwd-checkbox" : {
+		"set" : function(o, value, attr){
+			
+		}
+	},
+	"uiwd-radio" : {
+		"set" : function(o, value, attr){
+			
+		}
+	}
+}
 var ui_datasource_controller = function(){
 	var a = {
-		uiDataProviders : [],
+		uiDataProviders : {},
+		uiDataProvidersKeys : [],
 		uiDS: {},
-		createDataSourceWithName : function(name, def){
+		getDatsourceWithName : function(name){
+			if(!this.uiDS.hasOwnProperty(name)){
+				return {"name":name, "def": {}, "items":[], "attr":{}};
+			}
+			
+			return this.uiDS[name];
+		},
+		createDataSourceWithDefinition : function(name, def){
 			this.uiDS[name] = {"name":name, "def": def, "items":[], "attr":{}};
 			return this.uiDS[name];
 		},
-		registerDataProvider: function(sel, fnSet, fnGet){
-			this.uiDataProviders.push( {sel: sel, set:fnSet, get:fnGet} );
+		createDataSourceWithObject : function(name, obj){
+			var o = {"name":name, "def": {'source': 'ajax', 'source_pull':'static', 'url':'', 'url_find':'', 'bind': {} }, "items":[], "attr":{}};
+			console.log(o);
+			console.log(obj);
+			this.uiDS[name] = $.extend(o, obj, true);
+			console.log(this.uiDS[name]);
+			return this.uiDS[name];
+		},
+		registerDataProvider: function(classes, fnSet, fnGet){
+			
+			if(!Array.isArray(classes)) return;
+			
+			for(var i in classes){
+				var n = classes[i];
+				console.log("registerDataProvider[" + n +"]");
+				this.uiDataProviders[n]={ wd: n, set:fnSet, get:fnGet};
+				this.uiDataProvidersKeys.push(n);
+			}
 		},
 		componentLoaded : function(e){
 			console.log("@ui_datasource_controller.componentLoaded()");
@@ -80,7 +149,99 @@ var ui_datasource_controller = function(){
 			//this.datasetUseWithSelector()
 			
 		},
-		datasetUseWithSelector : function(ds, sel, akeys){
+		createDatasetFromSelector : function(sel, akeys, scope){
+			var o = (typeof sel == "string") ? $(sel) : sel;
+			if(!o || (o.length <= 0)) return;
+		
+			var dsu = []; //used
+			var data = {};
+			var ukeys = null;
+			if ( Array.isArray(akeys) && (akeys.length > 0) ){
+				ukeys = akeys;
+			}
+			
+			var fnpush = function(v){
+				if( data.hasOwnProperty( v.name )){
+					console.log("already has 1 " + v.name + " must create array");
+					if ( Array.isArray(data[v.name] ) ){
+						console.log("already has " + v.name + " is an array");
+						data[v.name].push( v );
+					}else{
+						console.log("already has " + v.name + " creating array");
+						var r = $.extend({}, data[v.name]);
+						data[v.name] = [r, v];
+					}
+				}else{
+					data[v.name] = v;
+				}
+			};
+			
+			console.log("@createDatasetFromSelector(" + sel + ")======================================");
+			
+			var uiw = o.find(".uiw");
+			uiw.each(function(){
+				var e = $( this );
+				var comp_name = e.elmKey("uiw");
+				var n = e.elmName();
+				
+				console.log("createDatasetFromSelector(" + sel + ") found element [" + n + "]");
+				
+				if( ukeys && (ukeys.indexOf(n) < 0) ){
+					console.log("skip [" + sel +"] for [" + n + "]");
+					return;
+				}
+				
+				if(e.is("[data-ignore=1]")) return;
+				if(e.elmHasKey("scope")){
+					if (!scope) return;
+					if (e.elmKey('scope') != scope) return;
+				}
+				
+				if( dsu.indexOf(n) >= 0 ) return;
+				
+				console.log("createDatasetFromSelector(" + sel + ") found element [" + n + "] looking for def");
+				var def = ui_datasource_controller.getDataProvider(e);
+				if(!def) return;
+				if(!def.get || (typeof def.get == "undefined") || (def.get == null) ) return;
+				
+				console.log("createDatasetFromSelector(" + sel + ") found element [" + n + "] wd [" + def.wd + "]---------------------");
+				
+				var v = rea.types.callback(def.get, e);
+				console.log(v);
+				if(!v || (typeof v == "undefined") || (v == null) ){
+					return;
+				}
+				
+				if(v.hasOwnProperty("multiple") && (Array.isArray(v.multiple))){
+					console.log("has multiple...");
+					for(var x=0; x<v.multiple.length; x++){
+						var v1 = v.multiple[x];
+						console.log(v1);
+						fnpush(v1);
+					}
+				}else{
+					fnpush(v);
+				}
+			});
+			
+			console.log("datset created ----------------------");
+			console.log(data);
+			
+			return data;
+			
+		},
+		getDataProvider : function(e){
+			var def = null;
+			
+			for(i=0;i<this.uiDataProvidersKeys.length;i++){
+				var wd = this.uiDataProvidersKeys[i];
+				if(!e.hasClass(wd)) continue;
+				def = this.uiDataProviders[wd];
+				break;
+			}
+			return def;
+		},
+		populateSelectorWithDataset : function(sel, ds, akeys){
 			var o = (typeof sel == "string") ? $(sel) : sel;
 			if(!o || (o.length <= 0)) return;
 		
@@ -90,55 +251,40 @@ var ui_datasource_controller = function(){
 				ukeys = akeys;
 			}
 			
-			for(i=0;i<this.uiDataProviders.length;i++){
-				var def = this.uiDataProviders[i];
-				o.find(def.sel).each(function(){
-					var o = $( this );
-					var ns = o.elmName();
-					var scope = '';
-					var n = ns;
+			var uiw = o.find(".uiw");
+			console.log("populateSelectorWithDataset(" + sel + ") searching for elements ---------------------");
+			uiw.each(function(){
+				var e = $( this );
+				var comp_name = e.elmKey("uiw");
+				var n = e.elmName();
+				
+				if( ukeys && (ukeys.indexOf(n) < 0) ){
+					console.log("skip [" + sel +"] for [" + n + "]");
+					return;
+				}
+				
+				if( dsu.indexOf(n) >= 0 ) return;
+				
+				if ( !ds.items.hasOwnProperty(n) ) {
+					return;
+				}
+				
+				var def = ui_datasource_controller.getDataProvider(e);
+				if(!def) return;
+				if(!def.set || (typeof def.set == "undefined") || (def.set == null) ) return;
+				
+				console.log("populateSelectorWithDataset(" + sel + ") found element [" + n + "] wd [" + def.wd + "]---------------------");
 					
-					if(n.indexOf(".") >= 0){
-						var ps = n.split(".");
-						n = ps[1];
-						scope = ps[0];
-						
-						if((scope.length > 0) && (scope != ds.name)){
-							console.log("[" + scope + "::" + n + "] does not belong with [" + ds.name + "]");
-							return;
-						}
-					}
+				var attr = {};
+				if(ds.attr && ds.attr.hasOwnProperty(n)){
+					var attr_defaults = {"ro":0};
+					$.extend(attr, attr_defaults,ds.attr[n]);
+				}
 					
-					//var k = n;
-					var k = (ds.items.hasOwnProperty(n)) ? n : (ds.items.hasOwnProperty(ns) ? ns: null);
-					
-					if( ukeys && (ukeys.indexOf(k) < 0) ){
-						console.log("skip [" + k +"] for [" + scope + "::" + n + "]");
-						return;
-					}
-					
-					if ( !k ) {
-						if (o.is("[data-ignore=1]")) return;
-						o.val('');
-						return;
-					}
-					
-					if( dsu.indexOf(k) >= 0 ) return;
-
-					console.log("setting [" + k +"] for [" + scope + "::" + n + "]");
-					dsu.push(k);
-
-					var attr = {"ro":0, "m":0};
-					if(ds.attr && ds.attr.hasOwnProperty(k)){
-						$.extend(attr, ds.attr[k]);
-						console.log(attr);
-					}
-					
-					var value = ds.items[k];
-					rea.types.callback(def.set, o, value, attr);
-				});
-			}
-		
+				var value = ds.items[n];
+				rea.types.callback(def.set, e, value, attr);
+				
+			});
 		},
 	}
 	

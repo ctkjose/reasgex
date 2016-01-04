@@ -99,10 +99,11 @@ rea.types.callback = function(fn){
 	var args = Array.prototype.slice.call(arguments, 1);
 	if(fn && Array.isArray(fn)){
 		var cfn = (typeof fn[1] === 'string') ? fn[0][fn[1]] : fn[1];
-		cfn.apply(fn[0], args);
+		return cfn.apply(fn[0], args);
 	}else{
-		fn.apply(null, args);
+		return fn.apply(null, args);
 	}
+	return null;
 }
 
 /**

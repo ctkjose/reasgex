@@ -32,6 +32,18 @@ jQuery.fn.elmType = function(){
 jQuery.fn.elmTag = function(){
 	return this.prop("tagName").toLowerCase();
 };
+jQuery.fn.elmKey = function(attr, val) {
+	if(val){
+		return this.attr('data-' + attr, val);
+	}else{
+		return this.attr('data-' + attr);
+	}
+	
+};
+jQuery.fn.elmHasKey = function(n){
+	//return (typeof this.data(n) == "undefined") ? false : true;
+	return (typeof this.attr('data-' + n) == "undefined") ? false : true;
+};
 jQuery.fn.elmHasOptions = function(){
 	var t = this.elmType();
 	if ( (t == "select") || (t == "checkbox") || (t == "radio") || (t == "check_yesno" ) || (t == "check_bool" )) {

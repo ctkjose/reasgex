@@ -5,10 +5,29 @@ function(){
 		initialize : function(){
 		},
 		uiDataProvider: function(uidsc){
-			uidsc.registerDataProvider("input.datepicker", [this,"uiDataSetter"], [this,"uiDataGetter"] );	
+			uidsc.registerDataProvider(['uiwd-date'] , [this,"uiDataSetter"], [this,"uiDataGetter"] );
 		},
-		uiDataGetter: function(){
+		uiDataGetter: function(o,attr){
+			if( o.attr('data-ignore') && (o.data('ignore')=='1')) return null;
+			var n = o.elmName();
+			var v = o.val();
+			var t = (o.attr('data-type') ? o.data('type') : 'text');
 			
+			var val = [];
+			if(v.length > 0) {
+				var dp = v.split('/');
+				var d = new Date( dp[2], dp[0]-1, dp[1], 0, 0, 0);
+				v = d.toMYSQLDateTime();
+				val.push({'name' : n, 'type' : 'date', 'value': v });
+				val.push({'name' : n + '_utc', 'type' : 'date_utc', 'value': d.toUTCString() });
+				val.push({'name' : n + '_iso', 'type' : 'date_utc', 'value': d.toISOString() });
+				val.push({'name' : n + '_json', 'type' : 'date_json', 'value': d.toJSON() });
+				val.push({'name' : n + '_seconds', 'type' : 'seconds', 'value': Math.round(d.getTime()/1000.0) });
+			}else{
+				val = null;
+			}
+			
+			return {'name' : n, 'type' : 'date', 'multiple': val };
 		},
 		uiDataSetter: function(o,value, attr){
 			console.log("@ui_datepicker.uiDataSetter()");
@@ -36,10 +55,18 @@ function(){
 			
 			o.val(v);
 			
-			if(attr.ro){
+			if(attr && attr.hasOwnProperty('ro') && attr.ro){
 				o.attr("disabled", "disabled");
 			}else if(o.attr("disabled")){
 				o.removeAttr("disabled");
+			}
+			
+			if(attr && attr.hasOwnProperty('dc')){
+				var p = o.closest(".input-group[name='" + o.attr("name") + "']");
+				if(p && (p.length > 0)){
+					var d = p.find(".input-group-addon");
+					if(d && (d.length > 0)) d.html( attr.dc );
+				}
 			}
 		},
 		/**
@@ -82,12 +109,14 @@ function(){
 			});
 		},
 		uiExpandElement: function(o){
-			console.log("@ui.calendar.expandElement()");
-			console.log(o);
+			//console.log("@ui.calendar.expandElement()");
 			
 			var data_class = 'datepicker';
 			var data_type = "date";
 			var n = o.attr("name");
+			var scope = "default";
+			if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); }
+			
 			
 			if (o.attr('data-calendar')) {
 				//t.attr("maxlength", 14);	
@@ -111,13 +140,17 @@ function(){
 			
 			t.addClass('form-control');
 			
-			t.attr('data-type', data_type );
-			t.attr('data-ignore', '1' );
+			t.addClass("uiw");
+			t.addClass("uiwd-date");
 			
-			if(o.hasOwnProperty("view")){
-				t.attr("name", o.view.name + "." + n );
-				d.attr("name", o.view.name + "." + n );
-			}
+			t.elmKey("uiw", "calendar");
+			//t.elmKey("ignore", "1" );
+			
+			
+			
+			if(scope != "default") { d.elmKey("scope", scope); t.elmKey("scope", scope); }
+			
+			d.addClass("uiwc-for-date");
 			
 			d.css({"width": "240px"});
 			
@@ -126,21 +159,7 @@ function(){
 			
 			o.replaceWith( d );
 			
-			return;
-		
-			
-			t.focus(function(e){
-				var r = /^(\d+)\/(\d+)\/\d{4}$/;
-				var o = $(e.target);
-				var v = o.val();
-				if ( v.length == 0) {
-					o.css({'background-color' : '#fff'});
-					return;
-				}else if (r.test(v)) {
-					o.css({'background-color' : '#fff'});
-				}
-			});
-			
+			client_interactions.installEvents(n, t);
 		}
 	};
 	return ui_datepicker;

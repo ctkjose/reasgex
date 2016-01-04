@@ -20,10 +20,10 @@ rea_controller.on = function(topic, listener) {
 };
 
 rea_controller.dispatchEvent = function(topic) {
-	console.log("@rea_controller.dispatchEvent(" + topic + ")");
+	//console.log("@rea_controller.dispatchEvent(" + topic + ")");
 	
 	var args = Array.prototype.slice.call(arguments, 1);
-	console.log(args);
+	//console.log(args);
 		
 		
 	if( (topic === "ready") && this.ops.waitForReady && !this.ready){
@@ -202,3 +202,5 @@ rea_controller.datasetCreateFromSelector = function(sel, opWithTable){
 	//console.log(data);
 	return data;
 }
+
+

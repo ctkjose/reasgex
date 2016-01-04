@@ -12,13 +12,13 @@ function(){
 
 		},		
 		uiDataProvider: function(uidsc){
-			uidsc.registerDataProvider("select", [this,"uiDataSetter"], [this,"uiDataGetter"] );	
+			uidsc.registerDataProvider(['uiwd-select'] , [this,"uiDataSetter"], [this,"uiDataGetter"] );
 		},
 		uiDataGetter: function(){
-			
+			return null;
 		},
 		uiDataSetter: function(o,value, attr){
-			console.log("@ui_select.uiDataSetter()");
+			//console.log("@ui_select.uiDataSetter()");
 
 			var v = '';
 			var ty = (typeof value);
@@ -33,7 +33,7 @@ function(){
 			o.attr('value', v);
 			o.val(v);
 			
-			if(attr.ro){
+			if(attr && attr.hasOwnProperty('ro') && attr.ro){
 				o.attr("disabled", "disabled");
 			}else if(o.attr("disabled")){
 				o.removeAttr("disabled");
@@ -49,7 +49,7 @@ function(){
 
 		},
 		uiExpandElement: function(o){
-			console.log("@ui.select.expandElement()");
+			//console.log("@ui.select.expandElement()");
 			
 			var n = o.attr("name");
 			var s = '';
@@ -112,20 +112,19 @@ function(){
 				d.append(s);
 			}
 			
-			//d.attr('default', v);
-			if (n == "town") {
-				console.log("here-------------");
-			}
-			
 			if( o.attr("datasource") && ( o.elmType() != "select" ) ){
 				d.attr("data-ds", o.attr("datasource"));
 				o.removeAttr("datasource");
 			}
 			
-			if(o.hasOwnProperty("view") && o.attr("name")){
-				d.attr("name", o.view.name + "." + o.attr("name")); 
-			}
+			if( o.attr("scope") ) { d.elmKey("scope", o.attr("scope")); }
+			
+			
+			d.addClass("uiw");
+			d.addClass("uiwd-text");
+			d.elmKey("uiw", "select");
 	
+			client_interactions.installEvents(n, d);
 			if( o.elmType() != "select" ){
 				o.replaceWith( d );
 			}
@@ -140,16 +139,59 @@ function(){
 		initialize : function(){
 		},
 		uiDataProvider: function(uidsc){
-			uidsc.registerDataProvider("fieldset.radios", [this,"uiDataSetter"], [this,"uiDataGetter"] );
-			uidsc.registerDataProvider("fieldset.checkboxes", [this,"uiDataSetter"], [this,"uiDataGetter"] );
-			uidsc.registerDataProvider("input[type=checkbox]", [this,"uiDataSetter"], [this,"uiDataGetter"] );
-			uidsc.registerDataProvider("input[type=radio]", [this,"uiDataSetter"], [this,"uiDataGetter"] );
+			uidsc.registerDataProvider(['uiwd-checkbox'] , [this,"uiDataSetter"], [this,"uiDataGetter"] );
+			uidsc.registerDataProvider(['uiwd-radio'] , [this,"uiDataSetter"], [this,"uiDataGetter"] );
 		},
-		uiDataGetter: function(){
+		uiDataGetter: function(o){
 			
+			if( o.attr('data-ignore') && (o.attr('data-ignore')=='1')) return null;
+			
+			var n = o.elmName();
+			
+			//if (!opWithTable && s.parents("table.repeater").length > 0) {
+			//return;
+			//}
+		
+			var opexc = (o.is('fieldset.radios')) ? true : false;
+			var opm = (opexc || o.is('fieldset.checkboxes')) ? true : false;
+			
+			var val = ((opm && !opexc) ? []:'');
+			console.log("opm=" + opm + "::opexc=" + opexc);
+			if(opm){
+				var c = 0;
+				var ops = (opexc) ? o.find('input[type=radio]:checked') : o.find('input[type=checkbox]:checked');
+				ops.each( function(i) {
+					var e = $(this);
+					c++;
+					console.log("found fieldset child [" + c + "] " + e.elmName() );
+					var v = e.attr('value');
+					if(opexc){
+						val = v;
+					}else{
+						val.push( v );	
+					}
+				});
+				
+				if ( o.attr("data-type") && (o.data('type') =='bool') && (c < 1) ) {
+					val = 0;
+				}
+			}else{
+				var bool = o.attr("data-type") && (o.data('type') =='bool') ? true : false;
+				if (! o.is(":checked") ) {
+					v = o.attr('default') ? o.attr('default') : (bool ? 0 : 'k');
+				}else{
+					v = o.attr('value');
+				}
+				val = v;
+			}
+			//data[n] = {'name' : n, 'type' : (m ? 'list':'text'), 'value': val };
+			
+		
+			return {'name' : n, 'type' : (opm ? 'list':'text'), 'value': val };
+
 		},
 		uiDataSetter: function(o,value, attr){
-			console.log("@ui_checkbox.uiDataSetter()");
+			//console.log("@ui_checkbox.uiDataSetter()");
 			var n = o.elmName();
 			
 			var v = '';
@@ -190,8 +232,6 @@ function(){
 				var ev = e.attr('value');
 				var check = false;
 			
-				console.log(k + " > input[type=" + t + "][name=" + idx + "][value=" + ev + "]");
-			
 				check = ui_datasource_controller.matchValue(v, ev);
 			
 				if (check) {
@@ -201,7 +241,7 @@ function(){
 					e.removeAttr("checked");
 				}
 				
-				if(attr.ro){
+				if(attr && attr.hasOwnProperty('ro') && attr.ro){
 					e.attr("disabled", "disabled");
 				}else if(e.attr("disabled")){
 					e.removeAttr("disabled");
@@ -218,25 +258,23 @@ function(){
 			extender.registerExpandHelper( "radio", [this, "uiExpandElement"] );
 		},
 		uiExpandElement: function(o){
-			console.log("@ui.checkbox.expandElement()");
+			//console.log("@ui.checkbox.expandElement()");
 			
 			var v = "";
 			var in_type = "checkbox";
-			var inline = "&nbsp;";
-			
 			var chk = {'name': '', 'name_prefix':'', 'type':'checkbox', 'lbl': null,'bind':'', 'default':'', 'html': "", 'options': {}, 'data_type':'' };
 			
 			chk.name = o.elmName();
 			chk.type = o.elmTag();
 		
-			if(o.hasOwnProperty("view")){
-				chk.name_prefix = o.view.name + ".";
-			}
+			var scope = "default";
+			if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); }
 			
 			if (o.attr("data-bind")) {
 				chk.bind = " data-bind=\"" + o.attr("data-bind") + "\"";
 				o.removeAttr("data-bind");
 			}
+			
 			if (o.attr("label")) {
 				chk.lbl = o.attr("label");
 			}else{
@@ -245,6 +283,7 @@ function(){
 				}
 			}
 			
+			var is_bool = false;
 			
 			if (o.attr("default")) {
 				chk.default = o.attr("default");
@@ -258,25 +297,28 @@ function(){
 				}
 			}else{
 				if (o.hasClass('bool')) {
-					chk.data_type = " data-type='bool' ";
-					chk.options[1] = (chk.lbl) ? chk.lbl : '';
+					is_bool = true;
+					chk.options['1'] = (chk.lbl) ? chk.lbl : '';
 				}
 				if (o.hasClass('yesno')) {
 					chk.type = "radio";
-					chk.data_type = " data-type='bool' ";
-					chk.options[1] = 'Yes';
-					chk.options[0] = 'No';
+					is_bool = true;
+					chk.options['1'] = 'Yes';
+					chk.options['0'] = 'No';
 					
 				}
 			}
 			
 			var plurals = {'radio':'radios', 'checkbox':'checkboxes'};
 			var lc = plurals[chk.type];
-			var d = $('<fieldset class="' + lc + '" name="' + chk.name_prefix + chk.name + '" ' + chk.data_type + '></fieldset>');
+			var d = $('<fieldset class="' + lc + '" name="' + chk.name + '" ' + chk.data_type + '></fieldset>');
 			
-			if (inline) {
-				d.addClass("inline");
-			}
+			d.addClass("uiwc-for-" + lc);
+			d.addClass("uiw");
+			d.data("uiwd", lc);
+			
+			d.addClass("inline");
+			if(scope != "default") d.elmKey("scope", scope);
 			
 			if (o.hasClass('control-group')) {
 				inline = '';
@@ -288,25 +330,47 @@ function(){
 			var c = (keys) ? keys.length : 0;
 			for (var k in chk.options) {
 				i++;
-				if(c > 1){
-					var dti = " data-ignore='1' ";
-					var opn = chk.name_prefix + ((chk.type == 'radio') ? chk.name : chk.name + "_" + i);
-				}else{
-					var dti = "";
-					var opn = chk.name_prefix + chk.name;
-				}
-				var checked = (v == k) ? ' checked' : '';
-				var s = (i > 1) ? inline: '';
-				s += "<label for='" + opn + "' class='" + lc + "'>";
-				s += "<input type='" + chk.type + "'" + dti + "name='" + opn + "'" + chk.data_type + "value='" + k + "'" + checked + "> " + chk.options[k] + "</label>";
 				
-				d.append(s);
+				var opn = chk.name;
+				opn += ((chk.type != 'radio') && (c>1)) ? "_" + i : "";
+
+				var checked = (v == k) ? ' checked' : '';
+				var lbl = $("<label for='" + opn + "' class='" + lc + "'></label>");
+				
+				var s = "<input type='" + chk.type + "' name='" + opn + "' " + chk.data_type + " value='" + k + "'>";
+				var e = $(s);
+				
+				if(scope != "default") e.elmKey("scope", scope);
+				
+				if(v == k){
+					e.prop("checked", true).attr("checked", true);
+				}
+				if(c > 1){
+					lbl.append('&nbsp;');
+					e.elmKey("ignore", 1);
+					e.addClass("uiwe");
+				}else{
+					e.addClass("uiw");
+					e.addClass("uiwd-" + chk.type);
+					if(is_bool) e.addClass("uiwd-force-bool");
+					e.elmKey("uiw", "checkbox");
+				}
+				
+				client_interactions.installEvents(chk.name, e);
+				lbl.append(e);
+				lbl.append( ' ' + chk.options[k] );
+				
+				d.append(lbl);
 			}
 			
 			if(c==1){
 				var s = d.html();
 				d = $(s);
-				//d.find("input").removeData("ignore").removeAttr("data-ignore");
+			}else{
+				d.addClass("uiw");
+				d.addClass("uiwd-" + chk.type);
+				d.elmKey("uiw", "checkbox");
+				if(is_bool) d.addClass("uiwd-force-bool");
 			}
 			
 			o.replaceWith( d );
@@ -337,10 +401,9 @@ function(){
 			console.log("@ui.button.expandElement()");
 			
 			var in_type = "checkbox";
-			
-			if(o.hasOwnProperty("view") && o.attr("name")){
-				o.attr("name", o.view.name + "." + o.attr("name")); 
-			}
+		
+			var scope = (o.hasOwnProperty("view")) ? o.view.name : 'default';
+			o.data("scope", scope);
 			
 			var bstl = ['btn-default','btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger']; 
 			var bscl = ['','blue','green','lblue','orange','red'];
@@ -375,13 +438,37 @@ function(){
 			
 		},
 		uiDataProvider: function(uidsc){
-			uidsc.registerDataProvider("input[type=hidden], input[type=text], input[type=email], input[type=password], textarea", [this,"uiDataSetter"], [this,"uiDataGetter"] );	
+			uidsc.registerDataProvider(['uiwd-text'] , [this,"uiDataSetter"], [this,"uiDataGetter"] );	
 		},
-		uiDataGetter: function(){
+		uiDataGetter: function(o){
+			if( o.attr('data-ignore') && (o.data('ignore')=='1')) return null;
+			var n = o.elmName();
+			var v = o.val();
+			var t = (o.attr('data-type') ? o.data('type') : 'text');
 			
+			if (t=='date'){
+				var val = [];
+				if(v.length > 0) {
+					var dp = v.split('/');
+					var d = new Date( dp[2], dp[0]-1, dp[1], 0, 0, 0);
+					v = d.toMYSQLDateTime();
+				
+					val[n + '_utc'] = {'name' : n + '_utc', 'type' : 'date_utc', 'value': d.toUTCString() };
+					val[n + '_iso'] = {'name' : n + '_iso', 'type' : 'date_utc', 'value': d.toISOString() };
+					val[n + '_json'] = {'name' : n + '_json', 'type' : 'date_json', 'value': d.toJSON() };
+					val[n + '_seconds'] = {'name' : n + '_seconds', 'type' : 'seconds', 'value': Math.round(d.getTime()/1000.0) };
+				}else{
+					val = null;
+				}
+				return {'name' : n, 'type' : 'date', 'value': val };
+			}else{
+			
+			}
+		
+			return {'name' : n, 'type' : 'text', 'value': v };
 		},
 		uiDataSetter: function(o,value, attr){
-			console.log("@ui_generic.uiDataSetter()");
+			//console.log("@ui_generic.uiDataSetter()");
 
 			var v = '';
 			var ty = (typeof value);
@@ -394,11 +481,22 @@ function(){
 				v = (value) ? '1' : '0';
 			}
 			
-			if(attr.ro){
+			if(attr && attr.hasOwnProperty('ro') && attr.ro){
 				o.attr("disabled", "disabled");
 			}else if(o.attr("disabled")){
 				o.removeAttr("disabled");
 			}
+			if(attr && attr.hasOwnProperty('ph')){
+				o.attr("placeholder", attr.ph);
+			}
+			if(attr && attr.hasOwnProperty('dc')){
+				var p = o.closest(".input-group[name='" + o.attr("name") + "']");
+				if(p && (p.length > 0)){
+					var d = p.find(".input-group-addon");
+					if(d && (d.length > 0)) d.html( attr.dc );
+				}
+			}
+			
 			o.val(v);
 		},
 		uiExtender : function(extender){
@@ -406,17 +504,34 @@ function(){
 			extender.registerExpandHelper( "input.email", [this, "uiExpandTextBox"] );
 			extender.registerExpandHelper( "input.password", [this, "uiExpandTextBox"] );
 			extender.registerExpandHelper( "textarea", [this, "uiExpandTextArea"] );
+			extender.registerExpandHelper( "input[type=hidden]", [this, "uiExpandHidden"] );
+			extender.registerExpandHelper( "input.hidden", [this, "uiExpandHidden"] );
 		},
-		uiExpandTextBox: function(o){
-			console.log("@ui.checkbox.uiExpandTextBox()");			
+		uiExpandHidden: function(o){
+			//console.log("@ui.checkbox.uiExpandTextBox()");			
 			var n = o.attr("name");
 
-			if(o.hasOwnProperty("view")){
-				n = o.view.name + "." + n;
-				o.attr("name", n);
+			var scope = "default";
+			if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); }
+		
+			o.addClass("uiw").addClass("hidden").addClass("uiwd-text");
+			
+			if(o.hasClass("hidden")){
+				o.attr("type", "hidden");
 			}
 			
+			o.elmKey("uiw", "generic");
+			if(scope != "default") o.elmKey("scope", scope);
+		},
+		uiExpandTextBox: function(o){
+			//console.log("@ui.checkbox.uiExpandTextBox()");			
+			var n = o.attr("name");
+
+			var scope = "default";
+			if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); }
+		
 			o.addClass("form-control").addClass("textbox");
+			
 			if(o.hasClass("email")){
 				o.attr("type", "email");
 			}else if(o.hasClass("password")){
@@ -425,30 +540,45 @@ function(){
 				o.attr("type", "text");
 			}
 			
+			o.addClass("uiw");
+			o.addClass("uiwd-text");
+			o.elmKey("uiw", "generic");
+			if(scope != "default") o.elmKey("scope", scope);
+			
 			if( o.attr("decorate") ){
 				var s  = o.attr("decorate");
 				o.removeAttr("decorate");	
-				var d = o.clone();
-			
+				var d = o.clone(true);
+				if(scope != "default") d.elmKey("scope", scope);
+				
+				client_interactions.installEvents(n,d);
+				
 				var fg = $("<div class='rea-group input-group' name='" + n + "'></div>");
 				fg.append(d);
 				fg.append("<span class='input-group-addon'>" + s + "</span>");
 				
 				o.replaceWith( fg );
+			}else{
+				client_interactions.installEvents(n,o);
 			}
 		},
 		uiExpandTextArea: function(o){
-			console.log("@ui.checkbox.uiExpandTextArea()");			
+			//console.log("@ui.checkbox.uiExpandTextArea()");			
 			var n = o.attr("name");
 
-			if(o.hasOwnProperty("view")){
-				n = o.view.name + "." + n;
-				o.attr("name", n);
-			}
-			
+			var scope = "default";
+			if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); o.elmKey("scope", scope); }
+
 			o.addClass("form-control").addClass("textarea");
 			
+			o.addClass("uiw");
+			o.elmKey("uiw", "generic");
+			
 			if( o.attr("rtf") ){
+				o.addClass("uiwd-html");
+			}else{
+				o.addClass("uiwd-text");
+				client_interactions.installEvents(n, o);
 			}
 		}
 	}

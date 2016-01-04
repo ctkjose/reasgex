@@ -1,4 +1,13 @@
 Por donde voy:
+4/JAN/2015
+Testing with http://localhost/reasgex/app/rum/test/employee/edit/?a=joe2
+
+Basic work on client interactions.
+
+Still need to work on loading datasources from urls; push views
+
+Tables (repeaters) are not fluid/mobile ready.
+
 
 
 15/DEC/2015 JLC

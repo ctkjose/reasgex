@@ -5,19 +5,18 @@ function(){
 			
 		},
 		uiExpandElement: function(tbl){
-			console.log("@ui.table.expandElement()");
-			console.log(tbl);
+			//console.log("@ui.table.expandElement()");
 			
 			var n = tbl.attr("name");
-			if(tbl.hasOwnProperty("view")){
-				tbl.data("view", n);
-				
-				n = tbl.view.name + "." + n;
-				tbl.attr("name", n);
-			}
+			var scope = "default";
+			if( tbl.attr("scope") ) { scope = tbl.attr("scope"); tbl.removeAttr("scope"); tbl.elmKey("scope", scope); }
 
 			var atr = tbl.find('tr.table-row-template');
 			tbl.data('template', atr);
+			
+			tbl.addClass("uiw").addClass("uiwc");
+			tbl.addClass("uiwc-for-table-rows");
+			tbl.addClass("uiwd-table-rows");
 			
 			if (tbl.attr("datasource1")) {
 				var ds_name = tbl.attr("datasource");
@@ -33,12 +32,8 @@ function(){
 				if (ds.def.source_pull=='dynamic') {
 					tbl.attr("data-source-update-on-change", tbl.attr("datasource"));
 				}
-				
 			}
 			//var ops = o.find('tr.template');
-			
-			
-			
 			atr.remove();
 			
 		},
@@ -54,7 +49,6 @@ function(){
 				var tbl = o.parents(".table");
 				var atr = tbl.data('template');
 				var n = tbl.attr("name");
-				var view = tbl.data("view");
 				
 				var tb = tbl.find('tbody');
 				var ltr = tb.find('tr:last-child');
@@ -63,6 +57,9 @@ function(){
 					k = (ltr.data('key') * 1) + 1;
 				}
 				
+				var scope = "default";
+				if( tbl.elmHasKey("scope") ) { scope = tbl.elmKey("scope"); }
+
 				
 				var tds = atr.find('td');
 				var tr = $("<tr data-owner='" + n + "' data-key='" + k + "' data-row-added='1'></tr>");
@@ -75,21 +72,36 @@ function(){
 					
 					td.attr('class', css);
 					td.html(html);
-					td.data('owner', n).data('key', k);
+					td.data('owner', n).elmKey('key', k);
 					
 					tr.append(td);
 				});
-				rea_helper_ui_extender.expandForSelector(tr, view);
+				rea_helper_ui_extender.expandForSelector(tr);
 				
 				tb.append(tr);
 				
 			});
 		},
 		uiDataProvider: function(uidsc){
-			uidsc.registerDataProvider("table.table", [this,"uiDataSetter"], [this,"uiDataGetter"] );	
+			//uidsc.registerDataProvider("table.table", [this,"uiDataSetter"], [this,"uiDataGetter"] );
+			uidsc.registerDataProvider(['uiwd-table-rows'] , [this,"uiDataSetter"],  [this,"uiDataGetter"] );
 		},
-		uiDataGetter: function(){
+		uiDataGetter: function(tbl){
+			var n = tbl.attr("name");
 			
+			var data = [];
+			
+			var trs = tbl.find("tr[data-key]");
+			
+			trs.each(function(){
+				var tr = $(this);
+				console.log("@row -------------------------");
+				console.log(tr);
+				var row_data = ui_datasource_controller.createDatasetFromSelector(tr, null, n);
+				data.push(row_data);
+			});
+			
+			return {'name' : n, 'type' : 'list', 'value': data };
 		},
 		uiDataSetter: function(tbl,value, attr){
 			console.log("@ui_table.uiDataSetter()=======================");
@@ -128,7 +140,7 @@ function(){
 				});
 				
 				rea_helper_ui_extender.expandForSelector(tr, view);
-				ui_datasource_controller.datasetUseWithSelector( { 'name':view, 'items': r }, tr);
+				ui_datasource_controller.populateSelectorWithDataset(tr, { 'name':view, 'items': r , 'attr':{} });
 				
 				if (ops.hasOwnProperty('css')) {
 					tr.addClass(ops.css);

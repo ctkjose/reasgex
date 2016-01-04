@@ -1,4 +1,3 @@
-
 ### Buttons ###
 
 Use class ```btn```
@@ -84,4 +83,19 @@ Define the body of a section with a div using the class ```body```. A section bo
 Create section footer with a div using the class ```footer```.
 
 
+## Attributes ##
 
+| Attribute | Used By | Value | Description |
+| ---------- | ---------- | :------- | :---------|
+| data-type | engine | "text", "bool", "date" | |
+| data-ignore |engine | 1-0 | ignored when reading values |
+| default | user | text | default value shown, value returned on empty check/radios |
+| uiwd | engine | "text" | type of data provided by a widget |
+
+## Classes ##
+| Attribute | Used By | Description |
+| ---------- | ---------- | :---------|
+| uiw | engine | identifies a widget |
+| uiwc | engine | identifies a widget container |
+| uiwe | engine | identifies a child element of a widget |
+| uiwd-* | engine | "text", "checkbox", "radio", "html", "date" |

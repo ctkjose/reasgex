@@ -52,23 +52,7 @@ class app {
 			define('REASG_SELF_CONTROLLER_CLASS', $frs);
 			
 			define('REASG_SELF_URL', ''); ///TODO how to do this nice!
-			
-			
-			$p = new \reasg\appBundle();
-			reasg_dev_dump($p);
-			
-			reasg_dev_dump($p->assets->js);
-			
-			error_log("realpath=" . $p->realPath() );
-			
-			error_log("all=" . $p->all("*") );
-			
-			$p1 = new \reasg\appBundle('engine');
-			
-			error_log("engine url=" . $p1->css->all() );
-			return;
-		
-			
+					
 			$app_controller->dispatchEvent("app_init_controller", [$frs]);
 		
 			$a = new $frs;
@@ -315,4 +299,3 @@ class appBundle extends \reasg\core\base {
 }
 
 
-?>	

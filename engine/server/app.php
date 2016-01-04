@@ -8,6 +8,9 @@ require_once("./reasg.app.router.php");
 
 require_once("./config/reasg.mapper.default.php");
 
+require_once("./reasg.helper.js.php");
+
+$name = "radio[value='jose']";
 
 reasg_dev_debuger_enabled();
 

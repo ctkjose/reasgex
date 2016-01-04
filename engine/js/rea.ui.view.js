@@ -18,7 +18,7 @@ var rea_ui_views = function(){
 			
 			v.o = o;
 			if(o.attr("name")){
-				v.name = o.elmName();
+				v.name = o.attr("name");
 			}
 			
 			return v;

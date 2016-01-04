@@ -40,6 +40,7 @@
 <script type='text/javascript' src='js/engine/rea.helper.types.js'></script>
 
 <script type='text/javascript' src='js/engine/rea.ui.controller.js'></script>
+<script type='text/javascript' src='js/engine/rea.ui.interactions.js'></script>
 <script type='text/javascript' src='js/engine/rea.ui.storage.js'></script>
 <script type='text/javascript' src='js/engine/rea.ui.view.js'></script>
 
@@ -64,7 +65,13 @@
 		rea.loadComponents();
 		
 		rea_helper_ui_extender.expandDefaults();
+		
+		{{js_ready}}
 	});
+	
+	{{js_init}}
+	
+	{{js_payload}}
 </script>
 </body>
 </html>

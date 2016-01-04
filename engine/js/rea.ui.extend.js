@@ -28,27 +28,22 @@ var rea_helper_ui_extender = function(){
 		 * @param {string} sel - A selector
 		 * @param {Callback} fn - A callback
 		 */
-		expandForSelector : function(sel, view_name){
+		expandForSelector : function(sel){
 			var o = (typeof sel == "string") ? $(sel) : sel;
 			
 			if(!o || (o.length <= 0)) return;
 			
+			if(o.hasClass("extended")) return;
+			
 			if(!o.hasClass("view")) o.addClass("view");
 			if(o.hasClass("extend")) o.removeClass("extend");
+			
 			if(!o.hasClass("extended")) o.addClass("extended");
-			
-			if(view_name && (typeof view_name !== "undefined") ){
-				var view = rea_ui_views.viewCreateWithName( view_name );
-			}else{
-				var view = rea_ui_views.viewCreateWithNode( o );
-			}
-			
 			
 			for(i=0;i<this.expand_functions.length;i++){
 				var def = this.expand_functions[i];
 				o.find(def.sel).each(function(){
 					var o = $( this );
-					o.view = view;
 					rea.types.callback(def.fn, o);
 				});
 			}
@@ -73,7 +68,7 @@ var rea_helper_ui_extender = function(){
 					rea.types.callback(def.fn, o);
 				});
 			}
-			var defaults = [".view-form",".view.extend"];
+			var defaults = [".view.extend"];
 			for(var i in defaults){
 				this.expandForSelector(defaults[i]);	
 			}
