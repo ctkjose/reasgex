@@ -51,6 +51,79 @@ rea_controller.dispatchEvent = function(topic) {
 	});
 };
 
+rea_controller.backend = {
+	/**
+	* Send an client_action to the backend.
+	* @param {client_action} a - An action to send.
+	*/
+	sendAction : function(a, data){
+		var backend = this;
+		var url = a.getURL();
+		
+		console.log("@rea_controller.sendAction(" + url + ")");
+		console.log(a);
+		
+		var p = {
+			'api-return' : 'json',
+			'api-json-data' : JSON.stringify(data),
+			'from-backend' : client_interactions.backend,
+		};
+		
+		$.post( url, p, function( data, status, xhr ) {
+			console.log("Start Response==================");
+			var type = "" + xhr.getResponseHeader("Content-Type");
+			
+			m = /([a-z0-9\-\_]+\/[a-z0-9\-\_]+)/.exec(type.toLowerCase());
+			if(!m){
+				type == "text/html";
+				console.log("Error: Unable to get mime of response");
+			}else{
+				type = m[1];
+			}
+			
+			console.log(type);
+			if( type == "text/html"){
+				backend.handleResponseHTML(data);
+			}else if(type == "text/json"){
+				backend.handleResponseJSON(data);
+			}
+			console.log(data);
+			console.log("End Response==================");
+		});
+	},
+	handleResponseHTML : function(data){
+		console.log("@handleResponseHTML");
+	},
+	handleResponseJSON : function(data){
+		console.log("@handleResponseJSON");
+		if(typeof data == "string"){
+			var obj = JSON.parse(data);
+		}else{
+			var obj = data;
+		}
+		
+		console.log(obj);
+		if (obj.hasOwnProperty("cmd") && Array.isArray(obj.cmd)) {
+			this.processCommands(obj.cmd);
+		}
+		
+	},
+	processCommands : function(cmd){
+		for (var i = 0; i < cmd.length; i++) {
+			var e = cmd[i];
+			console.log(e);
+			var args = e.args || [];
+			this.processCommand(e.cmd, args);
+		}
+	},
+	processCommand : function(cmd, args ){
+		if( client_interactions.hasOwnProperty(cmd) ){
+			//run a client_interaction
+			
+			client_interactions[cmd].apply(client_interactions, args);
+		}
+	}
+};
 
 rea_controller.datasetCreateFromSelector = function(sel, opWithTable){
 	if (typeof sel == "string") {

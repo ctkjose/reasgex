@@ -26,13 +26,50 @@
 	{{header}}
 </head>
 <body>
-<div class='container'>
-{{body}}
-</div><!-- end container -->
-
+<div id='wrapper'>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="{{brand_url}}">{{brand}}</a>
+			</div>
+			
+			<div class="navbar-default sidebar">
+				<div class="sidebar-nav navbar-collapse" role="navigation">
+					<ul class="nav in">
+						<li>
+							<a href="#">Dashboard</a>
+						</li>
+						<li>
+							<a href="#">Shortcuts</a>
+						</li>
+					</ul>
+				</div><!-- end sidebar-nav -->
+			</div><!-- end navbar-default -->
+			<ul class="nav navbar-top-links navbar-right navbar-collapse">
+				<li><a href="#"><span class="glyphicon glyphicon-user"></span> Please login...</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-home" title="Home..."></span></a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-cog" title="Options..."></span></a></li>
+			</ul>
+		<div class='container-fluid navbar-collapse'>
+			
+			</div>
+	</div><!-- end nav -->
+	<div id='page-wrapper'>
+		<div class='container-fluid'>
+			<div class='body-top place-alerts'></div>
+		{{body}}
+		</div><!-- end container -->
+	</div><!-- end page-wrapper -->
+</div><!-- end wrapper -->
 
 <script type='text/javascript' src='vendor/engine/jquery/jquery-2.1.3.min.js'></script>
 <script type='text/javascript' src='vendor/engine/bootstrap/js/bootstrap.min.js'></script>
+<script type='text/javascript' src='vendor/engine/medialize/URI.min.js'></script>
 <!-- <script type='text/javascript' src='../engine/vendor/require/require.js'></script> -->
 
 <script type='text/javascript' src='js/engine/rea.framework.js'></script>
@@ -67,11 +104,38 @@
 		rea_helper_ui_extender.expandDefaults();
 		
 		{{js_ready}}
+		
+		{{js[inline]}}
 	});
 	
 	{{js_init}}
 	
 	{{js_payload}}
+	
+	
+	$(document).ready(function(){
+		//jose
+		$(window).bind("load resize", function() {
+			topOffset = 50;
+			width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+			if (width < 768) {
+				$('div.navbar-collapse').addClass('collapse');
+				$('.navbar-top-links.navbar-collapse').addClass('collapse');
+				topOffset = 100; // 2-row-menu
+			} else {
+				$('div.navbar-collapse').removeClass('collapse');
+				$('.navbar-top-links.navbar-collapse').removeClass('collapse');
+			}
+	
+			height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
+			height = height - topOffset;
+			if (height < 1) height = 1;
+			if (height > topOffset) {
+				$("#page-wrapper").css("min-height", (height) + "px");
+			}
+		});
+	});
+	
 </script>
 </body>
 </html>

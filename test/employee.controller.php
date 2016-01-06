@@ -32,6 +32,19 @@ class employee extends \reasg\view_controller {
 		//reasg_dev_dump($recordView);
 		
 	}
+	public function save($values){
+		error_log("@employee->save =============================================================================");
+		
+		global $app_controller;
+		$ui = $app_controller->client();
+		
+		$ui->showAlertSuccess("Record saved...");
+		
+		$a = ['start_date'=> '09/23/2015'];
+		$ui->populateSelectorWithDataset("employee", $a);
+		
+		error_log("@employee->save DONE =============================================================================");
+	}
 	public function edit($values){
 		$page = \reasg\ui_views::createDefaultView();
 		
@@ -62,16 +75,31 @@ class employee extends \reasg\view_controller {
 		//the same name as this ds
 		$ds->bindToView();
 		
+		
+		$f = \reasg\appBundle::create("test", "@assets");
+		\reasg\client_controller::importController('employee_controller', $f->js->child('employee.controller.js')->url);
+		
+		global $app_controller;
+		$ui = $app_controller->client();
+		
+		$ui->showAlertError("This is an alert!");
+		
+		$a = ['start_date'=> '09/22/2015'];
+		$ui->populateSelectorWithDataset("employee", $a);
+		
+		//$page->js->write("//hello jose");
 		//$o = \reasg\client_controller::when("employee.email")->changed()->val('jose.cuevas')->done();
 		//reasg_dev_dump($o,'$o');
 		
 		//global $app_state;
 		//reasg_dev_dump($app_state['current_interaction'], '$app_state');
 		
+		
 		$recordView = \reasg\ui_template::create("record.view");
 		$recordView->set("record_title", "Employee Record");
-		
 		$page->body->write($recordView);
+		
+		
 		
 		//reasg_dev_dump($recordView);
 		

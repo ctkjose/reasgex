@@ -50,7 +50,7 @@ class ui_views extends \reasg\core\base {
 			$m = function(){
 				global $ui_default_view;
 				global $app_controller;
-				
+				error_log("@ui_default_view handler for app_send_output");
 				$app_controller->dispatchEvent("default_view_commit", [ $ui_default_view ] );
 				$app_controller->write($ui_default_view);
 
@@ -71,6 +71,10 @@ class ui_template extends \reasg\core\base {
 	public static function setViewsPath($p){
 		global $rea_views_path;
 		$rea_views_path = $p;
+	}
+	public function debug(){
+		error_log("current_field=" . $this->current_field );
+		reasg_dev_dump($this->fields[$this->current_field], "current_field");
 	}
 	public function value($k){
 		if(isset($this->fields[$k])) return $this->fields[$k]['value'];
@@ -496,14 +500,18 @@ class ui_view extends ui_template {
 			'view_name'=> $this->name,
 			'location'=> REASG_SELF_LOCATION,
 			'scope'=>REASG_SELF_SCOPE,
-			'controller'=>REASG_SELF_CONTROLLER_CLASS,
-			'url'=> 'app/' . REASG_SELF_LOCATION . '/' . REASG_SELF_SCOPE . '/' . REASG_SELF_CONTROLLER . '/',
+			'controller'=>REASG_SELF_CONTROLLER,
+			'controller_class'=>REASG_SELF_CONTROLLER_CLASS,
+			'root_url'=> REASG_ROOT_URL,
+			'base_url'=> REASG_ROOT_URL . 'app/' . REASG_SELF_LOCATION . '/' . REASG_SELF_SCOPE . '/',
+			'url'=> REASG_ROOT_URL . 'app/' . REASG_SELF_LOCATION . '/' . REASG_SELF_SCOPE . '/' . REASG_SELF_CONTROLLER . '/',
 			'action'=> REASG_SELF_CONTROLLER_ACTION,
 		];
 		
-		$s = "<script type='text/javascript'>\n";
-		$s.= "var view_options = " . json_encode($payload) . ";\n";
+		$js = "\n\nclient_interactions.backend = " . json_encode($payload) . ";\n";
+		$this->js_init->write($js);
 		
+		$s = "<script type='text/javascript' name='J2'>\n";
 		if(!empty($this->data)){
 			//$s.= "rea_views.setViewDataFromJSON(\"{$this->name}\", " . json_encode($this->data ) . ");\n";
 		}

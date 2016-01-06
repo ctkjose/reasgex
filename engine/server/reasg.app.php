@@ -256,7 +256,7 @@ class appBundle extends \reasg\core\base {
 		$this->path =  $o;
 	}
 	public function child($name){
-		$f = new appFileRef($this->scope);
+		$f = new \reasg\appBundle($this->scope);
 		$f->path = $this->path . ( (substr($this->path,-1,1) != '/') ? '/' : '') . $name;
 		return $f;
 	}

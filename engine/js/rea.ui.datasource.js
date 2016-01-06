@@ -165,14 +165,14 @@ var ui_datasource_controller = function(){
 					console.log("already has 1 " + v.name + " must create array");
 					if ( Array.isArray(data[v.name] ) ){
 						console.log("already has " + v.name + " is an array");
-						data[v.name].push( v );
+						data[v.name].push( v.value );
 					}else{
 						console.log("already has " + v.name + " creating array");
 						var r = $.extend({}, data[v.name]);
-						data[v.name] = [r, v];
+						data[v.name] = [r, v.value];
 					}
 				}else{
-					data[v.name] = v;
+					data[v.name] = v.value;
 				}
 			};
 			

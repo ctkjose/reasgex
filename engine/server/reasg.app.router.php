@@ -10,7 +10,7 @@ class router {
 	}
 	public static function loadFromRequest(){
 		global $reasg_route;
-		$reasg_route =  ['scope'=>'reasg','location'=>'default', 'controller'=>'main', 'action'=> 'main', 'values'=> array(), 'return_type'=>'any', 'method' => 'get', 'ajax'=> false, 'view' => 'default'];
+		$reasg_route =  ['scope'=>'reasg','location'=>'default', 'controller'=>'main', 'action'=> 'main', 'values'=> array(), 'return_type'=>'any', 'method' => 'get', 'view' => 'default'];
 		
 		if(isset($_SERVER['REQUEST_METHOD'])){
 			$method = strtolower($_SERVER['REQUEST_METHOD']);

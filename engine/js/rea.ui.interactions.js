@@ -8,7 +8,8 @@
 var client_interactions_element = function(o){
 	this.o = o;
 	this.name = this.o.elmName();
-	this.def = ui_datasource_controller.getDataProvider(o); //private
+	this.actions = {};
+	//this.def = ui_datasource_controller.getDataProvider(o); //private
 	
 	this.cmd_stopEvents = false; //private, use to indicate when to stop loop event
 	
@@ -16,6 +17,62 @@ var client_interactions_element = function(o){
 	this.target = o; 
 	
 	return this;
+}
+client_interactions_element.prototype.focus = function(v){
+	this.target.focus();
+}
+client_interactions_element.prototype.attr = function(s, val) {
+	if(val){
+		return this.target.attr(s, val);
+	}else{
+		return this.target.attr(s);
+	}
+}
+client_interactions_element.prototype.html = function(val) {
+	if(val){
+		return this.target.html(val);
+	}else{
+		return this.target.html();
+	}
+}
+client_interactions_element.prototype.val = function(val) {
+	if(val){
+		return this.target.val(val);
+	}else{
+		return this.target.val();
+	}
+}
+client_interactions_element.prototype.preventDefault = function(){
+	this.e.stopImmediatePropagation();
+	this.e.preventDefault();
+}
+client_interactions_element.prototype.appendAction = function(evt, fn){
+	if(!this.actions.hasOwnProperty(evt)) this.actions[evt] = [];
+	
+	this.actions[evt].push(fn);
+}
+client_interactions_element.prototype.installEvent = function(event){
+	var n = this;
+	var evt = event;
+	this.o.on(evt, function(e){
+		console.log("client_interactions_element event " + evt);
+		return n.executeAction(evt, e);
+	});
+}
+client_interactions_element.prototype.executeAction = function(evt, e){
+	if(!this.actions.hasOwnProperty(evt)) return;
+	
+	this.e = e;
+	var r = true;
+	this.cmd_stopEvents = false;
+	
+	for(var i=0; i< this.actions[evt].length;i++){
+		var fn = this.actions[evt][i];
+		r = fn.apply(this);
+		if(this.cmd_stopEvents) break;
+	}
+	
+	return;
 }
 client_interactions_element.prototype.getValue = function(){
 	if(!this.def){
@@ -49,6 +106,75 @@ client_interactions_element.prototype.stopOtherEvents = function(){
 	this.cmd_stopEvents = true;
 }
 
+
+
+var client_action = function(v){
+	this.url = "";
+	this.type = "backend1";
+	this.action = client_interactions.backend.action;
+	this.controller = client_interactions.backend.controller;
+	this.scope = client_interactions.backend.scope;
+	this.params = {};
+	
+	if(typeof v == "string") this.parse(v);
+	return this;
+}
+client_action.prototype.getURL = function(){
+	
+	if(this.type == "url") return this.url;
+	
+	var url = "";
+	if(this.type == "backend"){
+		var u = new URI(location.href);
+		u.segment([client_interactions.backend.root_url,"app",client_interactions.backend.location.toLowerCase(),this.scope,this.controller,this.action,""]);
+		u.query(URI.buildQuery(this.params));
+		
+		url = u.toString();
+	}
+	
+	return url;
+}
+client_action.prototype.parse = function(v){
+	if(typeof v != "string") return;
+	
+	var s = "" + v.toLocaleString();
+	this.action = "";
+	this.controller = client_interactions.backend.controller;
+	this.scope = client_interactions.backend.scope;
+	this.url = "";
+	
+	var m = /\@\(([A-Za-z0-9_\.\-\/]+)\)/.exec(s);
+	if( m ){ //is a backend action
+		this.type = "backend";
+		s = m[1];
+		
+		var p = s.split("\/");
+		var c = p.length; var i = 0;
+		if( p[0].length == 0 ){ c--; i++ }
+		
+		if(c == 3){
+			this.action = p[i+2];
+			this.controller = p[i+1];
+			this.scope = p[i];
+		}else if(c==2){
+			this.action = p[i+1];
+			this.controller = p[i];
+		}else if(c==1){
+			this.action = p[i];
+		}
+		
+		return;
+	}
+	
+	m = /url\(([A-Za-z0-9_\.\-\/\?\+\=\&\:\@]+)\)/.exec(s);
+	if( m ){ //is an url
+		this.type = "url";
+		this.url = m[1];
+		return;
+	}
+};
+
+
 var client_interactions = function(){
 	var a = {
 		listeners : {},
@@ -81,13 +207,15 @@ var client_interactions = function(){
 				if( r != null ) msg.rvalue = r;
 				if( cie.cmd_stopEvents ) break;
 			}
+			
+			cie.cmd_stopEvents = false;
 		},
 		installEvents : function(name, sel){
 			
 			var o = (typeof sel == "string") ? $(sel) : sel;
 			
 			var ciOnEvent = function(evt, name, o, e){
-				console.log("@ciOnEvent(" + evt + "," + name + "," + o + ") =======================================");
+				//console.log("@ciOnEvent(" + evt + "," + name + "," + o + ") =======================================");
 				var rvalue = null;
 				rea_controller.dispatchEvent("uiw_event", {"action": evt,"name": name, "event": e, "node": o, "rvalue":rvalue} );
 				if( rvalue != null ) return rvalue;
@@ -122,13 +250,12 @@ var client_interactions = function(){
 				var sel = '';
 				
 				revt.forEach(function(e){
-					console.log(e);
 					var r = new RegExp(e.r, "i");
 					var m = r.exec(fn_name);
-					console.log(m);
 					if(m){
 						evt = e.n;
 						sel = m[1];
+						sel = sel.toLocaleLowerCase();
 					}
 				});
 				
@@ -136,6 +263,10 @@ var client_interactions = function(){
 					this.createHandler(evt, sel, obj, fn_name);
 				}
 			}
+		},
+		attachHandler : function(evt, sel, fn){
+			var o = {action:fn};
+			this.createHandler(evt, sel, o, "action");
 		},
 		createHandler : function(evt, name, obj, fn_name){
 			var sel = ".uiw[name='" + name + "']";
@@ -150,12 +281,8 @@ var client_interactions = function(){
 			var handler = [obj, fn_name, obj[fn_name] ];
 			
 			listener.events[evt].push(handler);
-			console.log("@ciCreateHandler(" + evt + "," + sel + "," + fn_name + ")");
-			
-			console.log(this.listeners);
-			
-			//this.onEvent(sel, evt, obj[fn_name]);
-			
+			//console.log("@ciCreateHandler(" + evt + "," + sel + "," + fn_name + ")");
+			//console.log(this.listeners);	
 		},
 		onEvent : function(name,evt, fn){
 			var sel = ".uiw[name='" + name + "']";
@@ -197,15 +324,25 @@ var client_interactions = function(){
 			if(!def.set || (typeof def.set == "undefined") || (def.set == null) ) return;
 			
 			rea.types.callback(def.set, e, v, {});
+		},
+		displayAlert : function(type, msg){
+			s = '<div class="alert alert-' + type + '" role="alert">';
+			s+= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+			s+= msg + '</div>';
+		
+			$('.place-alerts').append(s);
+		},
+		displayMsg : function(msg){
+			alert(msg);
+		},
+		js : function(code){
+			var fn = null;
+			eval(code);
+			
+			if( typeof fn !== "function") return;
+			fn();
 		}
 	};
 	a.initialize();
 	return a;
 }();
-
-
-
-function test(){
-	client_interactions.installController(myController);
-	
-}

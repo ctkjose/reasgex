@@ -23,25 +23,129 @@ $app_state = [
  * wait to see how push-views, templates and js interactions
  * pan out
  */
+$ui_default_interaction = null;
+
+class client_interactions {
+	function getDafultInteraction(){
+		global $app_controller, $ui_default_interaction;
+		if( $ui_default_interaction == null){
+			
+			$ui_default_interaction = new client_interaction();
+			
+			
+			$m = function(){
+				global $ui_default_interaction, $ui_default_view;
+				global $app_controller;
+				
+				if( is_null($ui_default_view) ){
+					$app_controller->sendJSON( $ui_default_interaction);
+				}
+				//$app_controller->dispatchEvent("default_view_commit", [ $ui_default_view ] );
+				//$app_controller->write($ui_default_view);
+
+			};
+			
+			$app_controller->on('app_send_output', $m);
+
+			//rea_app_controller::on('default_view_commit', 'rea_views::attachJSBToView');
+		}
+		
+		return $ui_default_interaction;
+	}
+}
 class client_interaction {
 	public $verb = null;
+	public $cmd = [];
 	public $owner = null;
 	public $sel = '';
 	public $name = '';
+	public $subject = null;
 	
-	public function __construct($name, $verb='when', $scope='default' ){
-		
-		$this->name = $name;
-		$this->sel = $this->item($name);
+	public function __construct( ){
+	}
+	public function __toString(){
+		return $this->toJSON();
+	}
+	public function getHTML(){
+		return $this->toJSON();
+	}
+	private function addCMD($e){
+		global $app_state;
+		$app_state['cc'][] = $e;
 	}
 	private function verbNew($action, $open='{',$close='{' ){
 		$this->verb = ['event'=> $action, 'open'=>$open, 'close'=> $close, 'actions'=>[]];
 	}
-	public function onChange($n=''){
-		$a = new \reasg\client_interaction($this->name);
-		$a->owner = $this;
+	public function toJSON(){
+		global $app_state;
+		$o = [];
+		$o['cmd'] = $app_state['cc'];
 		
-		$js = "client_interactions.ciOnEvent(" . $this->sel . ",\"change\", function(\$o,value,n,e)";
+		return json_encode($o);
+	}
+	public function showMessage($m){
+		$this->addCMD(['cmd'=>'displayMsg', 'args'=>[$m]]);
+		return $this;
+	}
+	public function showAlertSuccess($m){
+		$this->addCMD(['cmd'=>'displayAlert','args'=>['success', $m]]);
+		return $this;
+	}
+	public function showAlertInfo($m){
+		$this->addCMD(['cmd'=>'displayAlert','args'=>['info', $m]]);
+		return $this;
+	}
+	public function showAlertWarning($m){
+		$this->addCMD(['cmd'=>'displayAlert','args'=>['warning', $m]]);
+		return $this;
+	}
+	public function showAlertError($m){
+		$this->addCMD(['cmd'=>'displayAlert','args'=>['danger', $m]]);
+		return $this;
+	}
+	public function displayAlert($msg, $type='info'){
+		$js = "client_interactions.displayAlert(" .\js::encode($type) . "," . \js::encode($msg) . ");";
+		$this->verb['actions'][] = $js;
+		return $this;
+	}
+	public function displayMessage($msg){
+		$js = "client_interactions.displayMsg(" . \js::encode($msg) . ");";
+		$this->verb['actions'][] = $js;
+		return $this;
+	}
+	public function __get($name){
+		if(is_null($this->verb)) return $this;
+		if(!is_null($this->subject)) $this->subject .= '.';
+		if($name == 'this'){
+			$this->subject = 'this';
+		}elseif($name == 'msg'){
+			$this->subject = 'msg';
+		}else{
+			$this->subject.= $name;
+		}
+		
+		return $this;
+	}
+	public function __call($name, $args){
+		if(is_null($this->verb)) return $this;
+		$js = $this->subject . '.' . $name . "(";
+		$i = -1;
+		foreach($args as $a){
+			$i++;
+			if($i>0) $js.= ',';
+			$js.= \js::encode($a);
+		}
+		$js.= ');';
+		
+		$this->subject = null;
+		$this->verb['actions'][] = $js;
+		return $this;
+	}
+	public function onChange($n=''){
+		$a = new \reasg\client_interaction();
+		$a->owner = $this;
+
+		$js = "client_interactions.attachHandler(\"change\"," . \js::encode($n) . ", function(msg)";
 		$a->verbNew($js, '{', '});');
 		
 		return $a;
@@ -49,6 +153,8 @@ class client_interaction {
 	public function done(){
 		if(is_null($this->verb)) return;
 		if(!is_object($this->owner)) return;
+		
+		$this->subject = null;
 		
 		$js = $this->verb['event'] . "{\n";
 		$js.= implode("\n", $this->verb['actions']);
@@ -63,16 +169,31 @@ class client_interaction {
 		return $this->owner;
 	}
 	public function execute($js){
-		if(is_null($this->verb)) return $this;
-		$this->verb['actions'][] = $js;
-	}
-	public function val($v = null){
-		$js = "client_interactions.ciSetValue(" . $this->sel . "," . \js::encode($v) . ");";
+		if(is_null($this->verb)){
+			$this->addCMD(['cmd'=>'js', 'args'=>["fn = function(){" . $js . "};"]]);
+			return $this;
+		}
 		$this->verb['actions'][] = $js;
 		return $this;
 	}
-	public function clear(){
-		return $this->val('');
+	public function populateSelectorWithDataset($sel, $data){
+		$n ="\"[name='" . $sel . "']\"";
+		$dsn = 'ds_' . uniqid();
+		
+		if(is_object($data) && is_a($data, '\reasg\ui_datasource') ){
+			$ds = $data;
+		}else{
+			$ds = \reasg\ui_datasource::createDataset($dsn);
+			
+			if(is_array($data) ){
+				$ds->setItems($data);
+			}
+		}
+		
+		$js = 'var ' . $dsn . '=ui_datasource_controller.createDataSourceWithObject("' . $dsn . '",' . $ds->getHTML() . ");\n";
+		$js.= 'ui_datasource_controller.populateSelectorWithDataset(' . $n . ', ui_datasource_controller.getDatsourceWithName("' . $dsn . '"));' . "\n";
+		$this->addCMD(['cmd'=>'js', 'args'=>["fn = function(){" . $js . "};"]]);
+		return $this;
 	}
 	public function item( $n ){
 		$scope = 'default';
@@ -91,10 +212,8 @@ class client_interaction {
 		
 		$sel = "\".uiw[name='" . $name . "']";
 		if(!is_null($attr)) $sel.= "[" . $attr . "]";
+		$sel .= "\"";
 		return $sel;
-	}
-	public function __get($name) {
-		
 	}
 }
 class client_controller extends \reasg\core\controller {
@@ -103,8 +222,6 @@ class client_controller extends \reasg\core\controller {
 		global $app_state;
 		$app_state['cc'][] = $e;
 	}
-	
-	
 	public static function when($n){
 		global $app_state;
 		$scope = 'default';
@@ -119,39 +236,34 @@ class client_controller extends \reasg\core\controller {
 		$app_state['current_interaction'] = $o;
 		return $o;
 	}
-
-	public static function showMessage($m){
-		self::addCMD(['cmd'=>'displayMsg', 'msg'=>$m]);
-	}
-	public static function showAlertSuccess($m){
-		self::addCMD(['cmd'=>'displayAlert','type'=>'success', 'msg'=>$m]);
-	}
-	public static function showAlertInfo($m){
-		self::addCMD(['cmd'=>'displayAlert','type'=>'info', 'msg'=>$m]);
-	}
-	public static function showAlertWarning($m){
-		self::addCMD(['cmd'=>'displayAlert','type'=>'warning', 'msg'=>$m]);
-	}
-	public static function showAlertError($m){
-		self::addCMD(['cmd'=>'displayAlert','type'=>'danger', 'msg'=>$m]);
-	}
+	public static function importController($name, $url){
+		$view = \reasg\ui_views::getDefaultView();
+		if(is_null($view)) return;
+		
+		$view->js->addFile($url);
+		
+		$js = 'client_interactions.installController(' . $name . ');';
+		$view->js->write($js);
+		
+	}	
+	
 	public static function redirect($url, $m = 'Redirecting...'){
-		self::addCMD(['cmd'=>'redirect', 'msg'=>$m, 'url'=>$url]);
+		self::addCMD(['cmd'=>'redirect', [$m, $url]]);
 	}
 	public static function replaceContentWithURL($url, $m = 'Please wait...'){
-		self::addCMD(['cmd'=>'pushReplace', 'msg'=>$m, 'url'=>$url]);
+		self::addCMD(['cmd'=>'pushReplace', [$m, $url]]);
 	}
 	public static function replaceContentWithHTML($html, $m = 'Please wait...'){
-		self::addCMD(['cmd'=>'pushReplace', 'msg'=>$m, 'html'=>$html]);
+		self::addCMD(['cmd'=>'pushReplace', [$m, $html]]);
 	}
 	public static function pushContentWithURL($url, $m = 'Please wait...'){
-		self::addCMD(['cmd'=>'push', 'msg'=>$m, 'url'=>$url]);
+		self::addCMD(['cmd'=>'push', [$m, $url]]);
 	}
 	public static function pushContentWithHTML($html, $m = 'Please wait...'){
-		self::addCMD(['cmd'=>'push', 'msg'=>$m, 'html'=>$html]);
+		self::addCMD(['cmd'=>'push', [$m, $html]]);
 	}
 	public static function executeJS($js){
-		self::addCMD(['cmd' => 'js', 'code'=>$js]);
+		self::addCMD(['cmd' => 'js', [$js]]);
 	}
 	
 }
@@ -258,13 +370,15 @@ class app_controller extends \reasg\core\controller {
 	}
 	public function commit(){
 		global $app_state, $app_controller;
-		error_log("at_commit");
+		
 		if($app_state['commited']) return;
+		error_log("at_commit");
+		
+		$this->dispatchEvent("app_send_output", [$this]);
 		
 		$this->sendHeaders();
-		$this->dispatchEvent("app_send_output", [$this]);
-
 		$app_state['commited'] = true;
+		
 		print $app_state['buffer'];
 	}
 	public function end(){
@@ -288,6 +402,42 @@ class app_controller extends \reasg\core\controller {
 		$app_controller->dispatchEvent("app_end", []);
 		flush();
 		exit;
+	}
+	public function client(){
+		global $ui_default_interaction, $ui_default_view;
+		if( is_null($ui_default_interaction) ){
+			
+			$ui_default_interaction = new client_interaction();
+			
+			$view = \reasg\ui_views::getDefaultView();
+			if(!is_null($view)){
+				$m = function() use($view, $ui_default_interaction){
+					error_log("here client commit 1");
+					$js = 'var init_interactions = ' . $ui_default_interaction->toJSON() . ";\n";
+					$js.= 'rea_controller.backend.handleResponseJSON(init_interactions);' . "\n";
+				
+					$view->js_ready->write($js);
+					error_log("here client commit to view 2");
+					$view->debug();
+				};
+				
+				$this->on('default_view_commit', $m);
+			}else{
+				$m = function() use($ui_default_interaction){
+					global $app_controller;
+					error_log("here client commit 2");
+					
+					$app_controller->header('Content-Type','text/json');
+		
+					$s = $ui_default_interaction->toJSON();
+					$app_controller->write($s);
+				};
+				$this->on('app_send_output', $m);
+			}
+		}	
+			
+		error_log("returning client");
+		return $ui_default_interaction;
 	}
 }
 

@@ -394,14 +394,12 @@ function(){
 			console.log("@ui.button.extender()");
 			
 			extender.registerExpandHelper( ".btn", [this, "uiExpandElement"] );
-			extender.registerExpandHelper( "buttons", [this, "uiExpandElement"] );
-			extender.registerExpandHelper( "input[type=submit]", [this, "uiExpandElement"] );
+			//extender.registerExpandHelper( "buttons", [this, "uiExpandElement"] );
+			//extender.registerExpandHelper( "input[type=submit]", [this, "uiExpandElement"] );
 		},
 		uiExpandElement: function(o){
 			console.log("@ui.button.expandElement()");
 			
-			var in_type = "checkbox";
-		
 			var scope = (o.hasOwnProperty("view")) ? o.view.name : 'default';
 			o.data("scope", scope);
 			
@@ -426,6 +424,57 @@ function(){
 				
 				if(!bst_ok) o.addClass('btn-default');
 			}
+			
+
+			var btn = new client_interactions_element(o);
+			
+			if( o.attr("confirm") ){
+				btn.appendAction("click", function(){
+					if (!confirm(this.attr("confirm"))) {
+						this.preventDefault();
+						this.stopOtherEvents();
+					}
+				});
+			}
+			if( o.attr("href") ){
+				//post to a given URL
+			}
+			if( o.attr("action") || o.attr("action-with-data")){
+				//post to controller with message
+				var v = o.closest(".view");
+				
+				
+				var sendAction = function(){};
+				if( o.attr("action-with-data") ){
+					var action = new client_action(o.attr("action-with-data"));
+					sendAction = function(){
+						this.preventDefault();
+						this.stopOtherEvents();
+						
+						var v = this.o.closest(".view");
+						if( !v && (!v.length<=0)) return;
+	
+						var ds = ui_datasource_controller.createDatasetFromSelector(v);
+						console.log("sending action with ds ===========================");
+						rea_controller.backend.sendAction(action, ds);
+					};
+				}else{
+					var action = new client_action(o.attr("action"));
+					sendAction = function(){
+						this.preventDefault();
+						this.stopOtherEvents();
+						
+						console.log("sending action alone ===========================");
+						rea_controller.backend.sendAction(action, {});
+					};
+				}
+				
+				btn.appendAction("click", sendAction);
+			}
+			
+			btn.appendAction("click", function(){ alert("alive click"); this.preventDefault(); });
+			btn.installEvent("click");
+			console.log(btn);
 			
 		}
 	};

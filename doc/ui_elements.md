@@ -12,6 +12,19 @@ Optionally: To change the size of the button use one of the classes:
 	
 Use class ```disabled``` to make button disabled.
 
+### Textbox ###
+
+```html
+<input class='text' name='field01'>
+
+<input class='email' name='user_email'>
+
+<input class='password' name='user_pass'>
+
+```
+Notice we use the ```class``` attribute instead of the regular ```type``` attribute.
+
+
 ### Checkbox ###
 
 Shorthands for checkboxes and radios let you create multiple options with only one div entry by using the ```checkbox``` or ```radio``` class.
@@ -83,7 +96,9 @@ Define the body of a section with a div using the class ```body```. A section bo
 Create section footer with a div using the class ```footer```.
 
 
-## Attributes ##
+## Technical Notes ##
+
+### Attributes Used ###
 
 | Attribute | Used By | Value | Description |
 | ---------- | ---------- | :------- | :---------|
@@ -92,7 +107,7 @@ Create section footer with a div using the class ```footer```.
 | default | user | text | default value shown, value returned on empty check/radios |
 | uiwd | engine | "text" | type of data provided by a widget |
 
-## Classes ##
+### Classes Used ###
 | Attribute | Used By | Description |
 | ---------- | ---------- | :---------|
 | uiw | engine | identifies a widget |

@@ -1,5 +1,45 @@
 /* COLOR ELEMENTS */
 
+#wrapper {
+	background-color: #f8f8f8;
+}
+.sidebar-nav {
+	background-color: #f8f8f8;
+	border-color: #e7e7e7;
+}
+
+.sidebar-nav ul li {
+	border-bottom-color: #e7e7e7;
+}
+.sidebar-nav ul li a {
+    
+}
+.sidebar-nav ul li a:hover {
+    background-color: #eee;
+}
+.sidebar-nav ul li a:active,
+.sidebar-nav ul li a:focus {
+    background-color: #eee;
+}
+
+.navbar-top-links li a {
+    color: #ffffff;
+}
+.navbar-top-links li a:hover,
+.navbar-top-links li a:active,
+.navbar-top-links li a:focus {
+    background-color: #333;
+	color: #ffffff;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+}
+
 .section .header {
 	background-color: #ffffff;
 }

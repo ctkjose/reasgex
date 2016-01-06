@@ -241,6 +241,7 @@
 		
 			return $this;
 		}
+			
 		public function insert($value){
 			///N: inserts an existing file (css, js, txt, etc) into the current part...
 			static $inserted; 

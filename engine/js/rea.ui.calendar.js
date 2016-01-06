@@ -99,10 +99,9 @@ function(){
 				var o = $(e.target);
 				var p = o.parents('div.datepicker:first');
 				var t = p.find('input[type=text]');
-				console.log(t);
 				
 				rea_helper_calendar.popup(t);
-				
+				 
 				
 				//rea.components.ui.calendar.state.txt = t;
 				//rea.components.ui.calendar.popup();
