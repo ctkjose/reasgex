@@ -54,6 +54,29 @@ The ```bool``` class defines a basic checkbox. You specify a caption using a ```
 
 Use &quot; to escape double quotes on options or in your ```label``` attribute.
 
+## Buttons ##
+
+```html 
+<button class='btn' name='btn-save'>Save</button>
+```
+
+Use any of the Bootstrap classes 'btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger' to style the button or use one of these corresponding color classes 'blue', 'green', 'lblue', 'orange', 'red'.
+
+Add a ```confirm``` attribute to prompt the user to accept the action of the button.
+```html 
+<button class='btn lblue' name='btn-save' confirm="Do you want to save this record?">Save</button>
+```
+
+Send an action to your backend using the ```action-with-data``` attribute.
+
+```html 
+<button class='btn lblue' name='btn-save' confirm="Do you want to save this record?" action-with-data="@(save)">Save</button>
+```
+In this sample the ```save``` action of your current backend controller will be called and the form data sent to it.
+
+To send an action without data use the attribute ```action```.
+
+
 
 ## Forms ##
 

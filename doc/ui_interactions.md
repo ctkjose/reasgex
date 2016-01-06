@@ -4,7 +4,7 @@ This module provides basic UI interaction patterns, behaviors and functionality.
 
 Most interactions with the UI are done using the <b>Client Interactions</b> module.
 
-## A UI Intercations Controller ##
+## An UI Intercations Controller ##
 
 You can add a basic javascript object to interact with the UI using the functionality provided by the <b>Client Interactions</b>.
 

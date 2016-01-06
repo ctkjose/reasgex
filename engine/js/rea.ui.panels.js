@@ -447,6 +447,7 @@ function(){
 				var sendAction = function(){};
 				if( o.attr("action-with-data") ){
 					var action = new client_action(o.attr("action-with-data"));
+					o.removeAttr("action-with-data");
 					sendAction = function(){
 						this.preventDefault();
 						this.stopOtherEvents();
@@ -460,6 +461,7 @@ function(){
 					};
 				}else{
 					var action = new client_action(o.attr("action"));
+					o.removeAttr("action");
 					sendAction = function(){
 						this.preventDefault();
 						this.stopOtherEvents();
