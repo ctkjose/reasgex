@@ -79,7 +79,7 @@ class client_interaction {
 	public function toJSON(){
 		global $app_state;
 		$o = [];
-		$o['cmd'] = $app_state['cc'];
+		$o['ui_controller_cmd'] = $app_state['cc'];
 		
 		return json_encode($o);
 	}
@@ -195,6 +195,7 @@ class client_interaction {
 		$this->addCMD(['cmd'=>'js', 'args'=>["fn = function(){" . $js . "};"]]);
 		return $this;
 	}
+	
 	public function item( $n ){
 		$scope = 'default';
 		$name = $n;
@@ -323,6 +324,26 @@ class app_controller extends \reasg\core\controller {
 		
 		$this->end();
 	}
+	public function sendDataset($data){
+		global $app_state;
+		$dsn = 'ds_' . uniqid();
+		
+		if(is_object($data) && is_a($data, '\reasg\ui_datasource') ){
+			$ds = $data;
+		}else{
+			$ds = \reasg\ui_datasource::createDataset($dsn);
+			
+			if(is_array($data) ){
+				$ds->setItems($data);
+			}
+		}
+		
+		$this->header('Content-Type','text/json');
+		$this->write($ds);
+		
+		if($app_state['commited']) return;
+		return $this;
+	}
 	public function sendDownloadWithFile($mime, $file){
 		global $app_state;
 		
@@ -414,7 +435,8 @@ class app_controller extends \reasg\core\controller {
 				$m = function() use($view, $ui_default_interaction){
 					error_log("here client commit 1");
 					$js = 'var init_interactions = ' . $ui_default_interaction->toJSON() . ";\n";
-					$js.= 'rea_controller.backend.handleResponseJSON(init_interactions);' . "\n";
+					$js.= 'var promise = {success: undefined,failure: undefined, data: undefined};' . "\n";
+					$js.= 'rea_controller.backend.handleResponseJSON(init_interactions,promise);' . "\n";
 				
 					$view->js_ready->write($js);
 					error_log("here client commit to view 2");

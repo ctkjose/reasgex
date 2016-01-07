@@ -18,7 +18,7 @@ function(){
 			return null;
 		},
 		uiDataSetter: function(o,value, attr){
-			//console.log("@ui_select.uiDataSetter()");
+			
 
 			var v = '';
 			var ty = (typeof value);
@@ -30,7 +30,8 @@ function(){
 			}else if( (ty == "boolean") ) {
 				v = (value) ? '1' : '0';
 			}
-			o.attr('value', v);
+			console.log("@ui_select.uiDataSetter(" + v + ")");
+			o.elmKey('value', v);
 			o.val(v);
 			
 			if(attr && attr.hasOwnProperty('ro') && attr.ro){
@@ -113,22 +114,60 @@ function(){
 			}
 			
 			if( o.attr("datasource") && ( o.elmType() != "select" ) ){
-				d.attr("data-ds", o.attr("datasource"));
+				
+				var dsn = o.attr("datasource");
+				
+				var ui_select = this;
+				var fn = function(ds){
+					ui_select.populateOptionsWithDS(d,ds);
+				};
+				
+				rea_controller.on("ds_changed_" + dsn, fn);
+				d.elmKey("ds", o.attr("datasource"));
 				o.removeAttr("datasource");
+				
 			}
 			
 			if( o.attr("scope") ) { d.elmKey("scope", o.attr("scope")); }
 			
 			
 			d.addClass("uiw");
-			d.addClass("uiwd-text");
+			d.addClass("uiwd-select");
 			d.elmKey("uiw", "select");
-	
+			
 			client_interactions.installEvents(n, d);
 			if( o.elmType() != "select" ){
-				o.replaceWith( d );
+				o.replaceWith( d );	
 			}
-		}
+		},
+		populateOptionsWithDS: function(o, ds){
+			console.log("@ui_select.populateOptionsWithDS1()");
+			//console.log(o);
+			console.log(ds);
+			
+			if( (typeof ds != "object") || (!ds.hasOwnProperty("items")) ) return;
+			
+			if(!ds.items.hasOwnProperty("options")) return;
+			var keys = Object.keys(ds.items.options);
+			
+			var v = o.val();
+			if(!v){
+				v = o.elmKey('value');
+			}
+			console.log("value==[" + v + "]");
+			
+			o.find("option").remove()
+			for(var i=0; i<keys.length; i++){
+				var k = keys[i];
+				var e = ds.items.options[k];
+				var op = { 'value' : k };
+				if(k == v) op['selected'] = "selected";
+				o.append($('<option>', op).text(e));
+				
+			}
+			
+			
+		},
 	};
 	return ui_select;
 }() );
@@ -457,7 +496,21 @@ function(){
 	
 						var ds = ui_datasource_controller.createDatasetFromSelector(v);
 						console.log("sending action with ds ===========================");
-						rea_controller.backend.sendAction(action, ds);
+						
+						var s = this.o.html();
+						this.o.elmKey("caption", s);
+						s = "<i class='fa fa-spinner fa-spin'></i> " + s;
+						this.o.html(s);
+						this.o.attr("disabled","disabled");
+						
+						var me = this.o;
+						var done = function(){
+							if(!me || (me.length <= 0) || !me.elmKey("caption")) return;
+							me.html( me.elmKey("caption") );
+							me.removeAttr("disabled");
+						};
+						rea_controller.backend.sendAction(action, ds, done);
+						
 					};
 				}else{
 					var action = new client_action(o.attr("action"));

@@ -58,9 +58,9 @@ class app {
 			$a = new $frs;
 			$a->scope = $route['scope'];
 			$a->location = $route['location'];
-			
-			if( method_exists($a, 'init') ){
-				call_user_func([$a, 'init'], $route['values']);
+			$a->controller = $app_controller;
+			if( method_exists($a, 'initialize') ){
+				call_user_func([$a, 'initialize'], $route['values']);
 			}
 			
 			$app_controller->dispatchEvent("app_start", $route);

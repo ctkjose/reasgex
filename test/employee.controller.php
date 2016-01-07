@@ -9,7 +9,7 @@ class employee extends \reasg\view_controller {
 		'op_commit_explicit'=>false, //user must commit outputs (not used as 1/JAN/16)
 	];
 	public $n = "hello jose";
-	public function init($values){
+	public function initialize($values){
 		error_log("--- @employee->init() ---");
 		//print "ENGINE=" . REASG_SELF_DIRECTORY . "<br>\n";
 		
@@ -40,8 +40,11 @@ class employee extends \reasg\view_controller {
 		
 		$ui->showAlertSuccess("Record saved...");
 		
-		$a = ['start_date'=> '09/23/2015'];
+		$a = ['start_date'=> '09/23/2015', 'fld_town01'=>'mc'];
 		$ui->populateSelectorWithDataset("employee", $a);
+		
+		
+		sleep( 5 );
 		
 		error_log("@employee->save DONE =============================================================================");
 	}
@@ -80,11 +83,10 @@ class employee extends \reasg\view_controller {
 		\reasg\client_controller::importController('employee_controller', $f->js->child('employee.controller.js')->url);
 		
 		global $app_controller;
-		$ui = $app_controller->client();
+		$ui = $this->controller->client();
+		//$ui->showAlertError("This is big alert 2!");
 		
-		$ui->showAlertError("This is an alert!");
-		
-		$a = ['start_date'=> '09/22/2015'];
+		$a = ['start_date'=> '09/27/2015'];
 		$ui->populateSelectorWithDataset("employee", $a);
 		
 		//$page->js->write("//hello jose");

@@ -329,8 +329,9 @@ var client_interactions = function(){
 			s = '<div class="alert alert-' + type + '" role="alert">';
 			s+= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
 			s+= msg + '</div>';
-		
-			$('.place-alerts').append(s);
+				
+			//$('.place-alerts').append(s);
+			ui_support.createNotification(msg, type);
 		},
 		displayMsg : function(msg){
 			alert(msg);

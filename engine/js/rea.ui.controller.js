@@ -63,6 +63,15 @@ rea_controller.backend = {
 		console.log("@rea_controller.sendAction(" + url + ")");
 		console.log(a);
 		
+		var promise = {success: undefined,failure: undefined, data: undefined};
+		if(arguments.length >= 3){
+			promise.success = arguments[2];
+		}
+		if(arguments.length >= 4){
+			promise.failure = arguments[3];
+		}
+		console.log("promise----");
+		console.log(promise);
 		var p = {
 			'api-return' : 'json',
 			'api-json-data' : JSON.stringify(data),
@@ -76,25 +85,32 @@ rea_controller.backend = {
 			m = /([a-z0-9\-\_]+\/[a-z0-9\-\_]+)/.exec(type.toLowerCase());
 			if(!m){
 				type == "text/html";
-				console.log("Error: Unable to get mime of response");
+				console.log("Error: Unable to get mime from response");
 			}else{
 				type = m[1];
 			}
 			
 			console.log(type);
 			if( type == "text/html"){
-				backend.handleResponseHTML(data);
+				backend.handleResponseHTML(data, promise);
 			}else if(type == "text/json"){
-				backend.handleResponseJSON(data);
+				backend.handleResponseJSON(data, promise);
 			}
-			console.log(data);
 			console.log("End Response==================");
+			
+		}).fail(function() {
+			rea.types.callback(promise.failure, []);
 		});
 	},
-	handleResponseHTML : function(data){
+	handleResponseHTML : function(data, promise){
 		console.log("@handleResponseHTML");
+		console.log(data);
+		
+		promise.data = obj;
+		rea.types.callback(promise.success, [promise.data]);
+		
 	},
-	handleResponseJSON : function(data){
+	handleResponseJSON : function(data, promise){
 		console.log("@handleResponseJSON");
 		if(typeof data == "string"){
 			var obj = JSON.parse(data);
@@ -103,9 +119,13 @@ rea_controller.backend = {
 		}
 		
 		console.log(obj);
-		if (obj.hasOwnProperty("cmd") && Array.isArray(obj.cmd)) {
-			this.processCommands(obj.cmd);
+		if (obj.hasOwnProperty("ui_controller_cmd") && Array.isArray(obj.ui_controller_cmd)) {
+			this.processCommands(obj.ui_controller_cmd);
 		}
+		promise.data = obj;
+		rea.types.callbackWithArguments(promise.success, [promise.data]);
+		
+		
 		
 	},
 	processCommands : function(cmd){

@@ -1,3 +1,27 @@
+
+## Using client interactions ##
+$ui = $app_controller->client();
+		
+$ui->showAlertError("This is an alert!"); //bootstrap alert div
+$ui->showMessage("Hello world"); //js alert()
+		
+$ui->onChange("emp_lname")->displayMessage("This value can not be changed")->this->focus()->done();
+
+| Verb | Description |
+| ---- | ----------- |
+| displayMessage(string) | Shows a js alert() |
+| this | reference the element of this event |
+| focus() | focus the element, operates on "this" |
+| attr(name, value) | sets an attr on the element, operates on "this" |
+| html(value) | sets the contents of the element, operates on "this" |
+| val(value) | sets the value of the element, operates on "this" |
+| setValue(value) | sets the value of a widget, operates on "this" |
+
+
+
+
+
+
 <div id="sidebar-wrapper">
 		<ul class="sidebar-nav">
 			<li class="sidebar-brand">
@@ -14,6 +38,24 @@
 		</ul>
 	</div><!-- end sidebar-wrapper -->
 
+<div class="navbar navbar-inverse navbar-fixed-top">
+navbar navbar-default navbar-static-top
+
+<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				</ul>
+			</div><!--/.nav-collapse -->
+			
+			
+			
+			
 <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav in" id="side-menu">

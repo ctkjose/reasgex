@@ -43,7 +43,7 @@
 				<checkbox class='bool' name='field_enabled' default='1' label1='Enabled'>Enabled</checkbox>
 			</div>
 			<div class="form row" title='test jose' data-label='Basic Select:'>
-				<div class='select size-auto' name='fld_town01' default='ag' options='{"ag":"Aguadilla", "mc":"Moca", "ri" : "Rincon", "my" : "Mayaguez"}'></div>
+				<div class='select size-auto' name='fld_town01' default='ag' datasource='cities' options1='{"ag":"Aguadilla", "mc":"Moca", "ri" : "Rincon", "my" : "Mayaguez"}'></div>
 			</div>
 			<div class='header'>
 				<h2>Tables</h2>
@@ -92,7 +92,7 @@
 						<tr class='table-row-template'>
 							<td name='id'>%id%</td>
 							<td name='name'><input class="hidden" scope='records2' name="id"><input class="text" scope='records2' name="school_name" placeholder="Enter school name"></td>
-							<td name='town'><div class='select size-small' scope='records2' name='town' default='%town%' datasource='towns'></div></td>
+							<td name='town'><div class='select size-small' scope='records2' name='town' default='%town%' datasource='cities'></div></td>
 							<td name='date'><input class='datepicker' type="text" scope='records2' name="date_created" placeholder="Enter date"></div></td>
 							<td name='actions'>
 								<a class='repeater-cmd-del' href='#' title='Delete'><i class='fa fa-trash-o'></i></a>
@@ -118,4 +118,8 @@
 			<button class='btn btn-info' name='btn-continue' confirm="are you sure" action-with-data="@(/save)">Continue</button>
 		</div>
 	</div><!-- end section -->
+	
+	
+	<datasource name="cities" src="@(/sis_common/lookup/cities)">
+	</datasource>
 </form>

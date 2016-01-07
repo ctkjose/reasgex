@@ -61,6 +61,119 @@ var ui_values_ = {
 		}
 	}
 }
+var ui_ds = function(){
+	this.name = "";
+	this.uid = "";
+	this.def = {'source': 'ajax', 'source_pull':'static', 'url':'', 'url_find':'', 'bind': {} };
+	this.items = [];
+	this.attr = {};
+	this.ready = false;
+	console.log("@ui_ds.constructor(" + arguments.length + ")" );
+	
+	if(arguments.length == 1){
+		var o = arguments[0];
+		if( (typeof o == "object") && (o.hasOwnProperty("def") || o.hasOwnProperty("items") || o.hasOwnProperty("attr"))){
+			//console.log(o);
+			if(o.hasOwnProperty("def")) $.extend(this.def, o.def);
+			
+			if( o.hasOwnProperty("name") ) this.name = o.name;
+			if( o.hasOwnProperty("uid") ) this.uid = o.uid;
+			
+			if( o.hasOwnProperty("items") ){
+				this.items = o.items;
+				this.ready = true;
+			}
+			if( o.hasOwnProperty("attr") ){
+				this.attr = o.attr;	
+			}
+		}else if( (typeof o == "string") ){
+			this.name = arguments[0];
+		}
+	}else if(arguments.length == 2){
+		this.name = arguments[0];
+		$.extend(this.def, arguments[1]);
+	}else if(arguments.length == 3){
+		this.name = arguments[0];
+		$.extend(this.def, arguments[1]);
+		this.items = arguments[2];
+		this.ready = true;
+	}else if(arguments.length == 4){
+		this.name = arguments[0];
+		$.extend(this.def, arguments[1]);
+		this.items = arguments[2];
+		this.attr = arguments[3];
+		this.ready = true;
+	}
+	
+	return this;
+}
+ui_ds.prototype.itemsChanged = function(){
+	console.log("@ds[" + this.name + "].itemsChanged()-----");
+	rea_controller.dispatchEvent( "ds_changed_" + this.name , this );
+	
+}
+ui_ds.prototype.ajaxSuccess = function(data){
+	console.log("@ds[" + this.name + "].ajaxSuccess()-----");
+	console.log(data);
+	
+	if( (typeof data == "object") && (data.hasOwnProperty("items") || data.hasOwnProperty("attr")) ){
+		if( data.hasOwnProperty("items") ){
+			this.items = data.items;
+			
+		}
+		if( data.hasOwnProperty("attr") ){
+			this.attr = data.attr;	
+		}
+	}
+	
+	this.ready = true;
+	this.itemsChanged();  
+}
+ui_ds.prototype.ajaxFailure = function(data){
+	console.log("@ds[" + this.name + "].ajaxFailure()-----");
+}
+ui_ds.prototype.ajaxPopulate = function(){
+	
+	var a = null;
+	if(this.def.action.length > 0){
+		a = new client_action( this.def.action );
+	}else if(this.def.url.length > 0){
+		a = new client_action( '@(' + this.def.url + ')');
+	}else{
+		return;
+	}
+	
+	var ds = this;
+	var fnSuccess = function(data){
+		ds.ajaxSuccess(data);
+		//rea.types.callback(fnDone);
+	}
+	rea_controller.backend.sendAction(a, {},[this,"ajaxSuccess"],[this,"ajaxFailure"] );
+}
+/**
+* Loads a datasource
+*/
+ui_ds.prototype.makeAvailable = function(){
+	if ( (this.def.source == 'ajax') && (this.def.url.length == 0) && (this.def.action.length == 0) ) return this;
+	
+	var up = false;
+	if ( (this.def.source == 'ajax') ){
+		up = (this.def.source_pull != 'static') ? true : (!this.ready);
+	}
+	
+	if(up){
+		this.ajaxPopulate();
+		return this;
+	}
+		
+	this.ready = true;
+	//if (fnDone) {
+	//	rea.types.callbackWithArguments(fn, [this]);
+	//}
+	this.itemsChanged();
+	return this;
+}
+
 var ui_datasource_controller = function(){
 	var a = {
 		uiDataProviders : {},
@@ -68,23 +181,26 @@ var ui_datasource_controller = function(){
 		uiDS: {},
 		getDatsourceWithName : function(name){
 			if(!this.uiDS.hasOwnProperty(name)){
-				return {"name":name, "def": {}, "items":[], "attr":{}};
+				return new ui_ds(name);
 			}
 			
 			return this.uiDS[name];
 		},
-		createDataSourceWithDefinition : function(name, def){
-			this.uiDS[name] = {"name":name, "def": def, "items":[], "attr":{}};
+		createDataSourceWithDefinition : function(name, def){	
+			this.uiDS[name] = new ui_ds(name,def);
 			return this.uiDS[name];
 		},
 		createDataSourceWithObject : function(name, obj){
-			var o = {"name":name, "def": {'source': 'ajax', 'source_pull':'static', 'url':'', 'url_find':'', 'bind': {} }, "items":[], "attr":{}};
-			console.log(o);
-			console.log(obj);
-			this.uiDS[name] = $.extend(o, obj, true);
+			
+			var o = new ui_ds(obj);
+			o.name = name;
+			console.log("createDataSourceWithObject------");
+			
+			this.uiDS[name] = o;
 			console.log(this.uiDS[name]);
 			return this.uiDS[name];
 		},
+		
 		registerDataProvider: function(classes, fnSet, fnGet){
 			
 			if(!Array.isArray(classes)) return;
@@ -296,7 +412,7 @@ var ui_datasource_controller = function(){
 
 rea.registerComponent( "ui", "ds", ["ui.panel"],
 function(){
-	var ui_ds = {
+	var a = {
 		initialize : function(){
 			
 		},
@@ -319,10 +435,18 @@ function(){
 				}else{
 					def.source_pull='static';
 				}
-	
 			}
-			console.log("herrrr----------------------");
-			var ds = ui_datasource_controller.createDataSourceWithName(n, def);
+			if (o.attr("src")) {
+				def.source = 'ajax';
+				def.action = o.attr("src");
+				
+				if (o.attr("source_pull")) {
+					def.source_pull=o.attr("source_pull");
+				}else{
+					def.source_pull='static';
+				}
+			}
+			var ds = ui_datasource_controller.createDataSourceWithDefinition(n, def);
 			
 			var ops = o.find('option');
 			ops.each( function(x) {
@@ -349,9 +473,11 @@ function(){
 				console.log(ds);
 			}
 			
+			ds.makeAvailable();
 			
 			o.remove();
 		}
 	}
-	return ui_ds;
+	return a;
 }() );
+

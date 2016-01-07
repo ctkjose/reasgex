@@ -100,10 +100,10 @@ rea.types.callback = function(fn){
 	if(fn && Array.isArray(fn)){
 		var cfn = (typeof fn[1] === 'string') ? fn[0][fn[1]] : fn[1];
 		return cfn.apply(fn[0], args);
-	}else{
-		return fn.apply(null, args);
+	}else if(typeof fn == "function"){
+		return fn.apply(fn, args);
 	}
-	return null;
+	return undefined;
 }
 
 /**
