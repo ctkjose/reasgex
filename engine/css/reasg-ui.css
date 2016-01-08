@@ -151,6 +151,30 @@ pre {
 	display:  inline-block !important;
 }
 
+.btn-default.btn-on,
+.btn-default.btn-off {
+	color:  white;
+	
+}
+.btn-default.btn-on.active {
+	background-color: #DA4F49;
+	color: #B73233;
+}
+.btn-default.btn-off.active {
+	background-color: #5BB75B;
+	color: #41913E;
+}
+.btn-default.btn-off,
+.btn-default.btn-on {
+	background-color: #EFEFEF;
+	color: rgb(85, 85, 85);
+}
+
+.btn-default.btn-on.active {
+}
+.btn-default.btn-off.active {
+
+}
 
 fieldset.checkboxes, fieldset.radios {
 	min-height: 27px;

@@ -78,8 +78,24 @@ function(){
 				});
 				rea_helper_ui_extender.expandForSelector(tr);
 				
+				tr.elmKey("row-added", 1);
+				
 				tb.append(tr);
 				
+			});
+			
+			$(document).on('click touchstart','.repeater-cmd-del', function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				
+				var o = $(e.target);
+				var tbl = o.parents(".table");
+				var atr = tbl.data('template');
+				var n = tbl.attr("name");
+				
+				var tr = o.closest("tr");
+				tr.elmKey("row-deleted", 1);
+				tr.hide();
 			});
 		},
 		uiDataProvider: function(uidsc){
@@ -98,6 +114,15 @@ function(){
 				console.log("@row -------------------------");
 				console.log(tr);
 				var row_data = ui_datasource_controller.createDatasetFromSelector(tr, null, n);
+				
+				row_data.flg_row_deleted = 0;
+				row_data.flg_row_added = 0;
+				if(tr.elmKey("row-added") && (tr.elmKey("row-added")=="1")){
+					row_data.flg_row_added = 1;
+				}
+				if(tr.elmKey("row-deleted") && (tr.elmKey("row-deleted")=="1")){
+					row_data.flg_row_deleted = 1;
+				}
 				data.push(row_data);
 			});
 			

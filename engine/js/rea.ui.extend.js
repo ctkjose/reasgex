@@ -40,7 +40,7 @@ var rea_helper_ui_extender = function(){
 			
 			if(!o.hasClass("extended")) o.addClass("extended");
 			
-			for(i=0;i<this.expand_functions.length;i++){
+			for(var i=0;i<this.expand_functions.length;i++){
 				var def = this.expand_functions[i];
 				o.find(def.sel).each(function(){
 					var o = $( this );
@@ -50,7 +50,7 @@ var rea_helper_ui_extender = function(){
 		},
 		copyAttributes: function(a, o, e){
 			
-			for(i=0;i<a.length;i++){
+			for(var i=0;i<a.length;i++){
 				var k = a[i];
 				if( o.attr(k) ) e.attr(k, o.attr(k));
 			}
@@ -61,7 +61,7 @@ var rea_helper_ui_extender = function(){
 		 */
 		expandDefaults : function(){
 			
-			for(i=0;i<this.global_expand_function.length;i++){
+			for(var i=0;i<this.global_expand_function.length;i++){
 				var def = this.global_expand_function[i];
 				$(def.sel).each(function(){
 					var o = $( this );

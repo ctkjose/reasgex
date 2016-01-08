@@ -58,8 +58,9 @@ class employee extends \reasg\view_controller {
 		$ds->items['emp_name'] = 'Jose';
 		$ds->items['emp_mname'] = 'L';
 		$ds->items['emp_lname'] = 'Cuevas Garcia';
-		$ds->items['fld_town01'] = 'ri';
-		$ds->items['field_yesno'] = '0';
+		$ds->items['emp_state'] = 'pr';
+		$ds->items['emp_city'] = 'mc';
+		$ds->items['field_enabled'] = '0';
 		$ds->items['start_date'] = '09/20/2015';
 		$ds->items['field_checkbox01'] = ['1','2'];
 		$ds->items['field_radio01'] = '2';

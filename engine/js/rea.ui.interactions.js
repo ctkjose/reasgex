@@ -9,7 +9,7 @@ var client_interactions_element = function(o){
 	this.o = o;
 	this.name = this.o.elmName();
 	this.actions = {};
-	//this.def = ui_datasource_controller.getDataProvider(o); //private
+	this.def = ui_datasource_controller.getDataProvider(o); //private
 	
 	this.cmd_stopEvents = false; //private, use to indicate when to stop loop event
 	
@@ -76,10 +76,15 @@ client_interactions_element.prototype.executeAction = function(evt, e){
 }
 client_interactions_element.prototype.getValue = function(){
 	if(!this.def){
-		if(o && (o.length > 0)) return o.val();
+		if(this.o && (this.o.length > 0)) return this.o.val();
+		return "";
 	}
+	console.log(this.def);
 	
-	if(!this.def.get || (typeof this.def.get == "undefined") || (this.def.get == null) ) return;
+	if(!this.def.get || (typeof this.def.get == "undefined") || (this.def.get == null) ){
+		if(this.o && (this.o.length > 0)) return this.o.val();
+		return "";
+	}
 	var v = rea.types.callback(this.def.get, this.o);
 	
 	if(!v || (typeof v == "undefined") || (v == null) ) return null;
@@ -295,6 +300,7 @@ var client_interactions = function(){
 			});
 		},
 		ciGetValue : function(sel){
+			return "";
 			var $o = $(sel);
 			var n = $o.elmName();
 			var def = ui_datasource_controller.getDataProvider($o);
@@ -315,6 +321,8 @@ var client_interactions = function(){
 			return value;
 		},
 		ciSetValue : function(sel, v){
+			return;
+		
 			var e = $(sel);
 			var comp_name = e.elmKey("uiw");
 			var n = e.elmName();	

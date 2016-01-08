@@ -67,6 +67,7 @@ var ui_ds = function(){
 	this.def = {'source': 'ajax', 'source_pull':'static', 'url':'', 'url_find':'', 'bind': {} };
 	this.items = [];
 	this.attr = {};
+	this.params = {};
 	this.ready = false;
 	console.log("@ui_ds.constructor(" + arguments.length + ")" );
 	
@@ -106,6 +107,13 @@ var ui_ds = function(){
 	}
 	
 	return this;
+}
+ui_ds.prototype.setParams = function(values){
+	var q = values;
+	var k = Object.keys(q);
+	for(var i in k){
+		this.params[k[i]] = q[ k[i] ];
+	}
 }
 ui_ds.prototype.itemsChanged = function(){
 	console.log("@ds[" + this.name + "].itemsChanged()-----");
@@ -148,7 +156,11 @@ ui_ds.prototype.ajaxPopulate = function(){
 		ds.ajaxSuccess(data);
 		//rea.types.callback(fnDone);
 	}
-	rea_controller.backend.sendAction(a, {},[this,"ajaxSuccess"],[this,"ajaxFailure"] );
+	rea_controller.backend.sendAction(a, this.params,[this,"ajaxSuccess"],[this,"ajaxFailure"] );
+}
+ui_ds.prototype.refresh = function(){
+	this.ready = false;
+	this.makeAvailable();
 }
 /**
 * Loads a datasource
@@ -181,7 +193,7 @@ var ui_datasource_controller = function(){
 		uiDS: {},
 		getDatsourceWithName : function(name){
 			if(!this.uiDS.hasOwnProperty(name)){
-				return new ui_ds(name);
+				return undefined;
 			}
 			
 			return this.uiDS[name];
@@ -349,11 +361,10 @@ var ui_datasource_controller = function(){
 		getDataProvider : function(e){
 			var def = null;
 			
-			for(i=0;i<this.uiDataProvidersKeys.length;i++){
+			for(var i=0;i<this.uiDataProvidersKeys.length;i++){
 				var wd = this.uiDataProvidersKeys[i];
 				if(!e.hasClass(wd)) continue;
-				def = this.uiDataProviders[wd];
-				break;
+				def = this.uiDataProviders[wd]; break;
 			}
 			return def;
 		},

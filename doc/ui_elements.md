@@ -54,6 +54,38 @@ The ```bool``` class defines a basic checkbox. You specify a caption using a ```
 
 Use &quot; to escape double quotes on options or in your ```label``` attribute.
 
+## Switch ##
+
+```html
+<div class='switch' name='field_enabled' default='1'></div>
+```
+
+```html
+<div class='switch' name='field_yesno' default='1' label-yes='Yes' label-no='No'></div>
+```
+
+```html
+<div class='switch' name='field_keep' default='1'>
+	<i class="fa fa-check label-yes" title="Keep Record"></i>
+	<i class="fa fa-trash label-no" title="Delete Record"></i>
+</div>
+```
+
+## Select ##
+
+```html
+<div class='select size-auto' name='cities' default='ag' options='{"ag":"Aguadilla", "mc":"Moca", "ri" : "Rincon", "my" : "Mayaguez"}'></div>
+```
+We use the ```default``` attribute to set the initial value.
+
+Use the attribute ```options``` to populate the list of options with a ```json``` of key-value pairs.
+
+You can also bind the select to a datasource:
+```html
+<div class='select size-auto' name='fld_town01' default='ag' datasource='cities'></div>
+```
+A select field will bind to an entry named ```options``` in the specified datasource. The ```options``` entry is a list of key-value pairs.
+
 ## Buttons ##
 
 ```html 

@@ -14,8 +14,12 @@ function(){
 		uiDataProvider: function(uidsc){
 			uidsc.registerDataProvider(['uiwd-select'] , [this,"uiDataSetter"], [this,"uiDataGetter"] );
 		},
-		uiDataGetter: function(){
-			return null;
+		uiDataGetter: function(o){
+			if( o.attr('data-ignore') && (o.data('ignore')=='1')) return null;
+			var n = o.elmName();
+			var v = o.val();
+		
+			return {'name' : n, 'type' : 'text', 'value': v };
 		},
 		uiDataSetter: function(o,value, attr){
 			
@@ -117,6 +121,12 @@ function(){
 				
 				var dsn = o.attr("datasource");
 				
+				var ds = ui_datasource_controller.getDatsourceWithName(dsn);
+				
+				if( (typeof ds != "undefined") && (ds.ready) ){
+					this.populateOptionsWithDS(d,ds);
+				}
+				
 				var ui_select = this;
 				var fn = function(ds){
 					ui_select.populateOptionsWithDS(d,ds);
@@ -141,9 +151,7 @@ function(){
 			}
 		},
 		populateOptionsWithDS: function(o, ds){
-			console.log("@ui_select.populateOptionsWithDS1()");
-			//console.log(o);
-			console.log(ds);
+			//console.log("@ui_select.populateOptionsWithDS1()");
 			
 			if( (typeof ds != "object") || (!ds.hasOwnProperty("items")) ) return;
 			
@@ -154,7 +162,6 @@ function(){
 			if(!v){
 				v = o.elmKey('value');
 			}
-			console.log("value==[" + v + "]");
 			
 			o.find("option").remove()
 			for(var i=0; i<keys.length; i++){
@@ -180,6 +187,7 @@ function(){
 		uiDataProvider: function(uidsc){
 			uidsc.registerDataProvider(['uiwd-checkbox'] , [this,"uiDataSetter"], [this,"uiDataGetter"] );
 			uidsc.registerDataProvider(['uiwd-radio'] , [this,"uiDataSetter"], [this,"uiDataGetter"] );
+			uidsc.registerDataProvider(['uiwd-switch-btn'], [this, "uiYesNoDataSetter"], undefined);
 		},
 		uiDataGetter: function(o){
 			
@@ -287,6 +295,47 @@ function(){
 				}
 			}
 		},
+		uiYesNoDataSetter: function(o,value, attr){
+			console.log("@ui_generic.uiYesNoDataSetter()");
+
+			var v = '';
+			var ty = (typeof value);
+	
+			if ( Array.isArray(value) && (value.hasOwnProperty(1)) ) {
+				v = '0';
+			}else if(ty == "string") {
+				v = (value == "1") ? '1' : '0';
+			}else if( ty == "number") {
+				v = (value == 1) ? '1' : '0';
+			}else if( (ty == "boolean") ) {
+				v = (value) ? '1' : '0';
+			}
+			
+			var p = o.closest(".btn-toogle-group");
+			var b1 = p.find(".btn-on");
+			var b2 = p.find(".btn-off");
+		
+			console.log(o);
+			console.log(v);
+			
+			if(v=='1'){
+				b1.removeClass("active");
+				b2.addClass("active");
+			}else{
+				b2.removeClass("active");
+				b1.addClass("active");
+			}
+			
+			if(attr && attr.hasOwnProperty('ro') && attr.ro){
+				b1.attr("disabled", "disabled");
+				b2.attr("disabled", "disabled");
+			}else {
+				if(b1.attr("disabled")) b1.removeAttr("disabled");
+				if(b2.attr("disabled")) b2.removeAttr("disabled");
+			}
+
+			o.val(v);
+		},
 		/**
 		 * Implements the UI Extend interface.
 		 * @param {Object} extender - The rea_helper_ui_extender instance
@@ -295,6 +344,90 @@ function(){
 			//implements the UI Extender interface
 			extender.registerExpandHelper( "checkbox", [this, "uiExpandElement"] );
 			extender.registerExpandHelper( "radio", [this, "uiExpandElement"] );
+			extender.registerExpandHelper( "div.switch", [this, "uiExpandSwitch"] );
+		},
+		uiExpandSwitch: function(o){
+			//console.log("@ui.checkbox.expandElement()");
+			
+			var v = "";
+			var n = o.elmName();
+			
+			var scope = "default";
+			if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); }
+			
+			if (o.attr("data-bind")) {
+				o.removeAttr("data-bind");
+			}
+			
+			
+			if (o.attr("default")) {
+				v = o.attr("default");
+			}
+			
+			var l1 = '<i class="fa fa-check" title="On"></i>';
+			var l2 = '<i class="fa fa-times" title="Off"></i>';
+			if(o.attr("label-yes")){
+				l1 = o.attr("label-yes");
+				o.removeAttr("label-yes");
+			}else{
+				var lo = o.find(".label-yes");
+				if( lo && (lo.length>0)) l1 = lo;
+				lo.detach();
+			}
+			if(o.attr("label-no")){
+				l2 = o.attr("label-no");
+				o.removeAttr("label-no");
+			}else{
+				var lo = o.find(".label-no");
+				if( lo && (lo.length>0)) l2 = lo;
+				lo.detach();
+			}
+			
+			var a1 = (v == 0) ? ' active' : '';
+			var a2 = (v == 1) ? ' active' : '';
+			var s = '<div class="btn-group btn-toogle-group" role="group" data-target="' + n + '" name="' + n + '_group">';
+			s+= '<label class="btn btn-default btn-on btn-sm' + a1 + '" data-expanded="1"></label>';
+			s+= '<label class="btn btn-default btn-off btn-sm' + a2 + '" data-expanded="1"></label>';
+			s+= '</div>';
+			
+			var d = $(s);
+
+			s = '<input type="hidden" class="uiw uiwd-switch-btn" data-expanded="1" name="' + n +'">';
+			var e = $(s);
+			
+			if(scope != "default") e.elmKey("scope", scope);
+			d.find(".btn-on").append(e);
+			d.find(".btn-on").append(l1);
+			d.find(".btn-off").append(l2);
+				
+			
+			var fn = function(e){
+				var o = $(e.target);
+				if(!o.hasClass("btn")) o = o.closest(".btn");
+				var p = o.closest(".btn-toogle-group");
+				
+				var b1 = p.find(".btn-on");
+				var b2 = p.find(".btn-off");
+				
+				var v = o.hasClass("btn-on") ? 1 : 0;
+				
+				if(v){
+					b1.removeClass("active");
+					b2.addClass("active");
+				}else{
+					b2.removeClass("active");
+					b1.addClass("active");
+				}
+				
+				var h = p.find("input.uiwd-switch-btn");
+				h.val(v);
+				
+				var rvalue = false;
+				rea_controller.dispatchEvent("uiw_event", {"action": "change","name": n, "event": e, "node": h, "rvalue":rvalue} );
+			}
+			
+			d.on("click touchend", ".btn", fn);
+			o.replaceWith( d );
 		},
 		uiExpandElement: function(o){
 			//console.log("@ui.checkbox.expandElement()");
@@ -439,7 +572,10 @@ function(){
 		uiExpandElement: function(o){
 			console.log("@ui.button.expandElement()");
 			
-			var scope = (o.hasOwnProperty("view")) ? o.view.name : 'default';
+			if(o.elmKey("expanded")) return;
+			
+			var scope = "default";
+			if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); }
 			o.data("scope", scope);
 			
 			var bstl = ['btn-default','btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger']; 
@@ -529,7 +665,6 @@ function(){
 			
 			btn.appendAction("click", function(){ alert("alive click"); this.preventDefault(); });
 			btn.installEvent("click");
-			console.log(btn);
 			
 		}
 	};
@@ -616,6 +751,10 @@ function(){
 			var n = o.attr("name");
 
 			var scope = "default";
+			if(o.elmKey("expanded")) return;
+			
+			
+			
 			if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); }
 		
 			o.addClass("uiw").addClass("hidden").addClass("uiwd-text");

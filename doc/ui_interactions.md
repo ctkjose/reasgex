@@ -67,7 +67,7 @@ The ```client_interactions_element``` is a helper object to represents an elemen
 
 ## Using client interactions in your php backend ##
 
-Client interactions allows write basic interactions from your php backend.
+Client interactions allows to write basic interactions from your php backend.
 
 You will use this functionality mainly to interact with a running application.
 

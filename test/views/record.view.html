@@ -37,13 +37,25 @@
 				<radio name='field_radio01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></radio>
 			</div>
 			<div class="form row" title='test jose' data-label='Yes No Shorthand:'>
-				<checkbox class='yesno' name='field_yesno' default='1'></checkbox>
+				<div class='switch' name='field_yesno' default='1' label-yes='Yes' label-no='No'></div>
 			</div>
-			<div class="form row" title='test jose' data-label='Bool Shorthand:'>
-				<checkbox class='bool' name='field_enabled' default='1' label1='Enabled'>Enabled</checkbox>
+			<div class="form row" title='test jose' data-label='Enabled:'>
+				<div class='switch' name='field_enabled' default='1'></div>
 			</div>
-			<div class="form row" title='test jose' data-label='Basic Select:'>
-				<div class='select size-auto' name='fld_town01' default='ag' datasource='cities' options1='{"ag":"Aguadilla", "mc":"Moca", "ri" : "Rincon", "my" : "Mayaguez"}'></div>
+			<div class="form row" title='test jose' data-label='Keep Record:'>
+				<div class='switch' name='field_enabled2' default='1'>
+					<i class="fa fa-check label-yes" title="Keep Record"></i>
+					<i class="fa fa-trash label-no" title="Delete Record"></i>
+				</div>
+			</div>
+			
+			<div class="form row inline" title='test jose' data-label='State:'>
+				<div class='select size-auto' name='emp_state' default='pr' datasource='states' size='2'></div>
+				<label class="control-label" for="city">City:</label>
+				<div class='select size-auto' name='emp_city' default='ag' datasource='cities'></div>
+			</div>
+			<div class="form row" title='test jose' data-label='Test:'>
+				
 			</div>
 			<div class='header'>
 				<h2>Tables</h2>
@@ -119,7 +131,6 @@
 		</div>
 	</div><!-- end section -->
 	
-	
-	<datasource name="cities" src="@(/sis_common/lookup/cities)">
-	</datasource>
+	<datasource name="states" src="@(/sis_common/lookup/states)"></datasource>
+	<datasource name="cities" src="@(/sis_common/lookup/cities)"></datasource>
 </form>
