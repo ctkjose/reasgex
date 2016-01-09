@@ -65,6 +65,10 @@ The ```client_interactions_element``` is a helper object to represents an elemen
 | val(value) | sets the value of the element |
 | val() | gets the value of the element |
 
+
+
+
+
 ## Using client interactions in your php backend ##
 
 Client interactions allows to write basic interactions from your php backend.

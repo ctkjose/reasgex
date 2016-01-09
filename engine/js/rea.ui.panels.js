@@ -831,8 +831,73 @@ function(){
 rea.registerComponent( "ui", "panel", [],
 function(){
 	var ui_panel = {
+		opRowClasses : ['flow-sm-no','sm-align-right','xs-align-right', 'xs-hide', 'sm-hide','md-hide', 'lg-hide', 'sm-flow', 'xs-flow', 'xs-scroll', 'sm-scoll'],
 		initialize : function(){
-			rea_ui_panels_controller.installEventHandlers();
+		
+		},
+		onViewSizeChanged : function(sz){
+			console.log("@at onViewSizeChanged(" + sz + ")");
+			
+			var sel = ".view-row.sm-flow, .view-row.xs-flow";
+			
+			if((sz == "sm") || (sz == "xs")){
+				var fn = function(o){
+					var tdl = o.find(".view-row-label");
+					var tdc = o.find(".view-row-contents");
+					
+					if(!tdl || (tdl.length <= 0)) return;
+					
+					tdl.detach();
+					tdc.data("o-tdl", tdl);
+					
+					var tdh = $("<div class='view-row-contents-header'></div>");
+					
+					tdh.html( tdl.html() );
+					tdc.prepend(tdh);
+					tdc.attr("colspan", "2");
+					
+				};
+			}else{
+				var fn = function(o){
+					var tdc = o.find(".view-row-contents");
+					var tdl = tdc.data("o-tdl");
+					var tdh = tdc.find(".view-row-contents-header");
+					
+					tdh.remove();
+					o.prepend(tdl);
+					
+					if(o.hasClass("with-label")){
+						tdc.removeAttr("colspan");
+					}
+				};
+			}
+			
+			
+			$(sel).each(function(){
+				var o = $(this);
+				fn(o);
+			});
+			
+		
+			sel = ".view-row.xs-scroll[xs-min-width], .view-row.sm-scroll[sm-min-width]";
+			if((sz == "sm") || (sz == "xs")){
+				fn = function(o){
+					var tdc = o.find(".view-row-contents");
+					var mw = (o.attr("xs-min-width")) ? o.attr("xs-min-width") : (o.attr("sm-min-width") ? o.attr("sm-min-width") : 1000 );
+					tdc.css({"min-width":mw});
+				}
+			}else{
+				fn = function(o){
+					var tdc = o.find(".view-row-contents");
+					tdc.css({"min-width":"auto"});
+				}
+			}
+			
+			$(sel).each(function(){
+				var o = $(this);			
+				fn(o);
+			});
+			
 		},
 		uiExtender : function(extender){
 			console.log("@ui.panel.extender()");
@@ -846,7 +911,7 @@ function(){
 			extender.registerExpandHelper( ".view-input-group", [this, "uiExpandViewInputGroup"] );
 			
 			
-			
+			rea_controller.on("view-size-changed", [this, "onViewSizeChanged"]);
 			
 		},
 		helperGetInlineItems : function(o){
@@ -947,7 +1012,7 @@ function(){
 			var sz = 0; var nsz = 0;
 			o.children("span,div,input,.btn").each(function(){
 				var n = $( this );
-				var d = $("<div></div>");
+				var d = $("<div class='muted'></div>");
 				
 				n.detach();
 				if( n.attr('size') ){
@@ -996,16 +1061,6 @@ function(){
 			
 			var tb = $("<table class='view-input-group' data-expanded='1'></table>");
 			
-			var c = 0;
-			/*
-			o.find(".form.row").each(function(i){
-				var row = $(this);
-				row.detach();
-				c++;
-				tb.append(row);
-			});
-			*/
-			
 			var html = o.html();
 			tb.html(html);
 			
@@ -1013,17 +1068,12 @@ function(){
 		},
 		uiExpandViewHeader : function(o){
 			console.log("@ui.panel.expandElement(Header)");
-			
-			
+
 			var html = o.html();
 			
-			var css = '';
-			var kc = ['flow-sm-no','sm-align-right'];
-			for(var i in kc){
-				console.log("s=" + i);
-				if(o.hasClass(kc[i])) css += " " + kc[i];
-			}
-			var tr = $("<tr class='view-row-header " + css + "'></tr>");
+			var tr = $("<tr class='view-row-header'></tr>");
+			
+			ui_support.copyClasses(o, tr, this.opRowClasses);
 			
 			var tdl = $("<td class='view-row-label'></td>");
 			
@@ -1040,15 +1090,11 @@ function(){
 			var lbl = o.children("label");
 			var has_lbl = (lbl.length > 0) ? true : false;
 			
-			
-			var css = '';
-			var kc = ['flow-sm-no','sm-align-right'];
-			for(var i in kc){
-				console.log("s=" + i);
-				if(o.hasClass(kc[i])) css += " " + kc[i];
-			}
-			var tr = $("<tr class='view-row " + css + "'></tr>");
+			var tr = $("<tr class='view-row'></tr>");
 			tr.removeClass("form").removeClass("row");
+			
+			ui_support.copyClasses(o, tr, this.opRowClasses);
+			ui_support.copyAttr(o,tr, ['xs-min-width', 'sm-min-width']);
 			
 			var tdc = $("<td class='view-row-contents'></td>");
 			var tdl = $("<td class='view-row-label'></td>");

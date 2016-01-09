@@ -167,8 +167,11 @@ pre {
 	padding-top: 11px;
 	padding-bottom: 11px;
 }
-.with-border .view-row,
-.with-border .view-row-header {
+
+.with-border .view-input-group .view-row,
+.with-border .view-input-group .view-row-header,
+.view-input-group.with-border .view-row,
+.view-input-group.with-border .view-row-header {
 	border-left: 1px solid #e5e5e5;
 	border-right: 1px solid #e5e5e5;
 	border-top: 1px solid  #ddd;
@@ -200,15 +203,67 @@ pre {
 	font-size: 16px;
 	
 }
+.xs .view-row.xs-scroll .view-row-contents,
+.sm .view-row.sm-scroll .view-row-contents {
+	/*width: auto;
+	overflow-x: scroll;
+	-webkit-overflow-scrolling: touch;
+	*/
+}
+.xs .view-row.xs-scroll .view-row-contents .table,
+.sm .view-row.sm-scroll .view-row-contents .table {
+	table-layout: auto;
+	width: auto;
+	max-width: none;
+}
 
-@media (max-width: 768px) {
-	.view-row.flow-sm-no {
-	}
-	.view-row.sm-align-right .view-row-contents {
-		text-align: right;
-	}
+.xs #page-wrapper,
+.sm #page-wrapper {
+	padding-left: 0;
+	padding-right: 0;
+}
+.xs #page-wrapper .container-fluid,
+.sm #page-wrapper .container-fluid {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.xs .view-row.xs-hide,
+.sm .view-row.sm-hide,
+.md .view-row.md-hide,
+.lg .view-row.lg-hide {
+	display: none;
+}
+
+.sm .view-row.flow-sm-no {
+}
+.sm .view-row.sm-flow {
+}
+.xs .view-row.xs-flow .view-row-label,
+.sm .view-row.sm-flow .view-row-label {
+	vertical-align: top;
+}
+.sm .view-row.sm-flow .view-row-contents {
 	
 }
+
+.xs .view-row .view-row-label,
+.sm .view-row .view-row-label {
+	text-align: left;
+}
+.xs .view-row.xs-align-right .view-row-contents,
+.sm .view-row.sm-align-right .view-row-contents {
+	text-align: right;
+}
+.xs .view-row.xs-align-right .view-row-label,
+.sm .view-row.sm-align-right .view-row-label {
+	
+}
+.xs .view-input-group .view-row .view-row-label,
+.sm .view-input-group .view-row .view-row-label {
+	
+}
+
 .btn-default.btn-on,
 .btn-default.btn-off {
 	color:  white;
@@ -271,6 +326,10 @@ div.round {
 div.round .header:first-child {
 	border-radius: .25rem .25rem 0 0;
 }
+.xs div.round .header:first-child,
+.sm div.round .header:first-child {
+	border-radius: 0 0 0 0;
+}
 div.round .body:last-child {
 	border-radius: 0 0 .25rem .25rem;
 }
@@ -280,18 +339,21 @@ div.round .footer:last-child {
 
 div.with-border {
 	border: 1px solid #e5e5e5;
+	border-collapse: collapse;
 }
 div.with-border .header {
 	border: 1px solid #e5e5e5;
 }
 div.with-border .footer {
 	border: 1px solid #e5e5e5;
+	border-collapse: collapse;
 }
 div.with-border .body {
 	border: 1px solid #e5e5e5;
 }
 div.with-border .body .header {
 	border-width: 1px 0 1px 0;
+	border-collapse: collapse;
 }
 
 
@@ -317,10 +379,6 @@ div.with-border .body .header {
     padding: 10px;
     margin-bottom: 0px;
 }
-
-
-
-
 .section h1, .section h2, .section h3 {
 	color: #222222;
     margin: 2px 0 0.1em 0;
@@ -381,26 +439,29 @@ div.with-border .body .header {
 
 /* Widgets */
 
-select.size-auto {
-	width: auto;
-}
-select.size-small {
-	width: 20em;
-}
-select.size-medium {
-	width: 30em;
-}
-
-select {
+.select {
 	display: inline-block;
 	font-size: 1em;
 	margin: 10px 0px 10px 0px;
 	
 	width: 100%;
+	max-width:90%;
+	
 	padding: 7px 8px;
 	vertical-align: middle;
 	outline: none;
 }
+.select.size-auto {
+	width: auto;
+}
+.select.size-small {
+	width: 20em;
+}
+.select.size-medium {
+	width: 30em;
+}
+
+
 
 #modal-background {
     display: none;
@@ -456,7 +517,27 @@ td.day.active {
 	border-spacing: 0;
 	
 	font-size:1em;
+	table-layout:fixed;
 }
+.table-wrapper {
+	width: 100%;
+	min-width: 100%;
+	overflow-y: auto;
+	_overflow: auto;
+	margin: 0 0 1em;
+}
+.table-wrapper::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 14px;
+	height: 14px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	border: 3px solid #fff;
+	background-color: rgba(0, 0, 0, .3);
+}
+
 .table thead tr:first-child>th:only-child {
 	border-radius:.25rem .25rem 0 0;
 }
@@ -561,7 +642,9 @@ td.day.active {
 .table tfoot th a:hover {
 	color: #00b2f3;
 }
-
 .table td .select {
 	margin: 0 0;
+}
+.table td.actions {
+	width: auto;
 }

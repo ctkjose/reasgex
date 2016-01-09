@@ -55,6 +55,9 @@ function(){
 			
 			o.val(v);
 			
+			o.attr("title", o.data("o-title") + "; Value " + v);
+				
+				
 			if(attr && attr.hasOwnProperty('ro') && attr.ro){
 				o.attr("disabled", "disabled");
 			}else if(o.attr("disabled")){
@@ -133,7 +136,10 @@ function(){
 			if (!t.attr('placeholder')) {
 				t.attr('placeholder', 'M/D/YYYY');
 			}
-			if (!t.attr('title')) {
+			if (t.attr('title')) {
+				t.data("o-title", t.attr('title'));
+			}else{
+				t.data("o-title", 'M/D/YYYY');
 				t.attr('title', 'M/D/YYYY');
 			}
 			
@@ -151,7 +157,7 @@ function(){
 			
 			d.addClass("uiwc-for-date");
 			
-			d.css({"width": "240px"});
+			d.css({"max-width": "240px"});
 			
 			d.append(t);
 			d.append(b);
@@ -276,7 +282,10 @@ rea_helper_calendar.popup = function(elm){
 			//var t = $('input.datepicker[name=' + n + ']');
 			
 			if ( typeof(rea_helper_calendar.elm) != 'undefined') {
-				rea_helper_calendar.elm.val( dt.as_string );
+				var s = dt.as_string;
+				rea_helper_calendar.elm.val( s );
+				rea_helper_calendar.elm.attr("title", rea_helper_calendar.elm.data("o-title") + "; Value " + s);
+				
 				rea_helper_calendar.elm.trigger('change');
 				rea_helper_calendar.popup("close");
 			}

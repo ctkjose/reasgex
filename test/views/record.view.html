@@ -5,62 +5,62 @@
 			<h2>Employee Record</h2>
 		</div>
 		<div class='view-input-group'>
-			<div class="form row" title='test jose'>
+			<div class="row xs-flow" title='test jose'>
 				<label class="control-label" for="email">Email:</label>
 				<input class='text' name='email' placeholder='Company email' decorate='@upr.edu'>
 			</div>
-			<div class="form row inline" title='test jose' data-label='Name:'>
+			<div class="row inline sm-flow xs-flow" title='test jose' data-label='Name:'>
 				<input class='text' name='emp_name' size='4' placeholder='First Name' data-validate="empty" data-error-message="Please provide a name">
 				<input class='text' name='emp_mname' size='1' placeholder='Initial'>
 				<input class='text' name='emp_lname'  placeholder='First Name' data-validate="empty" data-error-message="Please provide a last name">
 			</div>
-			<div class="form row" title='test jose' data-label='Salary:'>
+			<div class="row" title='test jose' data-label='Salary:'>
 				<span class='decorate'>$</span><input class='text' name='emp_salary' placeholder='Salary'>
 			</div>
 			
-			<div class="form row" data-label='Date Hired:'>
+			<div class="row" data-label='Date Hired:'>
 				<input class='datepicker' type="text" name="start_date" id="start_date" placeholder="Enter date">
 			</div>
 			
-			<div class="form row" title='test jose' data-label='Test:'>
+			<div class="row xs-flow" title='test jose' data-label='Test:'>
 				<span class='decorate'><checkbox aria-label="..." name='emp_test1_enabled' class='bool'></checkbox></span>
 				<input class='text' name='emp_test1' placeholder='Test'>
 			</div>
-			<div class="form row" title='test jose' data-label='Tax Rate:'>
+			<div class="row xs-flow" title='test jose' data-label='Tax Rate:'>
 				<input class='text'name='emp_tax_rate' placeholder='FICA'>
 				<span class='decorate'><i class='fa fa-money'></i></span>
 			</div>
-			<div class="form row" title='test jose' data-label='Checkbox Shorthand 1:'>
+			<div class="row xs-flow" title='test jose' data-label='Checkbox Shorthand 1:'>
 				<checkbox name='field_checkbox01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></checkbox>
 			</div>
-			<div class="row" title='test jose' data-label='Radio Shorthand:'>
+			<div class="row xs-flow" title='test jose' data-label='Radio Shorthand:'>
 				<radio name='field_radio01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></radio>
 			</div>
-			<div class="row sm-align-right" title='test jose' data-label='Yes No Shorthand:'>
+			<div class="row sm-align-right xs-align-right" title='test jose' data-label='Yes No Shorthand:'>
 				<div class='switch' name='field_yesno' default='1' label-yes='Yes' label-no='No'></div>
 			</div>
-			<div class="row sm-align-right" title='test jose' data-label='Enabled:'>
+			<div class="row sm-align-right xs-align-right" title='test jose' data-label='Enabled:'>
 				<div class='switch' name='field_enabled' default='1'></div>
 			</div>
-			<div class="row sm-align-right" title='test jose' data-label='Keep Record:'>
+			<div class="row sm-align-right xs-align-right" title='test jose' data-label='Keep Record:'>
 				<div class='switch' name='field_enabled2' default='1'>
 					<i class="fa fa-check label-yes" title="Keep Record"></i>
 					<i class="fa fa-trash label-no" title="Delete Record"></i>
 				</div>
 			</div>
 			
-			<div class="form row inline" title='test jose' data-label='State:'>
+			<div class="row xs-flow inline" title='test jose' data-label='State:'>
 				<div class='select size-auto' name='emp_state' default='pr' datasource='states' size='2'></div>
 				<label class="control-label" for="city">City:</label>
 				<div class='select size-auto' name='emp_city' default='ag' datasource='cities'></div>
 			</div>
-			<div class="form row" title='test jose' data-label='Test:'>
+			<div class="row xs-flow" title='test jose' data-label='Test:'>
 				
 			</div>
 			<div class='header'>
 				<h2>Tables</h2>
 			</div>
-			<div class="form row" >
+			<div class="row xs-flow" >
 				<table class='table striped' name='records_with_footer' datasource='emp_records'>
 						<thead><tr>
 							<th>ID</th>
@@ -90,10 +90,10 @@
 			<div class='header'>
 				<h2>Table with Repeater</h2>
 			</div>
-			<div class="form row without-label" >
-				<table class='table repeater' name='records2' datasource='schools'>
+			<div class="row xs-flow without-label" xs-min-width="1000px">
+				<table class='table repeater' min-width='800px' name='records2' datasource='schools'>
 					<thead><tr>
-						<th>ID</th>
+						<th size='60px'>ID</th>
 						<th>Name</th>
 						<th>Town</th>
 						<th>Date</th>
@@ -102,7 +102,7 @@
 					</thead>
 					<tbody>
 						<tr class='table-row-template'>
-							<td name='id'>%id%</td>
+							<td name='id' size='60px'>%id%</td>
 							<td name='name'><input class="hidden" scope='records2' name="id"><input class="text" scope='records2' name="school_name" placeholder="Enter school name"></td>
 							<td name='town'><div class='select size-small' scope='records2' name='town' default='%town%' datasource='cities'></div></td>
 							<td name='date'><input class='datepicker' type="text" scope='records2' name="date_created" placeholder="Enter date"></div></td>
@@ -122,7 +122,7 @@
 			<div class='header'>
 				<h2>Comments</h2><span>Enter record comments before saving this employee.</span>
 			</div>
-			<div class="form row" title='test jose' >
+			<div class="row xs-flow" title='test jose' >
 				<textarea rows="3" name="comments"></textarea>
 			</div>
 		</div><!-- end view-input-group -->

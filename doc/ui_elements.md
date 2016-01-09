@@ -114,30 +114,68 @@ To send an action without data use the attribute ```action```.
 
 ## Forms ##
 
+Create a div with the class ```view-input-group```.
+
+```html
+<div class='view-input-group'></div>
+```
+
+We can use ```view-input-group``` with a ```section```.
+```html
+<div class='section with-border round'>
+	<div class='header grey'>
+		<h2>Employee Record</h2>
+	</div>
+	<div class='view-input-group'>
+		...
+	</div>
+	<div class='footer grey'>
+		<button class='btn btn-info' name='btn-continue' confirm="Do you want to save this record?" action-with-data="@(/save)">Save</button>
+	</div>
+</div>
+```
+
+
 ### Header Row ###
 
 Use a div with class ```header``` to create a new row.
 
+```html
+<div class='header'>
+	<h2>Student Holds</h2>
+</div>
+```
 
 ### Form Rows ###
 
-Use a div with classes ```form row``` to create a new row.
+Use a div with class ```row``` to create a new row.
 
 Add a label using the attribute ```data-label```.
 
 ```html
-<div class="form row" data-label='Name:'>
-	<input type='text' class='form-control' name='emp_name' placeholder='Employee name' data-validate="empty" data-error-message="Please provide a name">
+<div class="row" data-label='Name:'>
+	...
 </div>
 ```
 
 If no label is given with ```data-label``` or an actual ```<label>``` element the row will be indented without a label. To have a row without a label and the indentation add the class ```without-label```.
 
 ```html
-<div class="form row without-label">
-	<input type='text' class='form-control' name='emp_name' placeholder='Employee name' data-validate="empty" data-error-message="Please provide a name">
+<div class="row without-label">
+	...
 </div>
 ```
+You can controll the behavior of a row in mobile and small screen using a couple of classes and attributes.
+
+To make a row responsive in compact it self on mobile use the classes ```xs-flow``` or ```sm-flow```.
+
+An "xs" extra small window is one with a width less than 460px. A "sm" small window is on less than 768px.
+
+When a flow class is applied the label of a row will stack on top of the content.
+
+In some case like for example checkboxes and switches you may want to simply align right the row's content, to do this use the class ```sm-align-right``` or ```xs-align-right```.
+
+Use the classes ```xs-hide```, ```sm-hide```, ```md-hide```, ```lg-hide``` to hide a row all together for a specific size.
 
 
 ## Section ##

@@ -8,12 +8,36 @@ function(){
 			//console.log("@ui.table.expandElement()");
 			
 			if(tbl.elmKey("expanded")) return;
-			return;
+			
 			var n = tbl.attr("name");
 			var scope = "default";
 			if( tbl.attr("scope") ) { scope = tbl.attr("scope"); tbl.removeAttr("scope"); tbl.elmKey("scope", scope); }
 
 			var atr = tbl.find('tr.table-row-template');
+			
+			atr.find("td").each(function(){
+				var td = $(this);
+				if(td.attr("size")){
+					td.css({"width":td.attr("size")});
+					td.removeAttr("size");
+				}
+				if(td.attr("max-size")){
+					td.css({"max-width":td.attr("max-size")});
+					td.removeAttr("max-size");
+				}
+			});
+			
+			tbl.find("th").each(function(){
+				var td = $(this);
+				if(td.attr("size")){
+					td.css({"width":td.attr("size")});
+					td.removeAttr("size");
+				}
+				if(td.attr("max-size")){
+					td.css({"max-width":td.attr("max-size")});
+					td.removeAttr("max-size");
+				}
+			});
 			tbl.data('template', atr);
 			
 			tbl.addClass("uiw").addClass("uiwc");
@@ -38,6 +62,19 @@ function(){
 			//var ops = o.find('tr.template');
 			atr.remove();
 			
+			ui_support.applyStandardRowSizeAttr(tbl,tbl);
+			
+			var m = $("<span></span>");
+			tbl.before(m);
+			tbl.detach();
+			var dw = $("<div class='table-wrapper'></div>");
+			dw.append(tbl);
+			
+			if(tbl.hasClass("size-fixed")) {
+				dw.addClass("size-fixed");
+			}
+			
+			m.replaceWith(dw);
 		},
 		uiExtender : function(extender){
 			console.log("@ui.table.extender()");
