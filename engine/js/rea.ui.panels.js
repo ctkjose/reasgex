@@ -326,12 +326,13 @@ function(){
 				b1.addClass("active");
 			}
 			
-			if(attr && attr.hasOwnProperty('ro') && attr.ro){
+			if(attr && attr.hasOwnProperty('ro') && (attr.ro=='1')){
 				b1.attr("disabled", "disabled");
 				b2.attr("disabled", "disabled");
 			}else {
-				if(b1.attr("disabled")) b1.removeAttr("disabled");
-				if(b2.attr("disabled")) b2.removeAttr("disabled");
+				console.log("remove disabled == " + p.attr("name") );
+				b1.removeAttr("disabled");
+				b2.removeAttr("disabled");
 			}
 
 			o.val(v);
@@ -839,7 +840,12 @@ function(){
 			extender.registerExpandHelper( "span.decorate", [this, "uiExpandSpanDecorations"] );
 			extender.registerExpandHelper( "group", [this, "uiExpandGroup"] );
 			
-			extender.registerExpandHelper( ".form.row", [this, "uiExpandRow"] );
+			
+			extender.registerExpandHelper( ".view-input-group .header", [this, "uiExpandViewHeader"] );
+			extender.registerExpandHelper( ".view-input-group .row", [this, "uiExpandViewRow"] );
+			extender.registerExpandHelper( ".view-input-group", [this, "uiExpandViewInputGroup"] );
+			
+			
 			
 			
 		},
@@ -984,20 +990,123 @@ function(){
 			
 			o.replaceWith(g);
 		},
-		uiExpandRow : function(o){
+		uiExpandViewInputGroup : function(o){
+			console.log("@ui.panel.expandElement(Body)");
+			
+			
+			var tb = $("<table class='view-input-group' data-expanded='1'></table>");
+			
+			var c = 0;
+			/*
+			o.find(".form.row").each(function(i){
+				var row = $(this);
+				row.detach();
+				c++;
+				tb.append(row);
+			});
+			*/
+			
+			var html = o.html();
+			tb.html(html);
+			
+			o.replaceWith( tb );
+		},
+		uiExpandViewHeader : function(o){
+			console.log("@ui.panel.expandElement(Header)");
+			
+			
+			var html = o.html();
+			
+			var css = '';
+			var kc = ['flow-sm-no','sm-align-right'];
+			for(var i in kc){
+				console.log("s=" + i);
+				if(o.hasClass(kc[i])) css += " " + kc[i];
+			}
+			var tr = $("<tr class='view-row-header " + css + "'></tr>");
+			
+			var tdl = $("<td class='view-row-label'></td>");
+			
+			tdl.attr("colspan",2);
+			tdl.html(html);
+			
+			tr.append(tdl);
+			
+			o.replaceWith( tr );
+		},
+		uiExpandViewRow : function(o){
+			console.log("@ui.panel.expandElement(FormRow)");
+			
+			var lbl = o.children("label");
+			var has_lbl = (lbl.length > 0) ? true : false;
+			
+			
+			var css = '';
+			var kc = ['flow-sm-no','sm-align-right'];
+			for(var i in kc){
+				console.log("s=" + i);
+				if(o.hasClass(kc[i])) css += " " + kc[i];
+			}
+			var tr = $("<tr class='view-row " + css + "'></tr>");
+			tr.removeClass("form").removeClass("row");
+			
+			var tdc = $("<td class='view-row-contents'></td>");
+			var tdl = $("<td class='view-row-label'></td>");
+			
+			if (has_lbl) {
+				lbl.detach();
+				tdl.append(lbl);
+			}else if (o.attr('data-label')) {
+				has_lbl = true;
+				lbl = $("<label class=\"control-label\">" + o.data("label") + "</label>");
+				tdl.append(lbl);
+			}
+			
+			if(has_lbl){
+				tdl.append(lbl);
+				tr.append(tdl);
+				tr.addClass("with-label");
+			}else{
+				tr.addClass("without-label");
+				tdc.attr("colspan",2);
+			}
+			
+			var html = null;
+			if( o.hasClass("inline") ){
+				html = this.helperGetInlineItems(o);
+			}else{
+				html = o.html();
+			}
+			
+			tdc.append(html);
+			tr.append(tdc);
+			o.html("");
+			
+			o.replaceWith( tr );
+			
+			//o.addClass("form-group");
+		},
+		uiExpandRow1 : function(o){
 			console.log("@ui.panel.expandElement(FormRow)");
 			
 			var sz = 'col-sm-10';
 			var lbl = o.children("label");
 			//var has_lbl = (typeof(lbl) !== 'undefined') ? true : false;
 			var has_lbl = (lbl.length > 0) ? true : false;
+			var cls = '';
+			
+			if(o.hasClass("col-keep-together")){
+				cls += " col-keep-together";
+				o.removeClass("col-keep-together");
+			}
+			
 			if (has_lbl) {
 				lbl.detach();
 				lbl.addClass("col-sm-2");
 			}else if (o.attr('data-label')) {
 				has_lbl = true;
 				
-				lbl = $("<label class=\"control-label col-sm-2\">" + o.data("label") + "</label>");
+				lbl = $("<label class=\"control-label col-sm-2" + cls + "\">" + o.data("label") + "</label>");
 			}else{
 				sz += " col-sm-offset-2";
 			}
@@ -1009,7 +1118,7 @@ function(){
 				html = o.html();
 			}
 			
-			var d = $("<div></div>");
+			var d = $("<div class='view-row-content'></div>");
 			d.append(html);
 			o.html("");
 			
@@ -1018,7 +1127,7 @@ function(){
 			}else if(has_lbl) {
 				o.append(lbl);
 			}
-			
+			d.addClass(cls);
 			d.addClass(sz);
 			o.append(d);
 			o.addClass("form-group");

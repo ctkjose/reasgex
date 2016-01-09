@@ -151,6 +151,64 @@ pre {
 	display:  inline-block !important;
 }
 
+.view-input-group {
+	table-layout:fixed;
+	width: 100%;
+	border-collapse: collapse;
+}
+.section .body .view-input-group {
+	margin: -15px -15px -15px -15px;
+}
+.view-input-group td {
+	vertical-align: middle;
+}
+.view-row {
+	border-collapse: collapse;
+	padding-top: 11px;
+	padding-bottom: 11px;
+}
+.with-border .view-row,
+.with-border .view-row-header {
+	border-left: 1px solid #e5e5e5;
+	border-right: 1px solid #e5e5e5;
+	border-top: 1px solid  #ddd;
+	border-bottom: 1px solid  #ddd;
+}
+.view-row td {
+	padding: 11px 15px 11px 15px;
+}
+.view-row-label {
+	text-align: right;
+	width: 35%;
+}
+.view-row-label label {
+	line-height: 1.42857143;
+}
+.view-row-content {
+	width: 85%;
+	padding: 11px 15px 11px 15px;
+}
+
+.view-row-header .view-row-label {
+	width: 100%;
+	text-align: left;
+	padding: 11px 15px 11px 15px;
+	background-color: #EFEFF4;
+}
+.view-row-header h2 {
+	font-weight: 400;
+	font-size: 16px;
+	
+}
+
+@media (max-width: 768px) {
+	.view-row.flow-sm-no {
+	}
+	.view-row.sm-align-right .view-row-contents {
+		text-align: right;
+	}
+	
+}
 .btn-default.btn-on,
 .btn-default.btn-off {
 	color:  white;

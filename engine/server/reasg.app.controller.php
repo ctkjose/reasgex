@@ -181,8 +181,10 @@ class client_interaction {
 		$dsn = 'ds_' . uniqid();
 		
 		if(is_object($data) && is_a($data, '\reasg\ui_datasource') ){
+			error_log("@populateSelectorWithDataset got ds");
 			$ds = $data;
 		}else{
+			error_log("@populateSelectorWithDataset create ds");
 			$ds = \reasg\ui_datasource::createDataset($dsn);
 			
 			if(is_array($data) ){

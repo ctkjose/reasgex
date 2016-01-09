@@ -4,7 +4,7 @@
 		<div class='header grey'>
 			<h2>Employee Record</h2>
 		</div>
-		<div class='body'>			
+		<div class='view-input-group'>
 			<div class="form row" title='test jose'>
 				<label class="control-label" for="email">Email:</label>
 				<input class='text' name='email' placeholder='Company email' decorate='@upr.edu'>
@@ -33,16 +33,16 @@
 			<div class="form row" title='test jose' data-label='Checkbox Shorthand 1:'>
 				<checkbox name='field_checkbox01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></checkbox>
 			</div>
-			<div class="form row" title='test jose' data-label='Radio Shorthand:'>
+			<div class="row" title='test jose' data-label='Radio Shorthand:'>
 				<radio name='field_radio01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></radio>
 			</div>
-			<div class="form row" title='test jose' data-label='Yes No Shorthand:'>
+			<div class="row sm-align-right" title='test jose' data-label='Yes No Shorthand:'>
 				<div class='switch' name='field_yesno' default='1' label-yes='Yes' label-no='No'></div>
 			</div>
-			<div class="form row" title='test jose' data-label='Enabled:'>
+			<div class="row sm-align-right" title='test jose' data-label='Enabled:'>
 				<div class='switch' name='field_enabled' default='1'></div>
 			</div>
-			<div class="form row" title='test jose' data-label='Keep Record:'>
+			<div class="row sm-align-right" title='test jose' data-label='Keep Record:'>
 				<div class='switch' name='field_enabled2' default='1'>
 					<i class="fa fa-check label-yes" title="Keep Record"></i>
 					<i class="fa fa-trash label-no" title="Delete Record"></i>
@@ -125,7 +125,7 @@
 			<div class="form row" title='test jose' >
 				<textarea rows="3" name="comments"></textarea>
 			</div>
-		</div>
+		</div><!-- end view-input-group -->
 		<div class='footer grey'>
 			<button class='btn btn-info' name='btn-continue' confirm="are you sure" action-with-data="@(/save)">Continue</button>
 		</div>

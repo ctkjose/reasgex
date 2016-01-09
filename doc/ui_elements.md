@@ -56,6 +56,8 @@ Use &quot; to escape double quotes on options or in your ```label``` attribute.
 
 ## Switch ##
 
+The switch is a checkbox substitude for simple yes no option. The switch always use a ```1``` or ```0``` value.  
+
 ```html
 <div class='switch' name='field_enabled' default='1'></div>
 ```

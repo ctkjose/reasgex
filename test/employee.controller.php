@@ -41,7 +41,15 @@ class employee extends \reasg\view_controller {
 		$ui->showAlertSuccess("Record saved...");
 		
 		$a = ['start_date'=> '09/23/2015', 'fld_town01'=>'mc'];
-		$ui->populateSelectorWithDataset("employee", $a);
+		//$ui->populateSelectorWithDataset("employee", $a);
+		
+		
+		$ds = \reasg\ui_datasource::createDataset('employee');
+		$ds->setItems($a);
+		$ds->field('field_enabled')->readonly(false);
+		
+		$ui->populateSelectorWithDataset("employee", $ds);
+		
 		
 		
 		sleep( 5 );
@@ -72,6 +80,7 @@ class employee extends \reasg\view_controller {
 		];
 		
 		//setting an attribute to a binded field
+		$ds->field('field_enabled')->readonly();
 		$ds->field('emp_tax_rate')->readonly()->placeholder('FICA NOT REQUIRED');
 		$ds->field('email')->decoration("@uprm.edu");
 		
@@ -118,7 +127,7 @@ class employee extends \reasg\view_controller {
 		$dataset->append('2', ['id'=>'2', 'school_name'=> 'Betances', 'town'=>'ag', 'type'=>'sc', 'date_created' => '6/15/2015']);
 		$dataset->append('3', ['id'=>'3', 'school_name'=> 'John B Waston', 'town'=>'mc', 'type'=>'sc', 'date_created' => '7/16/2015']);
 	
-
+		
 		$dataset->send();
 		
 		

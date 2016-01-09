@@ -7,6 +7,8 @@ function(){
 		uiExpandElement: function(tbl){
 			//console.log("@ui.table.expandElement()");
 			
+			if(tbl.elmKey("expanded")) return;
+			return;
 			var n = tbl.attr("name");
 			var scope = "default";
 			if( tbl.attr("scope") ) { scope = tbl.attr("scope"); tbl.removeAttr("scope"); tbl.elmKey("scope", scope); }

@@ -35,7 +35,9 @@ class lookup extends \reasg\view_controller {
 		
 		$cities = [
 			'pr'=> ['ag'=>'Aguadilla','ad'=>'Aguada', 'an'=>'Añasco', 'ar'=>'Arecibo', 'is'=>'Isabela', 'mc'=>'Moca', 'mg'=>'Mayagüez', 'sb'=>'Sabana Grande', 'sb'=>'San German', 'sj'=>'San Juan', 'ho'=>'Hormigeros', 'ya'=>'Yauco', 'po'=>'Ponce', 'ri'=>'Rincon', 'by'=>'Bayamon', 'hu'=>'Humacao', 'ut'=>'Utuado'],
-			'fl'=> ['or'=>'Orlando','mi'=>'Miami'],
+			'fl'=> ['or'=>'Orlando','mi'=>'Miami', 'tp'=>'Tampa', 'kw'=>'Key West', 'js'=>'Jacksonville', 'th'=>'Tallahassee', 'fd'=>'Fort Lauderdale'],
+			'ny'=> ['nyc'=>'New York City','bf'=>'Buffalo', 'bn'=>'Bronx', 'ab'=>'Albany', 'sy'=>'Syracuse', 'ro'=>'Rochester'],
+			'vi'=> ['ri'=> 'Richmond', 'vb'=>'Virginia Beach', 'nf'=>'Norfolk', 'wi'=>'Williamsburg', 'qa'=>'Quantico'],
 		];
 		
 		//this event may receive an optional "q" parameter with a state 
