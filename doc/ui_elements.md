@@ -146,15 +146,23 @@ Use a div with class ```header``` to create a new row.
 </div>
 ```
 
-### Form Rows ###
+### View Rows ###
 
 Use a div with class ```row``` to create a new row.
 
 Add a label using the attribute ```data-label```.
 
 ```html
-<div class="row" data-label='Name:'>
-	...
+<div class="row xs-flow" data-label="Email:" title='Employee email'>
+	<input class='text' name='email' placeholder='Company email' decorate='@upr.edu'>
+</div>
+```
+
+Also you can also add an actual ```<label>``` element.
+```html
+<div class="row xs-flow" title='Employee email'>
+	<label for="email">Email:</label>
+	<input class='text' name='email' placeholder='Company email' decorate='@upr.edu'>
 </div>
 ```
 
@@ -165,9 +173,11 @@ If no label is given with ```data-label``` or an actual ```<label>``` element th
 	...
 </div>
 ```
+
+### Rows and small screens  ###
 You can controll the behavior of a row in mobile and small screen using a couple of classes and attributes.
 
-To make a row responsive in compact it self on mobile use the classes ```xs-flow``` or ```sm-flow```.
+To make a row responsive and compact it self on mobile use the classes ```xs-flow``` or ```sm-flow```.
 
 An "xs" extra small window is one with a width less than 460px. A "sm" small window is on less than 768px.
 

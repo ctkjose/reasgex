@@ -1101,8 +1101,9 @@ function(){
 			
 			if (has_lbl) {
 				lbl.detach();
+				lbl.addClass("control-label");
 				tdl.append(lbl);
-			}else if (o.attr('data-label')) {
+			}else if (o.elmKey('label') ) {
 				has_lbl = true;
 				lbl = $("<label class=\"control-label\">" + o.data("label") + "</label>");
 				tdl.append(lbl);

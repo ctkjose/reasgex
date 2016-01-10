@@ -184,8 +184,15 @@ pre {
 	text-align: right;
 	width: 35%;
 }
-.view-row-label label {
+.view-row-label label,
+.view-row-contents-header label {
 	line-height: 1.42857143;
+	
+	font-size: 16px;
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	font-weight: normal;
+	font-style: normal;
+}
 }
 .view-row-content {
 	width: 85%;
@@ -247,10 +254,21 @@ pre {
 	
 }
 
+.xs .view-row .view-row-contents,
+.sm .view-row .view-row-contents {
+	width: auto;
+}
+
 .xs .view-row .view-row-label,
 .sm .view-row .view-row-label {
 	text-align: left;
+	width: auto;
 }
+.xs .view-row .view-row-label label,
+.sm .view-row .view-row-label label {
+
+}
+
 .xs .view-row.xs-align-right .view-row-contents,
 .sm .view-row.sm-align-right .view-row-contents {
 	text-align: right;
@@ -406,8 +424,11 @@ div.with-border .body .header {
 
 
 .rea-group {
-	
+	width: 100%;
 }
+
+
+
 
 @media only screen and (min-width: 768px) {
 	
