@@ -8,13 +8,11 @@
 	<meta name="viewporte" content="width=device-width">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	<link type="text/css" rel="stylesheet" href='vendor/engine/bootstrap/css/bootstrap.css' media='all'\>
-	<!-- <link type="text/css" rel="stylesheet" href='engine/vendor/bootstrap/css/bootstrap-theme.css' media='all'\> -->
 	<link type="text/css" rel="stylesheet" href='vendor/engine/font-awesome/font-awesome.css' media='all'\>
-	<link type="text/css" rel="stylesheet" href='css/engine/reasg-ui.css' media='all'\>
-	<link type="text/css" rel="stylesheet" href='css/engine/reasg-theme.css' media='all'\>
 	
-
+	<link type="text/css" rel="stylesheet" href='css/engine/reasg.ui.primitives.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='css/engine/reasg.ui.css' media='all'\>
+	
 	{{#repeat css[includes]}} 
 	<link type="text/css" rel="stylesheet" href='{{url}}' {{attr}}\>
 	{{end css[includes]}}
@@ -26,58 +24,42 @@
 	{{header}}
 </head>
 <body>
-<div id='wrapper'>
+<div class='view-page with-sidebar left-pane-hidden'>
 	<div id="noty-holder"></div>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="{{brand_url}}">{{brand}}</a>
+	<div class='view bar bar-nav'>
+		<div class='brand pull-left'>{{brand}}</div>
+		<div class='button sidebar-toggle pull-right'><i class="fa fa-bars"></i></div>
+		<div class='button pull-right disabled' title="Settings" role="button"><i class="fa fa-cog"></i></div>
+		<div class='button pull-right' role="button"><i class="fa fa-home"></i></div>
+	</div><!-- bar-nav -->
+	<div class='left-pane'>
+		<div class='sidebar with-brand list-pane dark' role="navigation">
+			<div class='brand'>
+				<div class='button sidebar-toggle pull-right'><i class="fa fa-chevron-left"></i></div>
+				{{brand}}
 			</div>
-			
-			<div class="navbar-default sidebar">
-				<div class="sidebar-nav navbar-collapse" role="navigation">
-					<ul class="nav in">
-						<li>
-							<a href="#">Dashboard</a>
-						</li>
-						<li>
-							<a href="#">Shortcuts</a>
-						</li>
-					</ul>
-				</div><!-- end sidebar-nav -->
-			</div><!-- end navbar-default -->
-			<ul class="nav navbar-top-links navbar-right navbar-collapse">
-				<li><a href="#"><span class="glyphicon glyphicon-user"></span> Please login...</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-home" title="Home..."></span></a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-cog" title="Options..."></span></a></li>
-			</ul>
-		<div class='container-fluid navbar-collapse'>
-			
-			</div>
-	</div><!-- end nav -->
-	<div id='page-wrapper'>
-		<div class='container-fluid'>
-			<div class='body-top place-alerts'></div>
-		{{body}}
-		</div><!-- end container -->
-	</div><!-- end page-wrapper -->
-</div><!-- end wrapper -->
-
+			<a class='menu-entry list-row' href="#">Dashboard</a>
+			<a class='menu-entry list-row' href="#">Shortcuts</a>
+		</div>
+	</div><!-- left-pane -->
+	<div class='right-pane'>
+		<div class='view view-main'>
+			{{body}}
+		</div><!-- view-main -->
+	</div><!-- right-pane -->
+<div><!-- view-page -->	
+	
 <script type='text/javascript' src='vendor/engine/jquery/jquery-2.1.3.min.js'></script>
-<script type='text/javascript' src='vendor/engine/bootstrap/js/bootstrap.min.js'></script>
 <script type='text/javascript' src='vendor/engine/medialize/URI.min.js'></script>
 <!-- <script type='text/javascript' src='../engine/vendor/require/require.js'></script> -->
 
 
 <script type='text/javascript' src='js/engine/rea.framework.js'></script>
 
-<script type='text/javascript' src='js/engine/rea.helper.jquery.js'></script>
+<script type='text/javascript' src='js/engine/jquery.reasg.js'></script>
+<script type='text/javascript' src='js/engine/jquery.reasgui.js'></script>
 <script type='text/javascript' src='vendor/engine/others/jquery.injectCSS.js'></script>
+
 <script type='text/javascript' src='js/engine/rea.helper.types.js'></script>
 <script type='text/javascript' src='js/engine/rea.helper.ui.js'></script>
 
@@ -89,6 +71,11 @@
 <script type='text/javascript' src='js/engine/rea.ui.extend.js'></script>
 <script type='text/javascript' src='js/engine/rea.ui.datasource.js'></script>
 <script type='text/javascript' src='js/engine/rea.ui.panels.js'></script>
+
+<script type='text/javascript' src='js/engine/rea.rte.js'></script>
+
+<script type='text/javascript' src='js/engine/rea.ui.widgets.min.js'></script>
+<script type='text/javascript' src='js/engine/rea.ui.wg.basic.js'></script>
 <script type='text/javascript' src='js/engine/rea.ui.table.js'></script>
 <script type='text/javascript' src='js/engine/rea.ui.calendar.js'></script>
 
@@ -111,15 +98,17 @@
 		{{js_ready}}
 		
 		{{js[inline]}}
+		
+		
+		rea_controller.on("std_sn_change", function(msg){
+			console.log("@std_sn_change");
+			console.log(arguments);
+		});
 	});
 	
 	{{js_init}}
 	
 	{{js_payload}}
-	
-	
-	
-	
 </script>
 </body>
 </html>

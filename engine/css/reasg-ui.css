@@ -151,53 +151,15 @@ pre {
 	display:  inline-block !important;
 }
 
-.view-input-group {
-	table-layout:fixed;
-	width: 100%;
-	border-collapse: collapse;
-}
-.section .body .view-input-group {
-	margin: -15px -15px -15px -15px;
-}
-.view-input-group td {
-	vertical-align: middle;
-}
-.view-row {
-	border-collapse: collapse;
-	padding-top: 11px;
-	padding-bottom: 11px;
-}
 
-.with-border .view-input-group .view-row,
-.with-border .view-input-group .view-row-header,
-.view-input-group.with-border .view-row,
-.view-input-group.with-border .view-row-header {
-	border-left: 1px solid #e5e5e5;
-	border-right: 1px solid #e5e5e5;
-	border-top: 1px solid  #ddd;
-	border-bottom: 1px solid  #ddd;
-}
+
+
+
 .view-row td {
 	padding: 11px 15px 11px 15px;
 }
-.view-row-label {
-	text-align: right;
-	width: 35%;
-}
-.view-row-label label,
-.view-row-contents-header label {
-	line-height: 1.42857143;
-	
-	font-size: 16px;
-	font-family: 'Helvetica Neue', Helvetica, sans-serif;
-	font-weight: normal;
-	font-style: normal;
-}
-}
-.view-row-content {
-	width: 85%;
-	padding: 11px 15px 11px 15px;
-}
+
+
 
 .view-row-header .view-row-label {
 	width: 100%;
@@ -210,19 +172,7 @@ pre {
 	font-size: 16px;
 	
 }
-.xs .view-row.xs-scroll .view-row-contents,
-.sm .view-row.sm-scroll .view-row-contents {
-	/*width: auto;
-	overflow-x: scroll;
-	-webkit-overflow-scrolling: touch;
-	*/
-}
-.xs .view-row.xs-scroll .view-row-contents .table,
-.sm .view-row.sm-scroll .view-row-contents .table {
-	table-layout: auto;
-	width: auto;
-	max-width: none;
-}
+
 
 .xs #page-wrapper,
 .sm #page-wrapper {
@@ -235,53 +185,150 @@ pre {
 	padding-right: 0;
 }
 
-.xs .view-row.xs-hide,
-.sm .view-row.sm-hide,
-.md .view-row.md-hide,
-.lg .view-row.lg-hide {
-	display: none;
+/* Attributes ------------------------------- */
+.width-auto,
+.xs .xs-width-auto,
+.sm .sm-width-auto,
+.md .md-width-auto,
+.lg .lg-width-auto {
+	width: auto !important;
 }
 
-.sm .view-row.flow-sm-no {
-}
-.sm .view-row.sm-flow {
-}
-.xs .view-row.xs-flow .view-row-label,
-.sm .view-row.sm-flow .view-row-label {
-	vertical-align: top;
-}
-.sm .view-row.sm-flow .view-row-contents {
-	
+.align-right,
+.xs .xs-align-right,
+.sm .sm-align-right,
+.md .md-align-right,
+.lg .lg-align-right {
+	text-align: right !important;
 }
 
+.align-left,
+.xs .xs-align-left,
+.sm .sm-align-left,
+.md .md-align-left,
+.lg .lg-align-left {
+	text-align: right !important;
+}
+
+.hide,
+.xs .xs-hide,
+.sm .sm-hide,
+.md .md-hide,
+.lg .lg-hide {
+	display: none !important;
+}
+
+
+/* view-input group -------------------*/
+
+.view-input-group {
+	width: 100%;
+	border-collapse: collapse;
+}
+.section .body .view-input-group1 {
+	margin: -15px -15px -15px -15px;
+}
+
+.with-border .view-input-group .view-row,
+.with-border .view-input-group .view-row-header,
+.view-input-group.with-border .view-row,
+.view-input-group.with-border .view-row-header {
+	border-left: 1px solid #e5e5e5;
+	border-right: 1px solid #e5e5e5;
+	border-bottom: 1px solid  #ddd;
+}
+
+.with-border .view-input-group .view-row:first-child {
+	border-top: 1px solid  #ddd;
+}
+.with-border .view-input-group .view-row:last-child {
+	border-bottom: none;
+}
+
+.view-row {
+	display: table;
+	width: 100%;
+	border-collapse: collapse;
+	padding-top: 11px;
+	padding-bottom: 11px;
+}
+
+
+
+
+
+
+
+
+
+
+.view-row .view-row-contents {
+	display: table-cell;
+	width: 75%;
+	padding: 11px 15px 11px 15px;
+}
 .xs .view-row .view-row-contents,
 .sm .view-row .view-row-contents {
-	width: auto;
+	
+}
+.md .view-row .view-row-contents,
+.lg .view-row .view-row-contents {
+
+}
+
+
+
+/* ---------- .view-row-label */
+.view-row .view-row-label {
+	display: table-cell;
+	padding: 8px 15px;
+	text-align: left;
+	width: 25%;
+}
+.view-row .view-row-label label,
+.view-row-contents-header label {
+	line-height: 21px;
+	
+	font-size: 16px;
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	font-weight: normal;
+	font-style: normal;
+
 }
 
 .xs .view-row .view-row-label,
 .sm .view-row .view-row-label {
-	text-align: left;
-	width: auto;
+	
 }
 .xs .view-row .view-row-label label,
 .sm .view-row .view-row-label label {
 
 }
-
-.xs .view-row.xs-align-right .view-row-contents,
-.sm .view-row.sm-align-right .view-row-contents {
-	text-align: right;
-}
-.xs .view-row.xs-align-right .view-row-label,
-.sm .view-row.sm-align-right .view-row-label {
+.md .view-row .view-row-label,
+.lg .view-row .view-row-label {
 	
 }
+.xs .view-row.xs-flow,
+.sm .view-row.sm-flow {
+	display:  block;
+}
+.xs .view-row.xs-flow .view-row-label,
+.sm .view-row.sm-flow .view-row-label {
+	display:  block;
+	width: 100%;
+}
+.xs .view-row.xs-flow .view-row-contents,
+.sm .view-row.sm-flow .view-row-contents {
+	display:  block;
+	width: 100%;
+}
+
 .xs .view-input-group .view-row .view-row-label,
 .sm .view-input-group .view-row .view-row-label {
 	
 }
 
+/* Switch */
 .btn-default.btn-on,
 .btn-default.btn-off {
 	color:  white;
@@ -307,6 +354,75 @@ pre {
 
 }
 
+/* Widgets */
+
+
+.textbox {
+    width: 100%;
+    height: 35px;
+    -webkit-appearance: none;
+    padding: 0 15px;
+    line-height: 21px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    outline: 0;
+}
+
+.widgets-in-row .textbox {
+	border-radius: 0;
+	border-width: 0;
+	border-bottom: 1px solid #fff;
+}
+
+
+.widgets-in-row .textbox:focus {
+	border-bottom-color: #66AFE9;
+}
+.widgets-in-row .textbox:hover {
+	/*background-color: #F6F6F6;*/
+	/*border-bottom-width: 2px;*/
+}
+
+.widgets-in-row .input-group1 {
+	position: relative;
+	display: table;
+	border-collapse: separate;
+}
+.widgets-in-row .input-group1:hover {
+	/*background-color: #F6F6F6;*/
+}
+.widgets-in-row .input-group-addon1 {
+	
+	font-size: 1.1em;
+	
+	padding-left: 12px;
+	padding-right: 12px;
+	text-align: center;
+	color: #aaa;
+	border-bottom: 1px solid #fff;
+	display: table-cell;
+	
+	
+	width: 1%;
+	min-width: 30px;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+.widgets-in-row .input-group1:hover .input-group-addon1 {
+	color: #555;
+	background-color: #ddd;
+	border-bottom-color: #ddd;
+	/*border-bottom-width: 2px;*/
+	
+}
+.widgets-in-row .input-group-addon1 label {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+
+/* Checkboxes */
 fieldset.checkboxes, fieldset.radios {
 	min-height: 27px;
 }

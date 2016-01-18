@@ -68,7 +68,7 @@ var rea_helper_ui_extender = function(){
 					rea.types.callback(def.fn, o);
 				});
 			}
-			var defaults = [".view.extend"];
+			var defaults = [".extend"];
 			for(var i in defaults){
 				this.expandForSelector(defaults[i]);	
 			}

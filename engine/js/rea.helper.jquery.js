@@ -73,6 +73,7 @@ jQuery.fn.elmOptionsGet = function(){
 };
 
 
+//Plugins for UI interactions
 
 //A basic Popover/Modal Plugin
 jQuery.fn.ui_popup = function(options){
@@ -95,6 +96,7 @@ jQuery.fn.ui_popup = function(options){
 		'template' : '',
 		'target' : null,
 		'center' : false,
+		'cssclass' : 'dialog',
 		'modal': false,
 	}, options );
 	
@@ -116,7 +118,7 @@ jQuery.fn.ui_popup = function(options){
 	
 	e.css("position","absolute");
 	e.show();
-	e.addClass("in");
+	e.addClass("in").addClass(ops.cssclass);
 	
 	var h = e.outerHeight();
 	var w = e.outerWidth();
@@ -134,4 +136,19 @@ jQuery.fn.ui_popup = function(options){
 		var p = ops.target.offset();
 		e.animate({top: (p.top + ops.target.outerHeight())+ 'px', left: p.left + 'px'}, 0);
 	}
+}
+
+jQuery.fn.ui_screenCenter = function() {
+		var e = this;
+		
+		var $window = $(window);
+		var $document = $(document);
+		var winWidth = $window.width();
+		var winHeight = $window.height();
+		var scrollLeft = $document.scrollLeft();
+		var scrollTop = $document.scrollTop();
+		var boxWidth = e.outerWidth(true);
+		var boxHeight = e.outerHeight(true);		
+
+		e.css ({ left: (winWidth-boxWidth)/2+scrollLeft, top: (winHeight-boxHeight)/2+scrollTop });
 }

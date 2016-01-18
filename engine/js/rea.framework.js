@@ -5,6 +5,7 @@ var rea = function(){
 		version : '1.0',
 		controller : {},
 		lang : 'en',
+		types : {},
 		ui : {},
 		components : {},
 		components_registered : [],
@@ -115,5 +116,5 @@ rea.types.callback = function(fn){
 rea.types.callbackWithArguments = function(fn, args){
 	var a = [fn];
 	Array.prototype.push.apply(a, args);
-	rea.types.callback.apply(null, a );
+	rea.types.callback.apply(rea.types, a );
 }

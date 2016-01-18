@@ -36,9 +36,42 @@ RewriteRule ^assets/([A-Za-z0-9-_]+)/([A-Za-z0-9-_\.\/]+)$ $1/assets/$2 [L,QSA]
 
 =================
 GIT NOTES
-git commit -m "notes"...
+http://www.git-tower.com/blog/git-for-subversion-users-cheat-sheet/
 
-git checkout a1e8fb5 hello.py
-git checkout HEAD hello.py
+
+
+git config --global user.name "ctkjose"
+git config --global user.email jcuevas@mac.com
+
+
+### Using filemerge ###
+nano ~/bin/git-diff-cmd.sh
+```
+        #!/bin/sh
+        /usr/bin/opendiff "$2" "$5" -merge "$1"
+```
+
+chmod +x ~/bin/git-diff-cmd.sh
+git config --global diff.external ~/bin/git-diff-cmd.sh
+
+
+git diff rev path
+git checkout path	==> svn revert path
+
+git commit -a -m "comments"  ==>svn commit
+
+git add file.php
+git commit -a -m "notes"... file.php
+git pull	==>svn update
+
+git status
+git blame file
+git log
+git log --oneline
+git log --grep="<pattern>"
+
+git checkout a1e8fb5 hello.py ===>svn revert
+git checkout HEAD hello.py ===>svn revert
 
 git revert <commit>   //new commit with diff path of prior last commited
+git revert HEAD

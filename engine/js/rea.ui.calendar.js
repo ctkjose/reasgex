@@ -78,37 +78,11 @@ function(){
 		 */
 		uiExtender : function(extender){
 			console.log("@ui.calendar.extender()");
-			extender.registerExpandHelper( ".datepicker", [this, "uiExpandElement"] );
+			extender.registerExpandHelper( ".date", [this, "uiExpandElement"] );
 			
-			$("body").on('blur', 'input[data-type=date]', function(e){
-				var o = $(e.target);
-				var n = o.attr('name');
-				var v = o.val();
 			
-				var r = /^(\d+)\/(\d+)\/\d{4}$/;
-				if ( v.length == 0) {
-					o.css({'background-color' : '#fff'});
-					return;
-				}
-				if (!r.test(v)) {
-					o.css({'background-color' : '#FF0000'}).css({'background-color' : '#FFEEEE'});
-				}else{
-					o.css({'background-color' : '#fff'});
-				}
-			});
 			
-			$("body").on('click touchend', '.input-group-addon.ui_cal_btn', function(e){
-				e.stopPropagation();
-				var o = $(e.target);
-				var p = o.parents('div.datepicker:first');
-				var t = p.find('input[type=text]');
-				
-				rea_helper_calendar.popup(t);
-				 
-				
-				//rea.components.ui.calendar.state.txt = t;
-				//rea.components.ui.calendar.popup();
-			});
+			
 		},
 		uiExpandElement: function(o){
 			//console.log("@ui.calendar.expandElement()");
@@ -128,43 +102,34 @@ function(){
 				data_class = o.attr('class');
 			}
 			
-			var d = $('<div class="input-group ' + data_class + '"  data-type="' + data_type + '" name="' + n + '_frame">');
-			var b = $('<span class="input-group-addon ui_cal_btn"><i class="fa fa-calendar"></i></span>');
-		
-			var t = o.clone();
+			var d = o;
+			var t = o;
+						
+			if (!o.attr('placeholder')) o.attr('placeholder', 'M/D/YYYY');
+			if (!o.attr('title')) o.attr('title', o.attr('placeholder'));
+			o.elmKey("o-title", o.attr('title'));
+			o.attr("extended", 1);
 			
-			if (!t.attr('placeholder')) {
-				t.attr('placeholder', 'M/D/YYYY');
-			}
-			if (t.attr('title')) {
-				t.data("o-title", t.attr('title'));
+			t.addClass("uiw").addClass("ui_date").addClass("field");
+			t.elmKey("uiw", "ui_date");
+			
+			if(o.hasClass("without-calendar")){
+				
 			}else{
-				t.data("o-title", 'M/D/YYYY');
-				t.attr('title', 'M/D/YYYY');
+				var d = $('<div class="input-group uiw ui_date"  data-uiw="ui_date" name="' + n + '_frame">');
+				d.css({"max-width": "200px"});
+				
+				var bttn = $('<span class="input-group-addon ui_cal_btn" data-field1="' + n + '"><i class="fa fa-calendar"></i></span>');
+				t = o.clone();
+				
+				d.addClass("input-group");
+				d.append(t);
+				d.append(bttn);
+				
+				o.replaceWith( d );
 			}
 			
-			t.addClass('form-control');
-			
-			t.addClass("uiw");
-			t.addClass("uiwd-date");
-			
-			t.elmKey("uiw", "calendar");
-			//t.elmKey("ignore", "1" );
-			
-			
-			
-			if(scope != "default") { d.elmKey("scope", scope); t.elmKey("scope", scope); }
-			
-			d.addClass("uiwc-for-date");
-			
-			d.css({"max-width": "240px"});
-			
-			d.append(t);
-			d.append(b);
-			
-			o.replaceWith( d );
-			
-			client_interactions.installEvents(n, t);
+			//client_interactions.installEvents(n, t);
 		}
 	};
 	return ui_datepicker;

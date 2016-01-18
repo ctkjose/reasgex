@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang='EN'>
+<head>
+	<meta charset="utf-8">
+	<base href='/reasgex/'>
+	<title>UI CORE 001</title>
+	<meta name="description" content="REASG PAGE">
+	<meta name="viewporte" content="width=device-width">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	
+	<!-- <link type="text/css" rel="stylesheet" href='vendor/engine/bootstrap/css/bootstrap.css' media='all'\> -->
+	<!-- <link type="text/css" rel="stylesheet" href='../engine/vendor/bootstrap/css/bootstrap-theme.css' media='all'\> -->
+	<link type="text/css" rel="stylesheet" href='vendor/engine/font-awesome/font-awesome.css' media='all'\>
+	
+	<link type="text/css" rel="stylesheet" href='css/engine/reasg.ui.primitives.css' media='all'\>
+	<link type="text/css" rel="stylesheet" href='css/engine/reasg.ui.css' media='all'\>
+	
+	
+	
+	
+</head>
+<body>
+<div class='view-page with-sidebar'>
+	<div class='view bar bar-nav'>
+		<div class='brand pull-left'>Web Services</div>
+		<div class='button sidebar-toggle pull-right'><i class="fa fa-bars"></i></div>
+		<div class='button pull-right disabled' title="Settings" role="button"><i class="fa fa-cog"></i></div>
+		<div class='button pull-right' role="button"><i class="fa fa-home"></i></div>
+	</div>
+	<div class='left-pane'>
+		<div class='sidebar with-brand list-pane dark' role="navigation">
+			<div class='brand'>
+				<div class='button sidebar-toggle pull-right'><i class="fa fa-chevron-left"></i></div>
+				Web Services
+			</div>
+			<a class='menu-entry list-row' href="#">Dashboard</a>
+			<a class='menu-entry list-row' href="#">Shortcuts</a>
+		</div>
+	</div>
+	<div class='right-pane'>
+		<div class='view view-main'>
+			<div class="view with-border round section">
+				<div class='header'>
+					<label class='title'>Student Record</label>
+				</div>
+				<div class="view-input-table">
+					<div class="input-table-row sm-stack">
+						<div class="row-label">
+							<label>Student Number</label>
+						</div>
+						<div class="row-contents">
+							<input class='field' type='text' name='std_sn' placeholder="Student Number">
+						</div>
+					</div>
+					<div class="input-table-row sm-stack">
+						<div class="row-label">
+							<label>Name</label>
+						</div>
+						<div class="row-contents">
+							<input class='field' type='text' name='std_name' placeholder="Name">
+						</div>
+					</div>
+					<div class="input-table-row">
+						<div class="row-label">
+							<label>Enabled</label>
+						</div>
+						<div class="row-contents">
+							<div class="field-decorated">
+								<span class='edit-box' contentEditable="true"></span><span class="addon">@uprm.edu</span>
+							</div>
+						</div>
+					</div>
+					<div class="input-table-row">
+						<div class="row-label">
+							<label>Enabled Active</label>
+						</div>
+						<div class="row-contents">
+							<div class="toggle active">
+								<div class="toggle-handle" style="transform: translate3d(44px, 0px, 0px);"></div>
+							</div>
+						</div>
+					</div>
+					<div class="input-table-row">
+						<div class="row-label">
+							<label>Enabled Active</label>
+						</div>
+						<div class="row-contents">
+							<div class='button with-border blue'>
+								Test <span class='badge' title='Five records found...'>5</span>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<div class='footer'>
+					<div class='button red pull-left'>DELETE</div><div class='button'>SAVE</div>
+				</div>
+			</div>
+			<div class="view with-border round section">
+				<div class='header'>
+					<label class='title'>Student Record 2</label>
+				</div>
+				<div class='body'>
+					hello
+				</div>
+				<div class='footer'>
+					<div class='button'>SAVE</div>
+				</div>
+			</div>
+			<div class="view section">
+				
+				<div class="dialog">
+					<h2>Regular Message</h2>
+					There are a total of 25 record available. 
+				</div>
+				
+				<div class="alert" role="alert">
+					<h2>Regular Message</h2>
+					There are a total of 25 record available. 
+				</div>
+				<p></p>
+				<div class="alert info" role="alert">
+					<i class="close icon" data-dismiss="alert" aria-label="Close"></i>
+					<h2>Information</h2>
+					Remeber to update employee address. Using an "alert info". 
+				</div>
+				<div class="alert success" role="alert">
+					<i class="close icon" data-dismiss="alert" aria-label="Close"></i>
+					<h2>Record Saved</h2>
+					This record was updated.  Using an "alert success".
+				</div>
+				<div class="alert danger" role="alert">
+					<i class="close icon" data-dismiss="alert" aria-label="Close"></i>
+					<h2>Unable to save record</h2>
+					This record is not available.  Using an "alert danger".
+				</div>
+			</div>
+			hello<br>
+			hello<br>
+			hello<br>
+			hello<br>
+			hello<br>
+		</div><!-- end view_main -->
+	</div><!-- end right-pane' -->
+
+<script type='text/javascript' src='vendor/engine/jquery/jquery-2.1.3.min.js'></script>
+<script>
+$(document).ready(function(){
+	
+	$("#run01").click(function(e){
+		var ds = rea_controller.datasetCreateFromSelector(".test_area");
+		console.log(ds);
+	});
+	
+	$("#run02").click(function(e){
+		//rea_helper_ui_extender.expandForSelector(".test_area");
+		rea_helper_ui_extender.expandDefaults();
+	});
+});
+</script>
+</div>
+</body>

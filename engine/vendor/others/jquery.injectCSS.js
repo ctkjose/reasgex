@@ -58,7 +58,7 @@
                                 }
                             }
                             else {
-                                jsonToCSS(makeSelectorName(scope, property), value);
+                                this.jsonToCSS(makeSelectorName(scope, property), value);
                             }
                             break;
                     }

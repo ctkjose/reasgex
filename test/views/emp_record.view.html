@@ -1,0 +1,136 @@
+<h1>{{record_title}}</h1>
+<form class="form-horizontal view extend" role="form" name="employee">
+	<div class='section with-border round'>
+		<div class='header grey'>
+			<h2>Employee Record</h2>
+		</div>
+		<div class='view-input-group widgets-in-row'>
+			<div class="row xs-flow" title='Employee company email'>
+				<label for="email">Email:</label>
+				<input class='text' name='email' placeholder='Company email' decorate='@upr.edu'>
+			</div>
+			<div class="row inline sm-flow xs-flow " title='test jose' data-label='Name:'>
+				<input class='text' name='emp_name' size='4' placeholder='First Name' data-validate="empty" data-error-message="Please provide a name">
+				<input class='text' name='emp_mname' size='1' placeholder='Initial'>
+				<input class='text' name='emp_lname'  placeholder='First Name' data-validate="empty" data-error-message="Please provide a last name">
+			</div>
+			<div class="row" title='test jose' data-label='Salary:'>
+				<span class='decorate'>$</span><input class='text' name='emp_salary' placeholder='Salary'>
+			</div>
+			
+			<div class="row" data-label='Date Hired:'>
+				<input class='datepicker' type="text" name="start_date" id="start_date" placeholder="Enter date">
+			</div>
+			
+			<div class="row xs-flow" title='test jose' data-label='Test:'>
+				<span class='decorate'><checkbox aria-label="..." name='emp_test1_enabled' class='bool'></checkbox></span>
+				<input class='text' name='emp_test1' placeholder='Test'>
+			</div>
+			<div class="row xs-flow" title='test jose' data-label='Tax Rate:'>
+				<input class='text'name='emp_tax_rate' placeholder='FICA'>
+				<span class='decorate'><i class='fa fa-money'></i></span>
+			</div>
+			<div class="row xs-flow" title='test jose' data-label='Checkbox Shorthand 1:'>
+				<checkbox name='field_checkbox01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></checkbox>
+			</div>
+			<div class="row xs-flow" title='test jose' data-label='Radio Shorthand:'>
+				<radio name='field_radio01' default='1' options='{"1":"Option 1", "2":"Option 2"}'></radio>
+			</div>
+			<div class="row sm-align-right xs-align-right" title='test jose' data-label='Yes No Shorthand:'>
+				<div class='switch' name='field_yesno' default='1' label-yes='Yes' label-no='No'></div>
+			</div>
+			<div class="row sm-align-right xs-align-right" title='test jose' data-label='Enabled:'>
+				<div class='switch' name='field_enabled' default='1'></div>
+			</div>
+			<div class="row sm-align-right xs-align-right" title='test jose' data-label='Keep Record:'>
+				<div class='switch' name='field_enabled2' default='1'>
+					<i class="fa fa-check label-yes" title="Keep Record"></i>
+					<i class="fa fa-trash label-no" title="Delete Record"></i>
+				</div>
+			</div>
+			
+			<div class="row xs-flow inline" title='test jose' data-label='State:'>
+				<div class='select size-auto' name='emp_state' default='pr' datasource='states' size='2'></div>
+				<label class="control-label" for="city">City:</label>
+				<div class='select size-auto' name='emp_city' default='ag' datasource='cities'></div>
+			</div>
+			<div class="row xs-flow" title='test jose' data-label='Test:'>
+				
+			</div>
+			<div class='header'>
+				<h2>Tables</h2>
+			</div>
+			<div class="row xs-flow" >
+				<table class='table striped' name='records_with_footer' datasource='emp_records'>
+						<thead><tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Amount</th>
+							<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class='table-row-template'>
+								<td name='id'>%id%</td>
+								<td name='name'>%name%</td>
+								<td name='amount' class='%amount_class%'>%amount%</td>
+								<td name='actions'>
+									<a href='test_view.php?a=edit&id=%id%' title='View'>View...</a>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<th></th>
+							<th colspan='3'>
+								<a href='test_view.php?a=edit' title='Create new record'><i class='icon icon-plus'></i> Create a new record...</a>
+							</th>
+						</tfoot>
+					</table>
+			</div>
+			<div class='header'>
+				<h2>Table with Repeater</h2>
+			</div>
+			<div class="row xs-flow without-label" xs-min-width="1000px">
+				<table class='table repeater' min-width='800px' name='records2' datasource='schools'>
+					<thead><tr>
+						<th size='60px'>ID</th>
+						<th>Name</th>
+						<th>Town</th>
+						<th>Date</th>
+						<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class='table-row-template'>
+							<td name='id' size='60px'>%id%</td>
+							<td name='name'><input class="hidden" scope='records2' name="id"><input class="text" scope='records2' name="school_name" placeholder="Enter school name"></td>
+							<td name='town'><div class='select size-small' scope='records2' name='town' default='%town%' datasource='cities'></div></td>
+							<td name='date'><input class='datepicker' type="text" scope='records2' name="date_created" placeholder="Enter date"></div></td>
+							<td name='actions'>
+								<a class='repeater-cmd-del' href='#' title='Delete'><i class='fa fa-trash-o'></i></a>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<th></th>
+						<th colspan='4'>
+							<a class='repeater-cmd-add' href='#' title='Create new record'><i class='fa fa-plus'></i> Create a new record...</a>
+						</th>
+					</tfoot>
+				</table>
+			</div>
+			<div class='header'>
+				<h2>Comments</h2><span>Enter record comments before saving this employee.</span>
+			</div>
+			<div class="row xs-flow" title='test jose' >
+				<textarea rows="3" name="comments"></textarea>
+			</div>
+		</div><!-- end view-input-group -->
+		<div class='footer grey'>
+			<button class='btn btn-info' name='btn-continue' confirm="are you sure" action-with-data="@(/save)">Continue</button>
+		</div>
+	</div><!-- end section -->
+	
+	<datasource name="states" src="@(/sis_common/lookup/states)"></datasource>
+	<datasource name="cities" src="@(/sis_common/lookup/cities)"></datasource>
+</form>
