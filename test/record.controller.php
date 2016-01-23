@@ -23,6 +23,21 @@ class record extends \reasg\view_controller {
 		
 		$page->body->write($recordView);
 		
+		
+		
+		$ds = \reasg\ui_datasource::createDataset('student_record');
+		
+		//Settings items individually
+		$ds->items['std_sn'] = '812150001';
+		$ds->items['std_name'] = 'Joe Cuevas Garcia';
+		$ds->items['std_ssn'] = ['123','45','6789'];
+		$ds->items['std_dob'] = '09/22/1998';
+		$ds->items['std_sex'] = 'm';
+		$ds->items['languages'] = ['sp','en'];
+		
+		//bind this ds to fields in a view with 
+		//the same name as this ds
+		$ds->bindToView();
 		//reasg_dev_dump($recordView);
 		
 	}

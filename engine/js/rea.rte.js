@@ -86,7 +86,7 @@ var rte = function(o){
 		//var sel = window.getSelection();
         //sel.removeAllRanges();
 		
-		console.log("rte.setSelectionPos(" + start + "," + len + ")");
+		//console.log("rte.setSelectionPos(" + start + "," + len + ")");
 		var r = document.createRange();
 		
 		var n = (this.o.get(0).firstChild) ? this.o.get(0).firstChild : this.o.get(0);

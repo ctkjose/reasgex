@@ -71,11 +71,11 @@ var ui_support = {
 			$(this).closest('.alert.page-alert').slideUp();
 		});
 		
-		$("body").on('click touchend', '.input-group-addon.ui_cal_btn', function(e){
+		$("body").on('click touchend', '.cmd-ui-cal-show', function(e){
 			e.stopPropagation();
 			var o = $(e.target);
-			if( !o.hasClass(".ui_cal_btn") ){
-				o = o.closest(".ui_cal_btn");
+			if( !o.hasClass(".cmd-ui-cal-show") ){
+				o = o.closest(".cmd-ui-cal-show");
 			}
 			
 			var t = o.prev();
@@ -253,8 +253,6 @@ ui_support.CreateMasked = function(e) {
 		t.html(s);
 			
 		if($this.selStart > 0){
-			
-			console.log("anchor=" + $this.selStart);
 			if($this.selStart<=s.length){
 				$this.txt.setSelectionPos($this.selStart,0);
 			}else{

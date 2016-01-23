@@ -40,6 +40,7 @@ var rea_helper_ui_extender = function(){
 			
 			if(!o.hasClass("extended")) o.addClass("extended");
 			
+			
 			for(var i=0;i<this.expand_functions.length;i++){
 				var def = this.expand_functions[i];
 				o.find(def.sel).each(function(){

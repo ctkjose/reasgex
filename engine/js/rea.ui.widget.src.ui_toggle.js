@@ -45,3 +45,64 @@ ui_widgets.ui_toggle.setValue = function(value){
 	this.o.find(".toggle-handle").css({"transform": "translate3d(" + tz + "px, 0px, 0px)"} );
 	this.o.elmKey("value", v);
 }	
+ui_widgets.ui_toggle.register = function(){
+	return {
+		"provide-expand": ["div.toggle"],
+		"privide-data": true,
+		"expand-needs": ["ui_table"],
+	};
+}
+ui_widgets.ui_toggle.expandElement = function(o){
+	var v = 0;
+	var n = o.elmName();
+	
+	var scope = "default";
+	if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); }
+	
+	if (o.attr("default")) {
+		v = o.attr("default");
+	}
+	
+	
+	o.addClass("field").addClass("ui_toggle").addClass("uiw");
+	o.elmKey("uiw", "ui_toggle");
+	o.attr("extended", 1);
+	
+	var tz = '0';
+	if(v == "1"){
+		o.addClass("active");
+		tz = '44';
+	}
+	
+	o.elmKey("value", v);
+	var th = $("<div class=\"toggle-handle\" style=\"transform: translate3d(" + tz + "px, 0px, 0px);\"></div>");
+	
+	o.append(th);
+		
+	
+	var fn = function(e){
+		var o = $(e.target);
+		if(!o.hasClass("toggle")) o = o.closest(".toggle");
+		
+		
+		var v = (o.elmKey("value")=="1") ? 1 : 0;
+		
+		var tz = '0';
+		if(v){
+			o.removeClass("active");
+			v = "0";
+		}else{
+			o.addClass("active");
+			v = "1";
+			tz = '44';
+		}
+		
+		o.find(".toggle-handle").css({"transform": "translate3d(" + tz + "px, 0px, 0px)"} );
+		o.elmKey("value", v);
+		
+		var rvalue = false;
+		rea_controller.dispatchEvent("uiw_event", {"action": "change","name": n, "event": e, "node": o, "rvalue":rvalue} );
+	}
+	
+	o.on("click", fn);
+}

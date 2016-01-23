@@ -74,7 +74,7 @@ jQuery.fn.uiPosition = function(options) {
 			
 			e.animate({top: p.top + 'px', left: p.left + 'px'}, 0);
 		}else if(ops.target){
-			console.log(ops.target);
+			//console.log(ops.target);
 			var p = ops.target.offset();
 			e.animate({top: (p.top + ops.target.outerHeight())+ 'px', left: p.left + 'px'}, 0);
 		}

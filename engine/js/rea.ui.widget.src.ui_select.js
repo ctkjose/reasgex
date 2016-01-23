@@ -3,8 +3,6 @@
 
 ui_widgets.ui_select = new ui_widget("ui_select");
 ui_widgets.ui_select.initWithElement = function(o){
-	console.log("@ui_select.initWithElement()");
-	
 	this.init(o);
 };
 ui_widgets.ui_select.setAttr = function(a, v){
@@ -58,4 +56,87 @@ ui_widgets.ui_select.setOptionsWithDS = function(ds){
 	if(!ds.items.hasOwnProperty("options")) return;
 	
 	this.setOptions(ds.items.options);
+}
+ui_widgets.ui_select.register = function(){
+	return {
+		"provide-expand": ["div.select"],
+		"privide-data": true,
+		"expand-needs": ["ui_table"],
+	};
+}
+ui_widgets.ui_select.expandElement = function(o){
+	var n = o.attr("name");
+	var v = '';
+	
+	
+	if(o.attr("extended") ) return;
+	if(o.data("ignore") && (o.data("ignore") == "1")) return;
+	
+	if (o.hasClass('multiple')) {
+		in_type = "select multiple";
+	}
+	
+	if (o.attr("default")) {
+		v = o.attr("default");
+	}
+	
+	var m_options = {};
+	
+	if (o.attr("options")) {
+		var ops = JSON.parse(o.attr("options"));
+		for (var k in ops) {
+			
+			m_options[k] = ops[k];
+		}
+	}else if (o.attr("datasource")) {
+		
+	}
+	
+	var d = o;
+	if( o.elmType() != "select" ){
+		d = $('<select class="field" name="' + n + '"></select>');
+		if (o.attr('data-with-code')) d.attr('data-with-code', o.attr('data-with-code'));
+	}
+	
+	d.removeClass("select");
+	
+	d.addClass("uiw").addClass("ui_select");
+	d.elmKey("uiw", "ui_select");
+	
+	var wg = ui_widgets.ui_select.instanceWithElement(d);
+	
+	d.attr('default', v);
+	d.attr("extended", 1);
+
+	
+	wg.setOptions(m_options);
+	
+	
+	if( o.attr("datasource") && ( o.elmType() != "select" ) ){
+		
+		var dsn = o.attr("datasource");
+		
+		var ds = ui_datasource_controller.getDatsourceWithName(dsn);
+		
+		if( (typeof ds != "undefined") && (ds.ready) ){
+			wg.setOptionsWithDS(ds);
+		}
+		
+		var fn = function(ds){
+			wg.setOptionsWithDS(ds);
+		};
+		
+		rea_controller.on("ds_changed_" + dsn, fn);
+		d.elmKey("ds", o.attr("datasource"));
+		o.removeAttr("datasource");
+		
+	}
+	
+	if( o.attr("scope") ) { d.elmKey("scope", o.attr("scope")); }
+	
+	wg.installEvents();
+
+	if( o.elmType() != "select" ){
+		o.replaceWith( d );	
+	}
 }

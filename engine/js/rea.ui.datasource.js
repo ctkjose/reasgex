@@ -288,19 +288,19 @@ var ui_datasource_controller = function(){
 				ukeys = akeys;
 			}
 			
-			var fnpush = function(v){
-				if( data.hasOwnProperty( v.name )){
-					console.log("already has 1 " + v.name + " must create array");
-					if ( Array.isArray(data[v.name] ) ){
-						console.log("already has " + v.name + " is an array");
-						data[v.name].push( v.value );
+			var fnpush = function(name, v){
+				if( data.hasOwnProperty( name )){
+					console.log("already has 1 " + name + " must create array");
+					if ( Array.isArray(data[name] ) ){
+						console.log("already has " + name + " is an array");
+						data[name].push( v );
 					}else{
-						console.log("already has " + v.name + " creating array");
-						var r = $.extend({}, data[v.name]);
-						data[v.name] = [r, v.value];
+						console.log("already has " + name + " creating array");
+						var r = $.extend({}, data[name]);
+						data[name] = [r, v];
 					}
 				}else{
-					data[v.name] = v.value;
+					data[name] = v;
 				}
 			};
 			
@@ -330,11 +330,13 @@ var ui_datasource_controller = function(){
 				console.log("createDatasetFromSelector(" + sel + ") found element [" + n + "] looking for def");
 				var def = ui_datasource_controller.getDataProvider(e);
 				if(!def) return;
-				if(!def.get || (typeof def.get == "undefined") || (def.get == null) ) return;
+				if(!def.getValue || (typeof def.getValue == "undefined") || (def.getValue == null) ) return;
 				
 				console.log("createDatasetFromSelector(" + sel + ") found element [" + n + "] wd [" + def.wd + "]---------------------");
 				
-				var v = rea.types.callback(def.get, e);
+				def.initWithElement(e);
+				
+				var v = def.getValue(e);
 				console.log(v);
 				if(!v || (typeof v == "undefined") || (v == null) ){
 					return;
@@ -345,10 +347,10 @@ var ui_datasource_controller = function(){
 					for(var x=0; x<v.multiple.length; x++){
 						var v1 = v.multiple[x];
 						console.log(v1);
-						fnpush(v1);
+						fnpush(n, v1);
 					}
 				}else{
-					fnpush(v);
+					fnpush(n, v);
 				}
 			});
 			
@@ -361,12 +363,12 @@ var ui_datasource_controller = function(){
 		getDataProvider : function(e){
 			var def = null;
 			
-			for(var i=0;i<this.uiDataProvidersKeys.length;i++){
-				var wd = this.uiDataProvidersKeys[i];
-				if(!e.hasClass(wd)) continue;
-				def = this.uiDataProviders[wd]; break;
-			}
-			return def;
+			
+			var uiw = e.elmKey("uiw");
+			if(!uiw) return null;
+			if(!ui_widgets.hasOwnProperty(uiw)) return null;
+			
+			return ui_widgets[uiw];
 		},
 		populateSelectorWithDataset : function(sel, ds, akeys){
 			var o = (typeof sel == "string") ? $(sel) : sel;
@@ -398,18 +400,22 @@ var ui_datasource_controller = function(){
 				
 				var def = ui_datasource_controller.getDataProvider(e);
 				if(!def) return;
-				if(!def.set || (typeof def.set == "undefined") || (def.set == null) ) return;
+				if(!def.setValue || (typeof def.setValue == "undefined") || (def.setValue == null) ) return;
 				
-				console.log("populateSelectorWithDataset(" + sel + ") found element [" + n + "] wd [" + def.wd + "]---------------------");
+				console.log("populateSelectorWithDataset(" + sel + ") found element [" + n + "] ---------------------");
 					
 				var attr = {};
 				if(ds.attr && ds.attr.hasOwnProperty(n)){
 					var attr_defaults = {"ro":0};
 					$.extend(attr, attr_defaults,ds.attr[n]);
 				}
-					
+				
+				def.initWithElement(e);
+				
 				var value = ds.items[n];
-				rea.types.callback(def.set, e, value, attr);
+				def.setValue(value);
+				
+				//rea.types.callback(def.set, e, value, attr);
 				
 			});
 		},

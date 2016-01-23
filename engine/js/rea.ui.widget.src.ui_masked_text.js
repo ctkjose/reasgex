@@ -3,8 +3,6 @@
 
 ui_widgets.ui_masked_text = new ui_widget("ui_masked_text");	
 ui_widgets.ui_masked_text.initWithElement = function(o){
-	console.log("@ui_masked_text.initWithElement()");
-	
 	this.init(o);
 	this.buffer = "";
 	
@@ -14,6 +12,44 @@ ui_widgets.ui_masked_text.initWithElement = function(o){
 	
 	
 };
+ui_widgets.ui_masked_text.getValue = function(){
+	if( this.o.attr('data-ignore') && (this.o.data('ignore')=='1')) return null;
+	
+	var out = [""];
+	var s = "";
+	this.o.find("span").each(function(){
+		var e = $(this);
+		var v = e.html();
+		
+		s += v;
+		if(e.hasClass(".edit-area")){
+			out.push(v);
+		}
+	});
+	
+	out[0] = s;
+	return out;
+}
+ui_widgets.ui_masked_text.setValue = function(value){
+	this.o.val(value);
+	
+	var i = -1;
+	if(typeof value == "string"){
+		this.o.find(".edit-area").each(function(){
+			i++;
+			if(i==0) $(this).html(value);
+		});
+		return;
+	}
+	if(Array.isArray(value)){
+		this.o.find(".edit-area").each(function(){
+			i++;
+			if(i >= value.length) return;
+			if(!(i in value)) return;
+			$(this).html(value[i]);
+		});
+	}
+}
 ui_widgets.ui_masked_text.setAttr = function(a, v){
 	
 	if(a == "ro"){
@@ -112,3 +148,35 @@ ui_widgets.ui_masked_text.buildComponents = function(src){
 	
 	
 };
+
+ui_widgets.ui_masked_text.register = function(){
+	return {
+		"provide-expand": [".masked-text"],
+		"privide-data": true,
+		"expand-needs": ["ui_table"],
+	};
+}
+ui_widgets.ui_masked_text.expandElement = function(o){
+	var n = o.attr("name");
+
+	var scope = "default";
+	if( o.attr("scope") ) { scope = o.attr("scope"); o.removeAttr("scope"); }
+
+	var v = "";
+	
+	if (o.attr("default")) {
+		v = o.attr("default");
+	}
+
+	o.addClass("uiw").addClass("field");
+	o.addClass("ui_masked_text");
+	o.elmKey("uiw", "ui_masked_text");
+	o.attr("extended", 1);
+	
+	if(scope != "default") o.elmKey("scope", scope);
+	
+	var widget =  ui_widgets.ui_masked_text.instanceWithElement(o);
+	if(o.attr("mask")){
+		widget.buildComponents(o.attr("mask"));
+	}
+}

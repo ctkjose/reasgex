@@ -75,9 +75,7 @@
 <script type='text/javascript' src='js/engine/rea.rte.js'></script>
 
 <script type='text/javascript' src='js/engine/rea.ui.widgets.min.js'></script>
-<script type='text/javascript' src='js/engine/rea.ui.wg.basic.js'></script>
-<script type='text/javascript' src='js/engine/rea.ui.table.js'></script>
-<script type='text/javascript' src='js/engine/rea.ui.calendar.js'></script>
+
 
 
 {{#repeat js[includes]}} 
@@ -93,7 +91,8 @@
 		
 		rea.loadComponents();
 		
-		rea_helper_ui_extender.expandDefaults();
+		ui_widgets.registerWidgets();
+		ui_widgets.expandDefaults();
 		
 		{{js_ready}}
 		
